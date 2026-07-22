@@ -1,0 +1,32 @@
+{
+  "existing": {
+    "otp": {
+      "OTP00": {
+        "data": {},
+        "success": false,
+        "inbox_id": "INBOX01",
+        "id": "OTP00"
+      },
+      "OTP01": {
+        "data": {},
+        "success": false,
+        "inbox_id": "INBOX01",
+        "id": "OTP01"
+      },
+      "OTP02": {
+        "data": {},
+        "success": false,
+        "inbox_id": "INBOX01",
+        "id": "OTP02"
+      }
+    }
+  },
+  "new": {
+    "otp": {
+      "otp_ref01": {
+        "data": {},
+        "success": false
+      }
+    }
+  }
+}

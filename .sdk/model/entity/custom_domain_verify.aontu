@@ -1,0 +1,80 @@
+# Entity: custom_domain_verify
+
+main: kit: entity: custom_domain_verify: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "data"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "success"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "verified"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  name: "custom_domain_verify"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "mail.acme.com"
+                kind: "param"
+                name: "domain"
+                orig: "domain"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/v1/custom-domains/{domain}/verify"
+          parts: [
+            "v1"
+            "custom-domains"
+            "{domain}"
+            "verify"
+          ]
+          select: {
+            exist: [
+              "domain"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "custom_domain"
+      ]
+    ]
+  }
+
+
+
+}

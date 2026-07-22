@@ -1,0 +1,32 @@
+{
+  "existing": {
+    "message": {
+      "MESSAGE00": {
+        "data": {},
+        "success": false,
+        "inbox_id": "INBOX01",
+        "id": "MESSAGE00"
+      },
+      "MESSAGE01": {
+        "data": {},
+        "success": false,
+        "inbox_id": "INBOX01",
+        "id": "MESSAGE01"
+      },
+      "MESSAGE02": {
+        "data": {},
+        "success": false,
+        "inbox_id": "INBOX01",
+        "id": "MESSAGE02"
+      }
+    }
+  },
+  "new": {
+    "message": {
+      "message_ref01": {
+        "data": {},
+        "success": false
+      }
+    }
+  }
+}

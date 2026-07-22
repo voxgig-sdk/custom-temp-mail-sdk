@@ -1,0 +1,42 @@
+{
+  "existing": {
+    "domain": {
+      "DOMAIN00": {
+        "domain": "s3c",
+        "expires_at": "s3d",
+        "expires_in_day": "s3e",
+        "expiring_soon": false,
+        "tag": [],
+        "tier": "s41"
+      },
+      "DOMAIN01": {
+        "domain": "s78",
+        "expires_at": "s79",
+        "expires_in_day": "s7a",
+        "expiring_soon": false,
+        "tag": [],
+        "tier": "s7d"
+      },
+      "DOMAIN02": {
+        "domain": "sb4",
+        "expires_at": "sb5",
+        "expires_in_day": "sb6",
+        "expiring_soon": false,
+        "tag": [],
+        "tier": "sb9"
+      }
+    }
+  },
+  "new": {
+    "domain": {
+      "domain_ref01": {
+        "domain": "sf0",
+        "expires_at": "sf1",
+        "expires_in_day": "sf2",
+        "expiring_soon": false,
+        "tag": [],
+        "tier": "sf5"
+      }
+    }
+  }
+}

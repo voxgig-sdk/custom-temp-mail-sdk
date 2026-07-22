@@ -1,0 +1,44 @@
+# API Information
+
+
+main: {
+  kit: {
+    info: {
+      description: `**Last updated:** May 2026
+
+Disposable email infrastructure for developers.
+
+All routes require \`Authorization: Bearer fce_<key>\` (developer API key), except \`GET /v1/plans\` and \`GET /v1/otp/public\` which are public.
+
+## IMAP & POP3 (Growth/Enterprise)
+
+In addition to the HTTP API, Growth and Enterprise plans can read inboxes via standard mail protocols (TLS only):
+
+| Protocol | Host | Port | Auth |
+|----------|------|------|------|
+| IMAP4rev1 | imap.freecustom.email | 993 | username = inbox address, password = fce_ key |
+| POP3 | pop.freecustom.email | 995 | username = inbox address, password = fce_ key |
+
+Connecting and listing messages are free. Fetching a message body (IMAP FETCH / POP3 RETR) costs 1 request from the monthly quota. Docs: https://freecustom.email/api/docs/imap
+`
+      security: {
+        in: "header"
+        name: "Authorization"
+        prefix: "Bearer"
+        scheme: "BearerAuth"
+        type: "http"
+      }
+      servers: [
+        {
+          description: "Production"
+          url: "https://api2.freecustom.email"
+        }
+      ]
+      summary: "**Last updated:** May 2026"
+      title: "FreeCustom.Email API"
+      version: "2.2.0"
+      website: "https://api2.freecustom.email"
+    }
+  }
+}
+

@@ -1,0 +1,36 @@
+{
+  "existing": {
+    "public_v1_message": {
+      "PUBLIC_V1_MESSAGE00": {
+        "data": {},
+        "message": "s1f",
+        "success": true,
+        "inbox_id": "INBOX01",
+        "id": "PUBLIC_V1_MESSAGE00"
+      },
+      "PUBLIC_V1_MESSAGE01": {
+        "data": {},
+        "message": "s3d",
+        "success": true,
+        "inbox_id": "INBOX01",
+        "id": "PUBLIC_V1_MESSAGE01"
+      },
+      "PUBLIC_V1_MESSAGE02": {
+        "data": {},
+        "message": "s5b",
+        "success": true,
+        "inbox_id": "INBOX01",
+        "id": "PUBLIC_V1_MESSAGE02"
+      }
+    }
+  },
+  "new": {
+    "public_v1_message": {
+      "public_v1_message_ref01": {
+        "data": {},
+        "message": "s79",
+        "success": true
+      }
+    }
+  }
+}

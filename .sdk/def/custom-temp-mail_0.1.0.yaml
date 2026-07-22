@@ -1,0 +1,2513 @@
+openapi: 3.1.0
+info:
+  title: FreeCustom.Email API
+  version: 2.2.0
+  description: >
+    **Last updated:** May 2026
+
+
+    Disposable email infrastructure for developers.
+
+
+    All routes require `Authorization: Bearer fce_<key>` (developer API key),
+    except `GET /v1/plans` and `GET /v1/otp/public` which are public.
+
+
+    ## IMAP & POP3 (Growth/Enterprise)
+
+
+    In addition to the HTTP API, Growth and Enterprise plans can read inboxes
+    via standard mail protocols (TLS only):
+
+
+    | Protocol | Host | Port | Auth |
+
+    |----------|------|------|------|
+
+    | IMAP4rev1 | imap.freecustom.email | 993 | username = inbox address, password = fce_ key |
+
+    | POP3 | pop.freecustom.email | 995 | username = inbox address, password = fce_ key |
+
+
+    Connecting and listing messages are free. Fetching a message body (IMAP FETCH / POP3 RETR)
+    costs 1 request from the monthly quota. Docs: https://freecustom.email/api/docs/imap
+servers:
+  - url: https://api2.freecustom.email
+    description: Production
+security:
+  - BearerAuth: []
+paths:
+  /v1/me:
+    get:
+      summary: Get current user (account info)
+      operationId: getMe
+      tags:
+        - Public v1 - Account
+      description: >-
+        Returns the authenticated developer's account info — plan, rate limits,
+        feature flags, inbox count, credit balance, and custom domain count.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-API-Plan:
+              schema:
+                type: string
+                example: startup
+            X-RateLimit-Limit-Second:
+              schema:
+                type: integer
+                example: 25
+            X-RateLimit-Remaining-Second:
+              schema:
+                type: integer
+                example: 24
+            X-RateLimit-Limit-Month:
+              schema:
+                type: integer
+                example: 250000
+            X-RateLimit-Remaining-Month:
+              schema:
+                type: integer
+                example: 248770
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeResponse'
+        '401':
+          description: Missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error429'
+  /v1/usage:
+    get:
+      summary: Get usage stats
+      operationId: getUsage
+      tags:
+        - Public v1 - Account
+      description: Returns live usage stats for the current billing period.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/plans:
+    get:
+      summary: List plans and credit packages
+      operationId: getPlans
+      tags:
+        - Public v1 - Account
+      description: >-
+        Public endpoint — no auth required. Returns all available plans and
+        credit packages.
+      security: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlansResponse'
+  /v1/inboxes/{inbox}/timeline:
+    get:
+      summary: Get inbox timeline history
+      operationId: getTimeline
+      tags:
+        - Public v1 - Dashboard Analytics
+      description: |
+        Returns the timeline history for a specific inbox. This shows the
+        test run history and event sequence for debugging failed tests.
+
+        **Plan required:** Growth ($89/mo) or Enterprise ($199/mo).
+
+        The timeline helps you understand:
+        - When the inbox was created and used
+        - Messages received over time
+        - Test flow patterns and failures
+
+        **Cost**: 2 requests.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: inbox
+          in: path
+          required: true
+          description: The inbox to get timeline for (e.g. `test@ditube.info`).
+          schema:
+            type: string
+          example: test@ditube.info
+        - name: test_id
+          in: query
+          required: false
+          description: >-
+            Optional test ID to filter the timeline events by a specific test
+            run.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      inbox:
+                        type: string
+                      events:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            inbox:
+                              type: string
+                            type:
+                              type: string
+                              enum:
+                                - inbox_created
+                                - test_started
+                                - smtp_rcpt_received
+                                - email_received
+                                - email_parsed
+                                - otp_extracted
+                                - webhook_sent
+                                - websocket_sent
+                                - error
+                            timestamp:
+                              type: integer
+                            latency_ms:
+                              type: integer
+                            test_run_id:
+                              type: string
+                            metadata:
+                              type: object
+                              properties:
+                                message_id:
+                                  type: string
+                                subject:
+                                  type: string
+                                from:
+                                  type: string
+                                otp:
+                                  type: string
+                                score:
+                                  type: number
+                                raw_snippet:
+                                  type: string
+                                verification_link:
+                                  type: string
+                                error:
+                                  type: string
+                      duration_hours:
+                        type: integer
+                      event_count:
+                        type: integer
+        '400':
+          description: Missing inbox parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400Inbox'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low — Growth or Enterprise required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/inboxes/{inbox}/insights:
+    get:
+      summary: Get inbox failure insights
+      operationId: getInsights
+      tags:
+        - Public v1 - Dashboard Analytics
+      description: >
+        Returns automated failure insights for a specific inbox. This analyzes
+        the
+
+        inbox activity and detects common issues with test flows.
+
+
+        **Plan required:** Growth ($89/mo) or Enterprise ($199/mo).
+
+
+        Insights include:
+        - Common failure patterns
+        - Recommendations for improving deliverability
+        - Timing issues detection
+
+        **Cost**: 3 requests.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: inbox
+          in: path
+          required: true
+          description: The inbox to get insights for (e.g. `test@ditube.info`).
+          schema:
+            type: string
+          example: test@ditube.info
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      inbox:
+                        type: string
+                      insights:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              example: slow_delivery
+                            message:
+                              type: string
+                              example: Email took >3s
+                      analyzed_at:
+                        type: string
+                        format: date-time
+        '400':
+          description: Missing inbox parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400Inbox'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low — Growth or Enterprise required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/domains:
+    get:
+      summary: List available platform domains
+      operationId: listDomains
+      tags:
+        - Public v1 - Platform Domains
+      description: >
+        Returns the **platform-managed** domains available for inbox creation,
+
+        filtered by your plan:
+
+
+        - **Free / Developer / Startup** — free-tier domains only.
+
+        - **Growth / Enterprise** — free-tier + pro-tier domains.
+
+
+        Results are cached for up to 5 minutes. New domains appear automatically
+
+        without requiring a code change on your side.
+
+
+        Tags on each domain:
+
+        - `new` — recently added domain, shown for ~30 days.
+
+        - `popular` — high-traffic domain.
+
+
+        Domains expiring within 30 days include `expires_at` and
+
+        `expires_in_days` as a heads-up to migrate inboxes. Healthy domains
+
+        omit these fields entirely to keep the payload lean.
+
+
+        > **Custom domains** (domains you own and verified) are managed via
+
+        > `GET /v1/custom-domains` — this endpoint only returns platform
+        domains.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainsListResponse'
+              examples:
+                free_plan:
+                  summary: Free / Developer / Startup plan
+                  value:
+                    success: true
+                    count: 10
+                    note: Upgrade to Growth plan to access additional pro domains.
+                    data:
+                      - domain: ditube.info
+                        tier: free
+                        tags:
+                          - popular
+                      - domain: ditplay.info
+                        tier: free
+                        tags:
+                          - popular
+                      - domain: ditapi.info
+                        tier: free
+                        tags: []
+                      - domain: getnotify.io
+                        tier: free
+                        tags:
+                          - new
+                        expires_at: '2026-04-01'
+                        expires_in_days: 25
+                        expiring_soon: true
+                growth_plan:
+                  summary: Growth / Enterprise plan
+                  value:
+                    success: true
+                    count: 14
+                    note: 'Growth/Enterprise plan: free + pro domains included.'
+                    data:
+                      - domain: ditube.info
+                        tier: free
+                        tags:
+                          - popular
+                      - domain: ditmail.pro
+                        tier: pro
+                        tags:
+                          - new
+                          - featured
+                      - domain: mock-api.pro
+                        tier: pro
+                        tags:
+                          - new
+                          - featured
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/domains/all:
+    get:
+      summary: List all platform domains with full metadata
+      operationId: listDomainsAll
+      tags:
+        - Public v1 - Platform Domains
+      description: |
+        Same domain list as `GET /v1/domains` but always includes full expiry
+        metadata for every domain — useful for dashboard integrations that
+        monitor domain health or want to proactively alert users before a
+        domain expires.
+
+        Plan gating is identical: Growth / Enterprise see pro-tier domains,
+        all other plans see free-tier only.
+
+        > This endpoint covers **platform domains** only. For your own verified
+        > custom domains use `GET /v1/custom-domains`.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainsAllResponse'
+              example:
+                success: true
+                count: 10
+                data:
+                  - domain: ditube.info
+                    tier: free
+                    tags:
+                      - popular
+                    expires_at: '2026-08-01'
+                    expires_in_days: 147
+                    expiring_soon: false
+                    expired: false
+                  - domain: ditmail.pro
+                    tier: pro
+                    tags:
+                      - new
+                      - featured
+                    expires_at: '2026-09-05'
+                    expires_in_days: 178
+                    expiring_soon: false
+                    expired: false
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/custom-domains:
+    get:
+      summary: List your custom domains
+      operationId: listCustomDomains
+      tags:
+        - Public v1 - Custom Domains
+      description: |
+        Returns all custom domains you have added to your account, along with
+        their verification status and the DNS records needed to verify them.
+
+        **Plan required:** Growth ($89/mo) or Enterprise ($199/mo).
+
+        Custom domains are **shared** between the API and the webapp dashboard —
+        a domain added here appears in the dashboard immediately and vice-versa.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomDomainsListResponse'
+              example:
+                success: true
+                count: 2
+                data:
+                  - domain: mail.acme.com
+                    verified: true
+                    mx_record: mx.freecustom.email
+                    txt_record: freecustomemail-verification=a1b2c3d4e5f6...
+                    added_at: '2026-01-15T10:00:00.000Z'
+                  - domain: staging.acme.com
+                    verified: false
+                    mx_record: mx.freecustom.email
+                    txt_record: freecustomemail-verification=9z8y7x6w5v4u...
+                    added_at: '2026-03-10T08:30:00.000Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low — Growth or Enterprise required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+    post:
+      summary: Add a custom domain
+      operationId: addCustomDomain
+      tags:
+        - Public v1 - Custom Domains
+      description: >
+        Adds a new custom domain to your account and returns the DNS records
+
+        you must configure at your registrar before verifying.
+
+
+        **Plan required:** Growth ($89/mo) or Enterprise ($199/mo).
+
+
+        **Workflow:**
+
+        1. `POST /v1/custom-domains` — add the domain, get DNS records.
+
+        2. Add the two DNS records (MX + TXT) at your registrar.
+
+        3. `POST /v1/custom-domains/{domain}/verify` — confirm propagation.
+
+        4. `POST /v1/inboxes` with any address `@yourdomain` — start receiving
+        mail.
+
+
+        This call is **idempotent** — if the domain is already added it returns
+
+        the existing entry with `200` instead of `201`.
+
+
+        **Limits:** Maximum 10 custom domains per account.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - domain
+              properties:
+                domain:
+                  type: string
+                  description: The bare domain name to add (no leading `@`, no protocol).
+                  example: mail.acme.com
+            example:
+              domain: mail.acme.com
+      responses:
+        '200':
+          description: Domain was already added (idempotent)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Domain already added.
+                  data:
+                    $ref: '#/components/schemas/CustomDomainEntry'
+        '201':
+          description: >-
+            Domain added — configure the DNS records and then call the verify
+            endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomDomainAddedResponse'
+              example:
+                success: true
+                message: >-
+                  Domain added. Configure the DNS records below, then call the
+                  verify endpoint.
+                data:
+                  domain: mail.acme.com
+                  verified: false
+                  mx_record: mx.freecustom.email
+                  txt_record: freecustomemail-verification=a1b2c3d4e5f6...
+                  added_at: '2026-03-11T12:00:00.000Z'
+                  dns_records:
+                    - type: MX
+                      hostname: '@'
+                      value: mx.freecustom.email
+                      priority: '10'
+                      ttl: Auto
+                    - type: TXT
+                      hostname: '@'
+                      value: freecustomemail-verification=a1b2c3d4e5f6...
+                      ttl: Auto
+                  next_step: POST /v1/custom-domains/mail.acme.com/verify
+        '400':
+          description: Missing or invalid domain name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    enum:
+                      - missing_field
+                      - invalid_domain
+                      - limit_reached
+                  message:
+                    type: string
+              examples:
+                missing_field:
+                  value:
+                    success: false
+                    error: missing_field
+                    message: '`domain` is required (e.g. "mail.yourdomain.com").'
+                invalid_domain:
+                  value:
+                    success: false
+                    error: invalid_domain
+                    message: Must be a valid domain name (e.g. "mail.yourdomain.com").
+                limit_reached:
+                  value:
+                    success: false
+                    error: limit_reached
+                    message: Maximum of 10 custom domains reached.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low — Growth or Enterprise required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/custom-domains/{domain}:
+    delete:
+      summary: Remove a custom domain
+      operationId: deleteCustomDomain
+      tags:
+        - Public v1 - Custom Domains
+      description: >
+        Permanently removes a custom domain from your account.
+
+
+        **Side effects:**
+
+        - All API inboxes registered at `@{domain}` are automatically
+        unregistered.
+
+        - The domain is also removed from the webapp dashboard.
+
+
+        **Plan required:** Growth ($89/mo) or Enterprise ($199/mo).
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: domain
+          in: path
+          required: true
+          description: The bare domain name to remove (e.g. `mail.acme.com`).
+          schema:
+            type: string
+            example: mail.acme.com
+      responses:
+        '200':
+          description: Domain removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomDomainDeletedResponse'
+              example:
+                success: true
+                message: '"mail.acme.com" removed.'
+                inboxes_removed:
+                  - support@mail.acme.com
+                  - noreply@mail.acme.com
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '404':
+          description: Domain not found in your account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: domain_not_found
+                  message:
+                    type: string
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/custom-domains/{domain}/verify:
+    post:
+      summary: Verify a custom domain
+      operationId: verifyCustomDomain
+      tags:
+        - Public v1 - Custom Domains
+      description: |
+        Triggers a live DNS check for the domain's MX and TXT records.
+        Call this after you have added the two records at your registrar.
+
+        **DNS records required:**
+
+        | Type | Host | Value | Priority |
+        |------|------|-------|----------|
+        | MX   | @    | `mx.freecustom.email` | 10 |
+        | TXT  | @    | `freecustomemail-verification=<token>` | — |
+
+        The `<token>` is the value returned in `txt_record` when you added the
+        domain. It is unique per domain + account.
+
+        DNS propagation can take up to 48 hours. If verification fails, wait a
+        few minutes and retry — the response includes the specific record that
+        is missing.
+
+        Once verified, you can immediately register inboxes at `@{domain}` via
+        `POST /v1/inboxes`.
+
+        **Plan required:** Growth ($89/mo) or Enterprise ($199/mo).
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: domain
+          in: path
+          required: true
+          description: The bare domain name to verify (e.g. `mail.acme.com`).
+          schema:
+            type: string
+            example: mail.acme.com
+      responses:
+        '200':
+          description: Verification succeeded (or domain was already verified)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomDomainVerifyResponse'
+              examples:
+                verified:
+                  summary: Verification succeeded
+                  value:
+                    success: true
+                    verified: true
+                    message: >-
+                      Domain "mail.acme.com" verified successfully. You can now
+                      register inboxes at @mail.acme.com.
+                    data:
+                      domain: mail.acme.com
+                      verified: true
+                      mx_record: mx.freecustom.email
+                      txt_record: freecustomemail-verification=a1b2c3d4e5f6...
+                already_verified:
+                  summary: Already verified
+                  value:
+                    success: true
+                    verified: true
+                    message: Domain is already verified.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '404':
+          description: Domain not found — add it first via POST /v1/custom-domains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: domain_not_found
+                  message:
+                    type: string
+                    example: >-
+                      "mail.acme.com" not found. Add it first via POST
+                      /v1/custom-domains.
+        '422':
+          description: Verification failed — DNS records not yet found or not propagated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomDomainVerifyFailedResponse'
+              examples:
+                missing_txt:
+                  summary: TXT record not found
+                  value:
+                    success: false
+                    verified: false
+                    error: verification_failed
+                    message: >-
+                      TXT record "freecustomemail-verification=a1b2c3d4e5f6..."
+                      not found.
+                    hint: DNS propagation can take up to 48 hours.
+                    dns_records_needed:
+                      - type: MX
+                        hostname: '@'
+                        value: mx.freecustom.email
+                        priority: '10'
+                      - type: TXT
+                        hostname: '@'
+                        value: freecustomemail-verification=a1b2c3d4e5f6...
+                missing_both:
+                  summary: Both records not found
+                  value:
+                    success: false
+                    verified: false
+                    error: verification_failed
+                    message: >-
+                      MX "mx.freecustom.email" and TXT
+                      "freecustomemail-verification=a1b2c3d4e5f6..." not found.
+                    hint: DNS propagation can take up to 48 hours.
+                    dns_records_needed:
+                      - type: MX
+                        hostname: '@'
+                        value: mx.freecustom.email
+                        priority: '10'
+                      - type: TXT
+                        hostname: '@'
+                        value: freecustomemail-verification=a1b2c3d4e5f6...
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/inboxes:
+    get:
+      summary: List inboxes
+      operationId: listInboxes
+      tags:
+        - Public v1 - Inboxes
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxesListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+    post:
+      summary: Register an inbox
+      operationId: createInbox
+      tags:
+        - Public v1 - Inboxes
+      description: >
+        Registers an inbox for API use.
+
+
+        **Platform domain inbox:** The domain must appear in `GET /v1/domains`
+        for your plan.
+
+
+        **Custom domain inbox:** The domain must be added and verified via
+
+        `POST /v1/custom-domains` + `POST /v1/custom-domains/{domain}/verify`
+
+        before registering inboxes at it. Requires Growth+ plan.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - inbox
+              properties:
+                inbox:
+                  type: string
+                  format: email
+                  example: test@ditube.info
+                isTesting:
+                  type: boolean
+                  description: >
+                    Flag this inbox for testing purposes to enable zero-latency
+                    event timelines in the Auth Flow Debugger.
+
+                    Requires Growth ($89/mo) or Enterprise ($199/mo) plan.
+                  example: false
+      responses:
+        '200':
+          description: Inbox was already registered (idempotent)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Inbox already registered.
+                  inbox:
+                    type: string
+        '201':
+          description: Inbox registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InboxCreatedResponse'
+        '400':
+          description: Missing or invalid inbox address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400Inbox'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Domain not allowed for your plan, or custom domain not yet verified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/inboxes/{inbox}:
+    delete:
+      summary: Unregister an inbox
+      operationId: deleteInbox
+      tags:
+        - Public v1 - Inboxes
+      parameters:
+        - name: inbox
+          in: path
+          required: true
+          description: URL-encoded email address (e.g. test%40ditube.info)
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Unregistered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Inbox not registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: not_found
+                  message:
+                    type: string
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/inboxes/{inbox}/tests:
+    post:
+      summary: Start a new test run
+      operationId: startTestRun
+      tags:
+        - Public v1 - Inboxes
+      description: >
+        Marks the start of a testing boundary for this inbox. Useful in test
+        suites
+
+        (Playwright, Cypress, Selenium) to group timeline events together under
+        a
+
+        single test run ID. Logs a `test_started` event in the Timeline.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: inbox
+          in: path
+          required: true
+          description: The inbox to start a test for.
+          schema:
+            type: string
+            example: test@ditube.info
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                test_id:
+                  type: string
+                  description: Optional custom test ID. If omitted, one will be generated.
+      responses:
+        '200':
+          description: Test started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      test_id:
+                        type: string
+                        example: signup-test-1
+                      inbox:
+                        type: string
+                        example: test@ditube.info
+                      started_at:
+                        type: string
+                        format: date-time
+                        example: '2026-03-04T10:00:00.000Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/inboxes/{inbox}/messages:
+    get:
+      summary: List messages
+      operationId: listMessages
+      tags:
+        - Public v1 - Messages
+      parameters:
+        - name: inbox
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: before
+          in: query
+          description: Message ID — returns messages older than this
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessagesListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Inbox not registered to this account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/inboxes/{inbox}/messages/{id}:
+    get:
+      summary: Get a message
+      operationId: getMessage
+      tags:
+        - Public v1 - Messages
+      parameters:
+        - name: inbox
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageDetailResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Message not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+    delete:
+      summary: Delete a message
+      operationId: deleteMessage
+      tags:
+        - Public v1 - Messages
+      parameters:
+        - name: inbox
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Message deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/inboxes/generate:
+    post:
+      summary: Bulk-generate inboxes (Inbox Generator)
+      operationId: generateInboxes
+      tags:
+        - Public v1 - Inboxes
+      description: |
+        Bulk-creates random disposable inboxes and registers them to your account in one call.
+        Each inbox comes with a long-lived per-inbox OTP token URL that lets you poll for
+        verification codes without exposing your API key.
+
+        **Requires:** Developer plan or above.
+
+        **Authentication:** Use your **Gen API key** (`fcegen_…`) — a scoped key that can only
+        call `/v1/inboxes/generate` and `/v1/otp/public`. Obtain it from the API Dashboard
+        → Inbox Generator tab, or via the internal key management endpoints.
+
+        **Billing:** 1 request per inbox generated (billed as N requests for a batch of N).
+
+        **OTP fast-save mode:** API-generated inboxes skip OTP extraction at SMTP delivery time
+        for maximum speed. The extraction happens on demand when you poll the OTP URL with
+        `?parseCode=true` (appended by default). This shaves 5–20 ms off the SMTP hot path
+        for high-volume workflows.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: Number of inboxes to generate (1–500 depending on plan).
+                  default: 1
+                  minimum: 1
+                username_style:
+                  type: string
+                  description: >
+                    Username generation style. One of:
+                    `random_chars` (default), `digits_only`, `letters_only`,
+                    `name`, `noun_digits`, `firstname.surname`.
+                  default: random_chars
+                domain_mode:
+                  type: string
+                  description: >
+                    Which domain pool to use. One of:
+                    `any` (default), `free_only`, `pro_only`, `custom_only`, `specific`.
+                  default: any
+                domains:
+                  type: array
+                  items:
+                    type: string
+                  description: Required when `domain_mode` is `specific`. List of domains to use.
+                output_format:
+                  type: string
+                  description: >
+                    Template string for each line of output. Variables:
+                    `{email}`, `{username}`, `{domain}`, `{otp_url}`, `{token}`, `{api_key}`.
+                  default: '{email}----{otp_url}'
+                since:
+                  type: integer
+                  description: >
+                    Unix timestamp in milliseconds. When provided, it is embedded as `?since=`
+                    in every OTP URL so stale codes from previous sessions are ignored.
+                parseCode:
+                  type: boolean
+                  description: >
+                    When `true` (default), embeds `?parseCode=true` in every OTP URL.
+                    This enables on-demand OTP extraction at poll time rather than at SMTP
+                    delivery — required for API inboxes since they use the fast-save path.
+                  default: true
+                custom_firstnames:
+                  type: array
+                  items:
+                    type: string
+                  description: Custom first-name pool for `firstname.surname` style.
+                custom_surnames:
+                  type: array
+                  items:
+                    type: string
+                  description: Custom surname pool for `firstname.surname` style.
+      responses:
+        '200':
+          description: Inboxes generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  count:
+                    type: integer
+                    example: 5
+                  daily_used:
+                    type: integer
+                    nullable: true
+                  daily_limit:
+                    type: integer
+                    nullable: true
+                  daily_remaining:
+                    type: integer
+                    nullable: true
+                  inboxes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        email:
+                          type: string
+                          example: jade.quasar21@addmy.space
+                        username:
+                          type: string
+                          example: jade.quasar21
+                        domain:
+                          type: string
+                          example: addmy.space
+                        token:
+                          type: string
+                          example: fceotp_24f1add500d18150a02c62e4…
+                        otp_url:
+                          type: string
+                          example: >-
+                            https://api2.freecustom.email/v1/otp/public?token=fceotp_…&since=1716900000000&parseCode=true
+                        formatted:
+                          type: string
+                          example: jade.quasar21@addmy.space----https://api2.freecustom.email/v1/otp/public?token=fceotp_…
+        '400':
+          description: Invalid parameters
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low or daily/batch limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /v1/otp/public:
+    get:
+      summary: Poll OTP via public token (no API key needed)
+      operationId: getOtpPublic
+      tags:
+        - Public v1 - OTP
+      description: |
+        Returns the latest OTP for an inbox using a long-lived per-inbox token generated by
+        `POST /v1/inboxes/generate`. No API key is required — safe to embed in scripts,
+        Playwright tests, or CI pipelines without exposing your `fce_` key.
+
+        Each token is valid for **365 days** from the time the inbox was generated.
+
+        **parseCode=true (recommended for API inboxes):** API-generated inboxes skip OTP
+        extraction at SMTP delivery time for speed. Pass `?parseCode=true` to trigger
+        on-demand extraction from the stored email text. The OTP URLs produced by the
+        Inbox Generator include this flag by default.
+
+        **since:** Pass the Unix ms timestamp from just before you triggered the verification
+        email to avoid getting a stale OTP from a previous session.
+      parameters:
+        - name: token
+          in: query
+          required: true
+          description: Per-inbox OTP token (format `fceotp_…`). Generated by `POST /v1/inboxes/generate`.
+          schema:
+            type: string
+            example: fceotp_24f1add500d18150a02c62e40b395828226a79ab
+        - name: since
+          in: query
+          required: false
+          description: >
+            Unix timestamp in milliseconds. Only OTPs from messages received **after** this
+            timestamp are returned. Use the timestamp captured just before triggering the
+            verification email to skip stale codes.
+          schema:
+            type: integer
+            example: 1716900000000
+        - name: parseCode
+          in: query
+          required: false
+          description: >
+            When `true`, triggers on-demand OTP extraction from stored email text.
+            Required for API-generated inboxes (fast-save path stores `otp: null`).
+            The Inbox Generator embeds this flag in OTP URLs by default.
+          schema:
+            type: boolean
+            default: false
+      security: []
+      responses:
+        '200':
+          description: OTP found or null
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+        '404':
+          description: Token not found or expired
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: token_not_found
+                  message:
+                    type: string
+                    example: Token not found or expired.
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /v1/inboxes/{inbox}/otp:
+    get:
+      summary: Get latest OTP
+      operationId: getOtp
+      tags:
+        - Public v1 - OTP
+      description: |
+        Returns the OTP and/or verification link from the most recent message
+        that contains one. Requires Growth plan or higher.
+
+        **Cost**: 3 requests.
+
+        On lower plans, message list endpoints return `otp: "__DETECTED__"` as a
+        hint that an OTP exists — use this endpoint (Growth+) to read the actual value.
+
+        **parseCode=true:** For API-generated inboxes (which use the fast-save path and
+        store `otp: null`), pass `?parseCode=true` to trigger on-demand extraction from
+        the stored email text. The Inbox Generator OTP URLs include this flag by default.
+      parameters:
+        - name: inbox
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: since
+          in: query
+          required: false
+          description: >
+            Unix timestamp in milliseconds. Only OTPs from messages received after this
+            timestamp are returned.
+          schema:
+            type: integer
+        - name: parseCode
+          in: query
+          required: false
+          description: >
+            When `true`, includes messages where `otp` is null and triggers on-demand
+            extraction from stored text. Use for API-generated inboxes.
+          schema:
+            type: boolean
+            default: false
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success (OTP found or null)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low — requires Growth plan ($89/mo) or above
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/inboxes/{inbox}/wait:
+    get:
+      summary: Wait for next message (Long Polling)
+      operationId: waitMessage
+      tags:
+        - Public v1 - Messages
+      description: >
+        Wait for a new email to arrive in the specified mailbox (Long Polling).
+
+        This eliminates the need for rapid polling and reduces request overhead.
+
+
+        **Plan Requirement**: Developer or above.
+
+        **Billing**: High-value endpoint; 1 wait call consumes **10 monthly
+        requests**.
+      parameters:
+        - name: inbox
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: timeout
+          in: query
+          description: Max seconds to wait (10-60 recommended, default 30).
+          schema:
+            type: integer
+            default: 30
+            minimum: 1
+            maximum: 60
+        - name: since
+          in: query
+          description: >-
+            Last seen message ID. Return immediately if a newer message exists,
+            otherwise wait.
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: New message received
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: New message received
+                  data:
+                    $ref: '#/components/schemas/MessageSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low — requires Developer plan or above
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '408':
+          description: Timeout reached
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Timeout reached
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/webhooks:
+    get:
+      summary: List active webhooks
+      operationId: listWebhooks
+      tags:
+        - Public v1 - Webhooks
+      description: |
+        List all active webhook subscriptions for your account.
+
+        **Plan Requirement**: Growth or above.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  count:
+                    type: integer
+                    example: 1
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        inbox:
+                          type: string
+                        url:
+                          type: string
+                        createdAt:
+                          type: string
+                          format: date-time
+                        failureCount:
+                          type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+    post:
+      summary: Register a webhook
+      operationId: createWebhook
+      tags:
+        - Public v1 - Webhooks
+      description: |
+        Subscribe to real-time message notifications via webhook.
+
+        **Plan Requirement**: Growth or above.
+
+        **Cost per Webhook Delivery**:
+        - Basic (No OTP): 2 requests
+        - OTP Present & Parsed: 4 requests
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+                - inbox
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  description: The HTTPS URL to receive the POST request.
+                  example: https://your-server.com/callback
+                inbox:
+                  type: string
+                  format: email
+                  description: The registered inbox to subscribe to.
+                  example: target@domain.com
+      responses:
+        '201':
+          description: Webhook registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  id:
+                    type: string
+                  inbox:
+                    type: string
+                  url:
+                    type: string
+        '400':
+          description: Missing fields
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Inbox not owned or plan too low
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+  /v1/webhooks/{id}:
+    delete:
+      summary: Unregister a webhook
+      operationId: deleteWebhook
+      tags:
+        - Public v1 - Webhooks
+      description: |
+        Delete an existing webhook subscription by ID.
+
+        **Plan Requirement**: Growth or above.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Webhook unregistered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Plan too low
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403Plan'
+        '404':
+          description: Webhook not found
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Developer API key as Bearer token (e.g. `Bearer fce_xxx`)
+    ApiKeyQuery:
+      type: apiKey
+      in: query
+      name: api_key
+      description: API key as query parameter (alternative to Bearer header)
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error401'
+    Forbidden:
+      description: Forbidden (e.g. inbox not owned by this account)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error403Forbidden'
+    RateLimited:
+      description: Rate limit exceeded (per-second or monthly quota)
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+            description: Seconds to wait before retrying
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error429'
+  schemas:
+    DomainEntry:
+      type: object
+      required:
+        - domain
+        - tier
+        - tags
+      properties:
+        domain:
+          type: string
+          example: ditube.info
+          description: Bare domain name (no leading @).
+        tier:
+          type: string
+          enum:
+            - free
+            - pro
+          description: |
+            `free` — available on all plans.
+            `pro` — requires Growth or Enterprise plan.
+        tags:
+          type: array
+          items:
+            type: string
+            enum:
+              - new
+              - popular
+              - featured
+          description: |
+            `new` — recently added, shown for ~30 days.
+            `popular` — high-traffic domain.
+            `featured` — pinned at top of domain picker.
+          example:
+            - popular
+        expires_at:
+          type: string
+          format: date
+          nullable: true
+          description: |
+            ISO 8601 date when the domain registration expires at the registrar.
+            Only present when `expiring_soon` is true (within 30 days).
+          example: '2026-04-01'
+        expires_in_days:
+          type: integer
+          nullable: true
+          description: >-
+            Days remaining until expiry. Only present when `expiring_soon` is
+            true.
+          example: 25
+        expiring_soon:
+          type: boolean
+          nullable: true
+          description: |
+            True when the domain expires within 30 days. Omitted entirely for
+            healthy domains to keep the payload lean. When true, migrate inboxes
+            to a different domain or your own custom domain.
+          example: true
+    DomainEntryFull:
+      allOf:
+        - $ref: '#/components/schemas/DomainEntry'
+        - type: object
+          required:
+            - expires_at
+            - expires_in_days
+            - expiring_soon
+            - expired
+          properties:
+            expires_at:
+              type: string
+              format: date
+              description: ISO 8601 registrar expiry date. Always present on this endpoint.
+              example: '2026-08-01'
+            expires_in_days:
+              type: integer
+              description: Days remaining until expiry. Always present on this endpoint.
+              example: 147
+            expiring_soon:
+              type: boolean
+              description: >-
+                True when expiry is within 30 days. Always present on this
+                endpoint.
+              example: false
+            expired:
+              type: boolean
+              description: True when the domain has already passed its expiry date.
+              example: false
+    DomainsListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        count:
+          type: integer
+          description: Total number of domains returned.
+          example: 10
+        note:
+          type: string
+          description: Human-readable note about plan gating.
+          example: Upgrade to Growth plan to access additional pro domains.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainEntry'
+    DomainsAllResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        count:
+          type: integer
+          example: 10
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainEntryFull'
+    CustomDomainEntry:
+      type: object
+      required:
+        - domain
+        - verified
+        - mx_record
+        - txt_record
+      description: A custom domain added to your account.
+      properties:
+        domain:
+          type: string
+          description: Bare domain name (no leading @).
+          example: mail.acme.com
+        verified:
+          type: boolean
+          description: |
+            `true` — MX and TXT records confirmed. Inboxes can be registered.
+            `false` — DNS records not yet verified. Call the verify endpoint.
+          example: true
+        mx_record:
+          type: string
+          description: The MX record value to add at your registrar.
+          example: mx.freecustom.email
+        txt_record:
+          type: string
+          description: >-
+            The full TXT record value (including the
+            `freecustomemail-verification=` prefix) to add at your registrar.
+            Unique per domain + account.
+          example: freecustomemail-verification=a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4
+        added_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: ISO 8601 timestamp when the domain was added.
+          example: '2026-01-15T10:00:00.000Z'
+    DnsRecord:
+      type: object
+      required:
+        - type
+        - hostname
+        - value
+        - ttl
+      description: A DNS record to add at your registrar.
+      properties:
+        type:
+          type: string
+          enum:
+            - MX
+            - TXT
+          example: MX
+        hostname:
+          type: string
+          description: The DNS hostname / host field. `@` means the root of the domain.
+          example: '@'
+        value:
+          type: string
+          description: The record value to enter in your DNS panel.
+          example: mx.freecustom.email
+        priority:
+          type: string
+          description: MX priority. Only present for MX records.
+          example: '10'
+          nullable: true
+        ttl:
+          type: string
+          description: Recommended TTL setting.
+          example: Auto
+    CustomDomainsListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        count:
+          type: integer
+          description: Number of custom domains in your account.
+          example: 2
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomDomainEntry'
+    CustomDomainAddedResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: >-
+            Domain added. Configure the DNS records below, then call the verify
+            endpoint.
+        data:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/CustomDomainEntry'
+          properties:
+            dns_records:
+              type: array
+              description: The two DNS records to add at your registrar (MX + TXT).
+              items:
+                $ref: '#/components/schemas/DnsRecord'
+            next_step:
+              type: string
+              description: The API path to call once DNS records are live.
+              example: POST /v1/custom-domains/mail.acme.com/verify
+    CustomDomainVerifyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        verified:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: >-
+            Domain "mail.acme.com" verified successfully. You can now register
+            inboxes at @mail.acme.com.
+        data:
+          $ref: '#/components/schemas/CustomDomainEntry'
+    CustomDomainVerifyFailedResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        verified:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: verification_failed
+        message:
+          type: string
+          description: Which specific record was not found.
+          example: TXT record "freecustomemail-verification=..." not found.
+        hint:
+          type: string
+          example: DNS propagation can take up to 48 hours.
+        dns_records_needed:
+          type: array
+          description: The records that must be present for verification to pass.
+          items:
+            $ref: '#/components/schemas/DnsRecord'
+    CustomDomainDeletedResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: '"mail.acme.com" removed.'
+        inboxes_removed:
+          type: array
+          description: |
+            API inboxes that were automatically unregistered because they used
+            this domain. May be an empty array.
+          items:
+            type: string
+          example:
+            - support@mail.acme.com
+            - noreply@mail.acme.com
+    MeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            plan:
+              type: string
+              example: startup
+            credits:
+              type: integer
+              example: 25000
+            features:
+              type: object
+              properties:
+                otp_extraction:
+                  type: boolean
+                attachments:
+                  type: boolean
+                max_attachment_size_mb:
+                  type: integer
+                custom_domains:
+                  type: boolean
+                websocket:
+                  type: boolean
+                max_ws_connections:
+                  type: integer
+            rate_limits:
+              type: object
+              properties:
+                requests_per_second:
+                  type: integer
+                requests_per_month:
+                  type: integer
+            api_inboxes:
+              type: array
+              items:
+                type: string
+            api_inbox_count:
+              type: integer
+            app_inboxes:
+              type: array
+              items:
+                type: string
+            app_inbox_count:
+              type: integer
+            custom_domains:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomDomainEntry'
+            custom_domain_count:
+              type: integer
+    UsageResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            plan:
+              type: string
+            period:
+              type: object
+              properties:
+                month:
+                  type: string
+                resets_at:
+                  type: string
+                  format: date-time
+            requests:
+              type: object
+              properties:
+                used:
+                  type: integer
+                limit:
+                  type: integer
+                remaining:
+                  type: integer
+                percent_used:
+                  type: number
+            credits:
+              type: object
+              properties:
+                balance:
+                  type: integer
+                note:
+                  type: string
+            rate_limit:
+              type: object
+              properties:
+                requests_per_second:
+                  type: integer
+    PlansResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            plans:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  label:
+                    type: string
+                  price_usd:
+                    type: integer
+                  requests_per_second:
+                    type: integer
+                  requests_per_month:
+                    type: integer
+                  features:
+                    $ref: '#/components/schemas/PlanFeatures'
+            credit_packages:
+              type: array
+              items:
+                type: object
+                properties:
+                  label:
+                    type: string
+                  price_usd:
+                    type: integer
+                  requests:
+                    type: integer
+    PlanFeatures:
+      type: object
+      properties:
+        otp_extraction:
+          type: boolean
+        attachments:
+          type: boolean
+        max_attachment_size_mb:
+          type: integer
+        custom_domains:
+          type: boolean
+        websocket:
+          type: boolean
+        max_ws_connections:
+          type: integer
+    InboxesListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            inboxes:
+              type: array
+              items:
+                type: string
+            count:
+              type: integer
+    InboxCreatedResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            inbox:
+              type: string
+            registered_at:
+              type: string
+              format: date-time
+    MessageSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        from:
+          type: string
+        subject:
+          type: string
+        date:
+          type: string
+          format: date-time
+        has_attachment:
+          type: boolean
+        otp:
+          type: string
+          nullable: true
+          description: |
+            The extracted OTP code, or `__DETECTED__` on plans below Growth
+            (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value).
+        verification_link:
+          type: string
+          nullable: true
+    MessagesListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            inbox:
+              type: string
+            messages:
+              type: array
+              items:
+                $ref: '#/components/schemas/MessageSummary'
+            count:
+              type: integer
+            has_more:
+              type: boolean
+    MessageDetailResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            from:
+              type: string
+            to:
+              type: string
+            subject:
+              type: string
+            date:
+              type: string
+              format: date-time
+            html:
+              type: string
+              nullable: true
+            text:
+              type: string
+              nullable: true
+            otp:
+              type: string
+              nullable: true
+            verification_link:
+              type: string
+              nullable: true
+            has_attachment:
+              type: boolean
+            attachments:
+              type: array
+              items:
+                type: object
+                properties:
+                  filename:
+                    type: string
+                  content_type:
+                    type: string
+                  size_bytes:
+                    type: integer
+    OtpResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            inbox:
+              type: string
+            otp:
+              type: string
+              nullable: true
+            score:
+              type: number
+              format: float
+              nullable: true
+              description: Confidence score (0.0 to 1.0) of the extracted OTP.
+            verification_link:
+              type: string
+              nullable: true
+            from:
+              type: string
+              nullable: true
+            subject:
+              type: string
+              nullable: true
+            message_id:
+              type: string
+              nullable: true
+            received_at:
+              type: string
+              format: date-time
+              nullable: true
+            message:
+              type: string
+              nullable: true
+    Error401:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          enum:
+            - unauthorized
+            - key_revoked
+        message:
+          type: string
+    Error403Forbidden:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: forbidden
+        message:
+          type: string
+    Error403Plan:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          enum:
+            - plan_required
+            - plan_restriction
+            - domain_not_verified
+            - domain_not_found
+        message:
+          type: string
+        upgrade_url:
+          type: string
+          format: uri
+          nullable: true
+    Error400Inbox:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          enum:
+            - missing_field
+            - invalid_inbox
+        message:
+          type: string
+    Error404:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: not_found
+        message:
+          type: string
+    Error429:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          enum:
+            - rate_limit_exceeded
+            - monthly_quota_exceeded
+        message:
+          type: string
+        upgrade_url:
+          type: string
+          format: uri
+          nullable: true
+        credits_url:
+          type: string
+          format: uri
+          nullable: true
+        hint:
+          type: string
+          nullable: true
+tags:
+  - name: Public v1 - Account
+    description: Account info, usage, and plans
+  - name: Public v1 - Platform Domains
+    description: |
+      List **platform-managed** domains available for inbox creation.
+      Results are plan-gated (Growth/Enterprise see pro-tier domains) and
+      Redis-cached with a 5-minute TTL. New domains surface automatically
+      without a code change. Does **not** include your own custom domains —
+      see the Custom Domains tag for that.
+  - name: Public v1 - Custom Domains
+    description: >
+      Add, verify, and remove **your own domains** so you can receive mail
+
+      at any address `@yourdomain`.
+
+
+      **Requires Growth ($89/mo) or Enterprise ($199/mo) plan.**
+
+
+      Custom domains are **shared** between the API and the webapp dashboard —
+
+      changes on either surface are immediately reflected on the other.
+
+
+      **Typical workflow:**
+
+      1. `POST /v1/custom-domains` — add domain, receive DNS records.
+
+      2. Add MX + TXT records at your registrar.
+
+      3. `POST /v1/custom-domains/{domain}/verify` — confirm propagation.
+
+      4. `POST /v1/inboxes` with `user@yourdomain` — start receiving mail.
+
+
+      DNS propagation can take up to 48 hours; most providers update within
+      minutes.
+  - name: Public v1 - Inboxes
+    description: Register and manage inboxes (platform domains and verified custom domains)
+  - name: Public v1 - Messages
+    description: List, get, and delete messages
+  - name: Public v1 - OTP
+    description: OTP and verification link extraction (Growth+ only)
+  - name: Public v1 - Webhooks
+    description: >-
+      Subscribe to real-time message notifications via HTTP webhooks (Growth+
+      only).
+  - name: Public v1 - Dashboard Analytics
+    description: |
+      Timeline history and automated failure insights for inboxes.
+
+      **Requires Growth ($89/mo) or Enterprise ($199/mo) plan.**
+
+      These endpoints help you debug and analyze test flow patterns:
+      - `GET /v1/inboxes/{inbox}/timeline` — View inbox event history
+      - `GET /v1/inboxes/{inbox}/insights` — Get automated failure analysis
+x-websocket:
+  url: wss://api2.freecustom.email/v1/ws
+  description: >
+    Real-time push for incoming emails. Requires Startup plan or higher.
+
+
+    **Connection:**
+    `wss://api2.freecustom.email/v1/ws?api_key=fce_...&mailbox=test@ditube.info`
+
+
+    | Query param | Required | Description |
+
+    |-------------|----------|-------------|
+
+    | api_key     | Yes      | Developer API key |
+
+    | mailbox     | No       | Subscribe to one inbox; omit for all registered
+    inboxes |
+
+
+    **Events (server → client):**
+
+    - `connected` — On connect; includes plan, subscribed_to, max_connections,
+    current_connections.
+
+    - `new_message` — New email; includes inbox and message (id, from, subject,
+    date, has_attachment, otp, verification_link).
+
+    - `ping` — Heartbeat every 30s; client should respond with `pong`.
+
+
+    **Close codes:**
+
+    - 4001 — Invalid or missing API key
+
+    - 4003 — Plan too low (WebSocket requires Startup+)
+
+    - 4004 — Inbox not registered
+
+    - 4029 — Connection limit reached

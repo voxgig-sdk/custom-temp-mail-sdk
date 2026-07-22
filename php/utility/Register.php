@@ -1,0 +1,67 @@
+<?php
+declare(strict_types=1);
+
+// CustomTempMail SDK utility registration
+
+require_once __DIR__ . '/../core/UtilityType.php';
+require_once __DIR__ . '/Clean.php';
+require_once __DIR__ . '/Done.php';
+require_once __DIR__ . '/MakeError.php';
+require_once __DIR__ . '/FeatureAdd.php';
+require_once __DIR__ . '/FeatureHook.php';
+require_once __DIR__ . '/FeatureInit.php';
+require_once __DIR__ . '/Fetcher.php';
+require_once __DIR__ . '/MakeFetchDef.php';
+require_once __DIR__ . '/MakeContext.php';
+require_once __DIR__ . '/MakeOptions.php';
+require_once __DIR__ . '/MakeRequest.php';
+require_once __DIR__ . '/MakeResponse.php';
+require_once __DIR__ . '/MakeResult.php';
+require_once __DIR__ . '/MakePoint.php';
+require_once __DIR__ . '/MakeSpec.php';
+require_once __DIR__ . '/MakeUrl.php';
+require_once __DIR__ . '/Param.php';
+require_once __DIR__ . '/PrepareAuth.php';
+require_once __DIR__ . '/PrepareBody.php';
+require_once __DIR__ . '/PrepareHeaders.php';
+require_once __DIR__ . '/PrepareMethod.php';
+require_once __DIR__ . '/PrepareParams.php';
+require_once __DIR__ . '/PreparePath.php';
+require_once __DIR__ . '/PrepareQuery.php';
+require_once __DIR__ . '/ResultBasic.php';
+require_once __DIR__ . '/ResultBody.php';
+require_once __DIR__ . '/ResultHeaders.php';
+require_once __DIR__ . '/TransformRequest.php';
+require_once __DIR__ . '/TransformResponse.php';
+
+CustomTempMailUtility::setRegistrar(function (CustomTempMailUtility $u): void {
+    $u->clean = [CustomTempMailClean::class, 'call'];
+    $u->done = [CustomTempMailDone::class, 'call'];
+    $u->make_error = [CustomTempMailMakeError::class, 'call'];
+    $u->feature_add = [CustomTempMailFeatureAdd::class, 'call'];
+    $u->feature_hook = [CustomTempMailFeatureHook::class, 'call'];
+    $u->feature_init = [CustomTempMailFeatureInit::class, 'call'];
+    $u->fetcher = [CustomTempMailFetcher::class, 'call'];
+    $u->make_fetch_def = [CustomTempMailMakeFetchDef::class, 'call'];
+    $u->make_context = [CustomTempMailMakeContext::class, 'call'];
+    $u->make_options = [CustomTempMailMakeOptions::class, 'call'];
+    $u->make_request = [CustomTempMailMakeRequest::class, 'call'];
+    $u->make_response = [CustomTempMailMakeResponse::class, 'call'];
+    $u->make_result = [CustomTempMailMakeResult::class, 'call'];
+    $u->make_point = [CustomTempMailMakePoint::class, 'call'];
+    $u->make_spec = [CustomTempMailMakeSpec::class, 'call'];
+    $u->make_url = [CustomTempMailMakeUrl::class, 'call'];
+    $u->param = [CustomTempMailParam::class, 'call'];
+    $u->prepare_auth = [CustomTempMailPrepareAuth::class, 'call'];
+    $u->prepare_body = [CustomTempMailPrepareBody::class, 'call'];
+    $u->prepare_headers = [CustomTempMailPrepareHeaders::class, 'call'];
+    $u->prepare_method = [CustomTempMailPrepareMethod::class, 'call'];
+    $u->prepare_params = [CustomTempMailPrepareParams::class, 'call'];
+    $u->prepare_path = [CustomTempMailPreparePath::class, 'call'];
+    $u->prepare_query = [CustomTempMailPrepareQuery::class, 'call'];
+    $u->result_basic = [CustomTempMailResultBasic::class, 'call'];
+    $u->result_body = [CustomTempMailResultBody::class, 'call'];
+    $u->result_headers = [CustomTempMailResultHeaders::class, 'call'];
+    $u->transform_request = [CustomTempMailTransformRequest::class, 'call'];
+    $u->transform_response = [CustomTempMailTransformResponse::class, 'call'];
+});

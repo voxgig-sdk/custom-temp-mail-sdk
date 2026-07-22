@@ -1,0 +1,29 @@
+{
+  "existing": {
+    "usage": {
+      "USAGE00": {
+        "data": {},
+        "success": false,
+        "id": "USAGE00"
+      },
+      "USAGE01": {
+        "data": {},
+        "success": false,
+        "id": "USAGE01"
+      },
+      "USAGE02": {
+        "data": {},
+        "success": false,
+        "id": "USAGE02"
+      }
+    }
+  },
+  "new": {
+    "usage": {
+      "usage_ref01": {
+        "data": {},
+        "success": false
+      }
+    }
+  }
+}

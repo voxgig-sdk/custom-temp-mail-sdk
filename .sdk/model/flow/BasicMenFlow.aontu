@@ -1,0 +1,28 @@
+# BasicMenFlow
+
+main: kit: flow: BasicMenFlow:
+{
+  entity: "men",
+  kind: "basic",
+  name: "BasicMenFlow",
+  step: [
+    {
+      input: {
+        ref: "men_ref01",
+        srcdatavar: "men_ref01_data",
+        suffix: "_dt0"
+      }
+
+      op: "load",
+      valid: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-men_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicMenFlow"
+}

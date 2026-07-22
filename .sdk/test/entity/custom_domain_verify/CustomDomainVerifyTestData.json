@@ -1,0 +1,40 @@
+{
+  "existing": {
+    "custom_domain_verify": {
+      "CUSTOM_DOMAIN_VERIFY00": {
+        "data": {},
+        "message": "s29",
+        "success": true,
+        "verified": false,
+        "domain": "DOMAIN01",
+        "id": "CUSTOM_DOMAIN_VERIFY00"
+      },
+      "CUSTOM_DOMAIN_VERIFY01": {
+        "data": {},
+        "message": "s51",
+        "success": true,
+        "verified": false,
+        "domain": "DOMAIN01",
+        "id": "CUSTOM_DOMAIN_VERIFY01"
+      },
+      "CUSTOM_DOMAIN_VERIFY02": {
+        "data": {},
+        "message": "s79",
+        "success": true,
+        "verified": false,
+        "domain": "DOMAIN01",
+        "id": "CUSTOM_DOMAIN_VERIFY02"
+      }
+    }
+  },
+  "new": {
+    "custom_domain_verify": {
+      "custom_domain_verify_ref01": {
+        "data": {},
+        "message": "sa1",
+        "success": true,
+        "verified": false
+      }
+    }
+  }
+}

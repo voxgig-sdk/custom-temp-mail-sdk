@@ -1,0 +1,41 @@
+{
+  "existing": {
+    "inbox": {
+      "INBOX00": {
+        "data": {},
+        "inbox": "s33",
+        "is_testing": true,
+        "message": "s35",
+        "success": true,
+        "id": "INBOX00"
+      },
+      "INBOX01": {
+        "data": {},
+        "inbox": "s65",
+        "is_testing": true,
+        "message": "s67",
+        "success": true,
+        "id": "INBOX01"
+      },
+      "INBOX02": {
+        "data": {},
+        "inbox": "s97",
+        "is_testing": true,
+        "message": "s99",
+        "success": true,
+        "id": "INBOX02"
+      }
+    }
+  },
+  "new": {
+    "inbox": {
+      "inbox_ref01": {
+        "data": {},
+        "inbox": "sc9",
+        "is_testing": true,
+        "message": "scb",
+        "success": true
+      }
+    }
+  }
+}

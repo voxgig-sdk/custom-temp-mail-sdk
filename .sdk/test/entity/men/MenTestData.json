@@ -1,0 +1,29 @@
+{
+  "existing": {
+    "men": {
+      "MEN00": {
+        "data": {},
+        "success": false,
+        "id": "MEN00"
+      },
+      "MEN01": {
+        "data": {},
+        "success": false,
+        "id": "MEN01"
+      },
+      "MEN02": {
+        "data": {},
+        "success": false,
+        "id": "MEN02"
+      }
+    }
+  },
+  "new": {
+    "men": {
+      "men_ref01": {
+        "data": {},
+        "success": false
+      }
+    }
+  }
+}
