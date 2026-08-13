@@ -141,11 +141,8 @@ custom_domain = client.CustomDomain()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `added_at` | `str` | No |  |
-| `data` | `dict` | Yes |  |
 | `domain` | `str` | Yes |  |
-| `message` | `str` | No |  |
 | `mx_record` | `str` | Yes |  |
-| `success` | `bool` | No |  |
 | `txt_record` | `str` | Yes |  |
 | `verified` | `bool` | Yes |  |
 
@@ -157,7 +154,6 @@ Create a new entity with the given data. Returns the created entity data and rai
 
 ```python
 result = client.CustomDomain().create({
-    "data": {},  # dict
     "domain": "example_domain",  # str
     "mx_record": "example_mx_record",  # str
     "txt_record": "example_txt_record",  # str
@@ -222,10 +218,11 @@ custom_domain_verify = client.CustomDomainVerify()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `dict` | Yes |  |
-| `message` | `str` | No |  |
-| `success` | `bool` | No |  |
-| `verified` | `bool` | No |  |
+| `added_at` | `str` | No |  |
+| `domain` | `str` | Yes |  |
+| `mx_record` | `str` | Yes |  |
+| `txt_record` | `str` | Yes |  |
+| `verified` | `bool` | Yes |  |
 
 ### Operations
 
@@ -236,6 +233,9 @@ Create a new entity with the given data. Returns the created entity data and rai
 ```python
 result = client.CustomDomainVerify().create({
     "domain": "example_domain",  # str
+    "mx_record": "example_mx_record",  # str
+    "txt_record": "example_txt_record",  # str
+    "verified": True,  # bool
 })
 ```
 
@@ -280,9 +280,9 @@ domain = client.Domain()
 | --- | --- | --- | --- |
 | `domain` | `str` | Yes |  |
 | `expires_at` | `str` | No |  |
-| `expires_in_day` | `int` | No |  |
+| `expires_in_days` | `int` | No |  |
 | `expiring_soon` | `bool` | No |  |
-| `tag` | `list` | Yes |  |
+| `tags` | `list` | Yes |  |
 | `tier` | `str` | Yes |  |
 
 ### Operations
@@ -339,9 +339,9 @@ domains_all = client.DomainsAll()
 | `domain` | `str` | Yes |  |
 | `expired` | `bool` | Yes |  |
 | `expires_at` | `str` | No |  |
-| `expires_in_day` | `int` | No |  |
+| `expires_in_days` | `int` | No |  |
 | `expiring_soon` | `bool` | No |  |
-| `tag` | `list` | Yes |  |
+| `tags` | `list` | Yes |  |
 | `tier` | `str` | Yes |  |
 
 ### Field Usage by Operation
@@ -351,9 +351,9 @@ domains_all = client.DomainsAll()
 | `domain` | - |
 | `expired` | - |
 | `expires_at` | Yes |
-| `expires_in_day` | Yes |
+| `expires_in_days` | Yes |
 | `expiring_soon` | Yes |
-| `tag` | - |
+| `tags` | - |
 | `tier` | - |
 
 ### Operations
@@ -407,9 +407,10 @@ inbox = client.Inbox()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `dict` | No |  |
+| `count` | `int` | No |  |
 | `inbox` | `str` | No |  |
-| `is_testing` | `bool` | No |  |
+| `inboxes` | `list` | No |  |
+| `isTesting` | `bool` | No |  |
 | `message` | `str` | No |  |
 | `success` | `bool` | No |  |
 
@@ -417,9 +418,10 @@ inbox = client.Inbox()
 
 | Field | load | create |
 | --- | --- | --- |
-| `data` | - | - |
+| `count` | - | - |
 | `inbox` | - | Yes |
-| `is_testing` | - | - |
+| `inboxes` | - | - |
+| `isTesting` | - | - |
 | `message` | - | - |
 | `success` | - | - |
 
@@ -481,8 +483,16 @@ men = client.Men()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `dict` | No |  |
-| `success` | `bool` | No |  |
+| `api_inbox_count` | `int` | No |  |
+| `api_inboxes` | `list` | No |  |
+| `app_inbox_count` | `int` | No |  |
+| `app_inboxes` | `list` | No |  |
+| `credits` | `int` | No |  |
+| `custom_domain_count` | `int` | No |  |
+| `custom_domains` | `list` | No |  |
+| `features` | `dict` | No |  |
+| `plan` | `str` | No |  |
+| `rate_limits` | `dict` | No |  |
 
 ### Operations
 
@@ -533,8 +543,21 @@ message = client.Message()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `dict` | No |  |
-| `success` | `bool` | No |  |
+| `attachments` | `list` | No |  |
+| `count` | `int` | No |  |
+| `date` | `str` | No |  |
+| `from` | `str` | No |  |
+| `has_attachment` | `bool` | No |  |
+| `has_more` | `bool` | No |  |
+| `html` | `str` | No |  |
+| `id` | `str` | No |  |
+| `inbox` | `str` | No |  |
+| `messages` | `list` | No |  |
+| `otp` | `str` | No |  |
+| `subject` | `str` | No |  |
+| `text` | `str` | No |  |
+| `to` | `str` | No |  |
+| `verification_link` | `str` | No |  |
 
 ### Operations
 
@@ -585,8 +608,15 @@ otp = client.Otp()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `dict` | No |  |
-| `success` | `bool` | No |  |
+| `from` | `str` | No |  |
+| `inbox` | `str` | No |  |
+| `message` | `str` | No |  |
+| `message_id` | `str` | No |  |
+| `otp` | `str` | No |  |
+| `received_at` | `str` | No |  |
+| `score` | `float` | No |  |
+| `subject` | `str` | No |  |
+| `verification_link` | `str` | No |  |
 
 ### Operations
 
@@ -637,8 +667,8 @@ plan = client.Plan()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `dict` | No |  |
-| `success` | `bool` | No |  |
+| `credit_packages` | `list` | No |  |
+| `plans` | `list` | No |  |
 
 ### Operations
 
@@ -689,8 +719,12 @@ public_v1_dashboard_analytics = client.PublicV1DashboardAnalytics()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `dict` | No |  |
-| `success` | `bool` | No |  |
+| `analyzed_at` | `str` | No |  |
+| `duration_hours` | `int` | No |  |
+| `event_count` | `int` | No |  |
+| `events` | `list` | No |  |
+| `inbox` | `str` | No |  |
+| `insights` | `list` | No |  |
 
 ### Operations
 
@@ -742,18 +776,19 @@ public_v1_inbox = client.PublicV1Inbox()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `count` | `int` | No |  |
-| `custom_firstname` | `list` | No |  |
-| `custom_surname` | `list` | No |  |
+| `custom_firstnames` | `list` | No |  |
+| `custom_surnames` | `list` | No |  |
 | `daily_limit` | `int` | No |  |
 | `daily_remaining` | `int` | No |  |
 | `daily_used` | `int` | No |  |
-| `data` | `dict` | No |  |
-| `domain` | `list` | No |  |
 | `domain_mode` | `str` | No |  |
-| `inbox` | `list` | No |  |
+| `domains` | `list` | No |  |
+| `inbox` | `str` | No |  |
+| `inboxes` | `list` | No |  |
 | `output_format` | `str` | No |  |
-| `parse_code` | `bool` | No |  |
+| `parseCode` | `bool` | No |  |
 | `since` | `int` | No |  |
+| `started_at` | `str` | No |  |
 | `success` | `bool` | No |  |
 | `test_id` | `str` | No |  |
 | `username_style` | `str` | No |  |
@@ -816,9 +851,13 @@ public_v1_message = client.PublicV1Message()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `dict` | No |  |
-| `message` | `str` | No |  |
-| `success` | `bool` | No |  |
+| `date` | `str` | No |  |
+| `from` | `str` | No |  |
+| `has_attachment` | `bool` | No |  |
+| `id` | `str` | No |  |
+| `otp` | `str` | No |  |
+| `subject` | `str` | No |  |
+| `verification_link` | `str` | No |  |
 
 ### Operations
 
@@ -877,8 +916,8 @@ public_v1_webhook = client.PublicV1Webhook()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `str` | No |  |
-| `failure_count` | `int` | No |  |
+| `createdAt` | `str` | No |  |
+| `failureCount` | `int` | No |  |
 | `id` | `str` | No |  |
 | `inbox` | `str` | Yes |  |
 | `url` | `str` | Yes |  |
@@ -887,8 +926,8 @@ public_v1_webhook = client.PublicV1Webhook()
 
 | Field | list | create | remove |
 | --- | --- | --- | --- |
-| `created_at` | - | - | - |
-| `failure_count` | - | - | - |
+| `createdAt` | - | - | - |
+| `failureCount` | - | - | - |
 | `id` | - | - | - |
 | `inbox` | Yes | - | - |
 | `url` | Yes | - | - |
@@ -963,8 +1002,11 @@ usage = client.Usage()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `dict` | No |  |
-| `success` | `bool` | No |  |
+| `credits` | `dict` | No |  |
+| `period` | `dict` | No |  |
+| `plan` | `str` | No |  |
+| `rate_limit` | `dict` | No |  |
+| `requests` | `dict` | No |  |
 
 ### Operations
 

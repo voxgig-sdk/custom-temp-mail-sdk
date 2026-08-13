@@ -5,27 +5,27 @@
         "domain": "s46",
         "expired": false,
         "expires_at": "s48",
-        "expires_in_day": "s49",
+        "expires_in_days": "s49",
         "expiring_soon": true,
-        "tag": [],
+        "tags": [],
         "tier": "s4c"
       },
       "DOMAINS_ALL01": {
         "domain": "s8c",
         "expired": false,
         "expires_at": "s8e",
-        "expires_in_day": "s8f",
+        "expires_in_days": "s8f",
         "expiring_soon": true,
-        "tag": [],
+        "tags": [],
         "tier": "s92"
       },
       "DOMAINS_ALL02": {
         "domain": "sd2",
         "expired": false,
         "expires_at": "sd4",
-        "expires_in_day": "sd5",
+        "expires_in_days": "sd5",
         "expiring_soon": true,
-        "tag": [],
+        "tags": [],
         "tier": "sd8"
       }
     }
@@ -36,9 +36,9 @@
         "domain": "s118",
         "expired": false,
         "expires_at": "s11a",
-        "expires_in_day": "s11b",
+        "expires_in_days": "s11b",
         "expiring_soon": true,
-        "tag": [],
+        "tags": [],
         "tier": "s11e"
       }
     }

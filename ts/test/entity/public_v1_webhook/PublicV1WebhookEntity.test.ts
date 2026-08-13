@@ -26,8 +26,8 @@ import {
 describe('PublicV1WebhookEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when CUSTOMTEMPMAIL_TEST_LIVE=TRUE.
-  afterEach(liveDelay('CUSTOMTEMPMAIL_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when CUSTOM_TEMP_MAIL_TEST_LIVE=TRUE.
+  afterEach(liveDelay('CUSTOM_TEMP_MAIL_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = CustomTempMailSDK.test()
@@ -48,7 +48,7 @@ describe('PublicV1WebhookEntity', async () => {
     // fixture (entity TestData.json). Those don't exist on the live API.
     // Skip live runs unless the user provided a real ENTID env override.
     if (setup.syntheticOnly) {
-      t.skip('live entity test uses synthetic IDs from fixture — set CUSTOM_TEMP_MAIL_TEST_PUBLIC_V__WEBHOOK_ENTID JSON to run live')
+      t.skip('live entity test uses synthetic IDs from fixture — set CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_WEBHOOK_ENTID JSON to run live')
       return
     }
     const client = setup.client
@@ -62,14 +62,14 @@ describe('PublicV1WebhookEntity', async () => {
     const public_v1_webhook_ref01_ent = client.PublicV1Webhook()
     let public_v1_webhook_ref01_data = setup.data.new.public_v1_webhook['public_v1_webhook_ref01']
 
-    public_v1_webhook_ref01_data = await public_v1_webhook_ref01_ent.create(public_v1_webhook_ref01_data)
+    public_v1_webhook_ref01_data = (await public_v1_webhook_ref01_ent.create(public_v1_webhook_ref01_data)).data()
     assert(null != public_v1_webhook_ref01_data.id)
 
 
     // LIST
     const public_v1_webhook_ref01_match: any = {}
 
-    const public_v1_webhook_ref01_list = await public_v1_webhook_ref01_ent.list(public_v1_webhook_ref01_match)
+    const public_v1_webhook_ref01_list = (await public_v1_webhook_ref01_ent.list(public_v1_webhook_ref01_match)).map((e: any) => e.data())
 
     assert(!isempty(select(public_v1_webhook_ref01_list, { id: public_v1_webhook_ref01_data.id })))
 
@@ -82,7 +82,7 @@ describe('PublicV1WebhookEntity', async () => {
     // LIST
     const public_v1_webhook_ref01_match_rt0: any = {}
 
-    const public_v1_webhook_ref01_list_rt0 = await public_v1_webhook_ref01_ent.list(public_v1_webhook_ref01_match_rt0)
+    const public_v1_webhook_ref01_list_rt0 = (await public_v1_webhook_ref01_ent.list(public_v1_webhook_ref01_match_rt0)).map((e: any) => e.data())
 
     assert(isempty(select(public_v1_webhook_ref01_list_rt0, { id: public_v1_webhook_ref01_data.id })))
 
@@ -127,17 +127,17 @@ function basicSetup(extra?: any) {
   // basic flow consumes synthetic IDs from the fixture file; without an
   // override those synthetic IDs reach the live API and 4xx. Surface this
   // to the test so it can skip rather than fail.
-  const idmapEnvVal = process.env['CUSTOM_TEMP_MAIL_TEST_PUBLIC_V__WEBHOOK_ENTID']
+  const idmapEnvVal = process.env['CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_WEBHOOK_ENTID']
   const idmapOverridden = null != idmapEnvVal && idmapEnvVal.trim().startsWith('{')
 
   const env = envOverride({
-    'CUSTOM_TEMP_MAIL_TEST_PUBLIC_V__WEBHOOK_ENTID': idmap,
+    'CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_WEBHOOK_ENTID': idmap,
     'CUSTOM_TEMP_MAIL_TEST_LIVE': 'FALSE',
     'CUSTOM_TEMP_MAIL_TEST_EXPLAIN': 'FALSE',
     'CUSTOM_TEMP_MAIL_APIKEY': 'NONE',
   })
 
-  idmap = env['CUSTOM_TEMP_MAIL_TEST_PUBLIC_V__WEBHOOK_ENTID']
+  idmap = env['CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_WEBHOOK_ENTID']
 
   const live = 'TRUE' === env.CUSTOM_TEMP_MAIL_TEST_LIVE
 

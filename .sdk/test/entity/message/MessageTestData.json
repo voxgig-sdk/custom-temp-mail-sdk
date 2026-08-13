@@ -2,30 +2,78 @@
   "existing": {
     "message": {
       "MESSAGE00": {
-        "data": {},
-        "success": false,
-        "inbox_id": "INBOX01",
-        "id": "MESSAGE00"
+        "attachments": [],
+        "count": "s97",
+        "date": "s98",
+        "from": "s99",
+        "has_attachment": true,
+        "has_more": false,
+        "html": "s9c",
+        "id": "MESSAGE00",
+        "inbox": "s9e",
+        "messages": [],
+        "otp": "sa0",
+        "subject": "sa1",
+        "text": "sa2",
+        "to": "sa3",
+        "verification_link": "sa4",
+        "inbox_id": "INBOX01"
       },
       "MESSAGE01": {
-        "data": {},
-        "success": false,
-        "inbox_id": "INBOX01",
-        "id": "MESSAGE01"
+        "attachments": [],
+        "count": "s12d",
+        "date": "s12e",
+        "from": "s12f",
+        "has_attachment": true,
+        "has_more": false,
+        "html": "s132",
+        "id": "MESSAGE01",
+        "inbox": "s134",
+        "messages": [],
+        "otp": "s136",
+        "subject": "s137",
+        "text": "s138",
+        "to": "s139",
+        "verification_link": "s13a",
+        "inbox_id": "INBOX01"
       },
       "MESSAGE02": {
-        "data": {},
-        "success": false,
-        "inbox_id": "INBOX01",
-        "id": "MESSAGE02"
+        "attachments": [],
+        "count": "s1c3",
+        "date": "s1c4",
+        "from": "s1c5",
+        "has_attachment": true,
+        "has_more": false,
+        "html": "s1c8",
+        "id": "MESSAGE02",
+        "inbox": "s1ca",
+        "messages": [],
+        "otp": "s1cc",
+        "subject": "s1cd",
+        "text": "s1ce",
+        "to": "s1cf",
+        "verification_link": "s1d0",
+        "inbox_id": "INBOX01"
       }
     }
   },
   "new": {
     "message": {
       "message_ref01": {
-        "data": {},
-        "success": false
+        "attachments": [],
+        "count": "s259",
+        "date": "s25a",
+        "from": "s25b",
+        "has_attachment": true,
+        "has_more": false,
+        "html": "s25e",
+        "inbox": "s260",
+        "messages": [],
+        "otp": "s262",
+        "subject": "s263",
+        "text": "s264",
+        "to": "s265",
+        "verification_link": "s266"
       }
     }
   }

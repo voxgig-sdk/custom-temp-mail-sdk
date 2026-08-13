@@ -2,22 +2,22 @@
   "existing": {
     "public_v1_webhook": {
       "PUBLIC_V1_WEBHOOK00": {
-        "created_at": "s32",
-        "failure_count": "s33",
+        "createdAt": "s32",
+        "failureCount": "s33",
         "id": "PUBLIC_V1_WEBHOOK00",
         "inbox": "s35",
         "url": "s36"
       },
       "PUBLIC_V1_WEBHOOK01": {
-        "created_at": "s64",
-        "failure_count": "s65",
+        "createdAt": "s64",
+        "failureCount": "s65",
         "id": "PUBLIC_V1_WEBHOOK01",
         "inbox": "s67",
         "url": "s68"
       },
       "PUBLIC_V1_WEBHOOK02": {
-        "created_at": "s96",
-        "failure_count": "s97",
+        "createdAt": "s96",
+        "failureCount": "s97",
         "id": "PUBLIC_V1_WEBHOOK02",
         "inbox": "s99",
         "url": "s9a"
@@ -27,8 +27,8 @@
   "new": {
     "public_v1_webhook": {
       "public_v1_webhook_ref01": {
-        "created_at": "sc8",
-        "failure_count": "sc9",
+        "createdAt": "sc8",
+        "failureCount": "sc9",
         "inbox": "scb",
         "url": "scc"
       }

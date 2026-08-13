@@ -23,6 +23,7 @@ require_once __DIR__ . '/MakeUrl.php';
 require_once __DIR__ . '/Param.php';
 require_once __DIR__ . '/PrepareAuth.php';
 require_once __DIR__ . '/PrepareBody.php';
+require_once __DIR__ . '/Graphql.php';
 require_once __DIR__ . '/PrepareHeaders.php';
 require_once __DIR__ . '/PrepareMethod.php';
 require_once __DIR__ . '/PrepareParams.php';
@@ -59,6 +60,8 @@ CustomTempMailUtility::setRegistrar(function (CustomTempMailUtility $u): void {
     $u->prepare_params = [CustomTempMailPrepareParams::class, 'call'];
     $u->prepare_path = [CustomTempMailPreparePath::class, 'call'];
     $u->prepare_query = [CustomTempMailPrepareQuery::class, 'call'];
+    $u->graphql_body = [CustomTempMailGraphql::class, 'body'];
+    $u->graphql_errors = [CustomTempMailGraphql::class, 'errors'];
     $u->result_basic = [CustomTempMailResultBasic::class, 'call'];
     $u->result_body = [CustomTempMailResultBody::class, 'call'];
     $u->result_headers = [CustomTempMailResultHeaders::class, 'call'];

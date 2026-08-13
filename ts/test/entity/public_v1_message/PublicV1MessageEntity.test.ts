@@ -26,8 +26,8 @@ import {
 describe('PublicV1MessageEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when CUSTOMTEMPMAIL_TEST_LIVE=TRUE.
-  afterEach(liveDelay('CUSTOMTEMPMAIL_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when CUSTOM_TEMP_MAIL_TEST_LIVE=TRUE.
+  afterEach(liveDelay('CUSTOM_TEMP_MAIL_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = CustomTempMailSDK.test()
@@ -39,7 +39,7 @@ describe('PublicV1MessageEntity', async () => {
   test('basic', async (t) => {
 
     const live = 'TRUE' === process.env.CUSTOM_TEMP_MAIL_TEST_LIVE
-    for (const op of ['load', 'remove']) {
+    for (const op of ['load']) {
       if (maybeSkipControl(t, 'entityOp', 'public_v1_message.' + op, live)) return
     }
 
@@ -48,7 +48,7 @@ describe('PublicV1MessageEntity', async () => {
     // fixture (entity TestData.json). Those don't exist on the live API.
     // Skip live runs unless the user provided a real ENTID env override.
     if (setup.syntheticOnly) {
-      t.skip('live entity test uses synthetic IDs from fixture — set CUSTOM_TEMP_MAIL_TEST_PUBLIC_V__MESSAGE_ENTID JSON to run live')
+      t.skip('live entity test uses synthetic IDs from fixture — set CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID JSON to run live')
       return
     }
     const client = setup.client
@@ -59,9 +59,12 @@ describe('PublicV1MessageEntity', async () => {
 
     let public_v1_message_ref01_data = Object.values(setup.data.existing.public_v1_message)[0] as any
 
-    // LOAD: skipped — no entity id field and load requires path params.
-    // Entity-var is declared here so later flow steps still compile.
+    // LOAD
     const public_v1_message_ref01_ent = client.PublicV1Message()
+    const public_v1_message_ref01_match_dt0: any = {}
+    public_v1_message_ref01_match_dt0.id = public_v1_message_ref01_data.id
+    const public_v1_message_ref01_data_dt0 = (await public_v1_message_ref01_ent.load(public_v1_message_ref01_match_dt0)).data()
+    assert(public_v1_message_ref01_data_dt0.id === public_v1_message_ref01_data.id)
 
 
   })
@@ -104,17 +107,17 @@ function basicSetup(extra?: any) {
   // basic flow consumes synthetic IDs from the fixture file; without an
   // override those synthetic IDs reach the live API and 4xx. Surface this
   // to the test so it can skip rather than fail.
-  const idmapEnvVal = process.env['CUSTOM_TEMP_MAIL_TEST_PUBLIC_V__MESSAGE_ENTID']
+  const idmapEnvVal = process.env['CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID']
   const idmapOverridden = null != idmapEnvVal && idmapEnvVal.trim().startsWith('{')
 
   const env = envOverride({
-    'CUSTOM_TEMP_MAIL_TEST_PUBLIC_V__MESSAGE_ENTID': idmap,
+    'CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID': idmap,
     'CUSTOM_TEMP_MAIL_TEST_LIVE': 'FALSE',
     'CUSTOM_TEMP_MAIL_TEST_EXPLAIN': 'FALSE',
     'CUSTOM_TEMP_MAIL_APIKEY': 'NONE',
   })
 
-  idmap = env['CUSTOM_TEMP_MAIL_TEST_PUBLIC_V__MESSAGE_ENTID']
+  idmap = env['CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID']
 
   const live = 'TRUE' === env.CUSTOM_TEMP_MAIL_TEST_LIVE
 

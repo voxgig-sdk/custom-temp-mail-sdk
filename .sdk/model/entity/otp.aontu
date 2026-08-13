@@ -6,14 +6,49 @@ main: kit: entity: otp: {
 
   fields: [
     {
-      name: "data"
+      name: "from"
       req: false
-      type: "`$OBJECT`"
+      type: "`$STRING`"
     }
     {
-      name: "success"
+      name: "inbox"
       req: false
-      type: "`$BOOLEAN`"
+      type: "`$STRING`"
+    }
+    {
+      name: "message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "message_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "otp"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "received_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "score"
+      req: false
+      type: "`$NUMBER`"
+    }
+    {
+      name: "subject"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "verification_link"
+      req: false
+      type: "`$STRING`"
     }
   ]
 
@@ -73,7 +108,7 @@ main: kit: entity: otp: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
         {
@@ -122,7 +157,7 @@ main: kit: entity: otp: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

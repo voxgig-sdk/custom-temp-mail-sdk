@@ -6,23 +6,28 @@ main: kit: entity: custom_domain_verify: {
 
   fields: [
     {
-      name: "data"
-      req: true
-      type: "`$OBJECT`"
-    }
-    {
-      name: "message"
+      name: "added_at"
       req: false
       type: "`$STRING`"
     }
     {
-      name: "success"
-      req: false
-      type: "`$BOOLEAN`"
+      name: "domain"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "mx_record"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "txt_record"
+      req: true
+      type: "`$STRING`"
     }
     {
       name: "verified"
-      req: false
+      req: true
       type: "`$BOOLEAN`"
     }
   ]
@@ -60,7 +65,7 @@ main: kit: entity: custom_domain_verify: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

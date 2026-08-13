@@ -1,4 +1,4 @@
-# ProjectName SDK exists test
+# CustomTempMail SDK exists test
 
 import pytest
 from customtempmail_sdk import CustomTempMailSDK

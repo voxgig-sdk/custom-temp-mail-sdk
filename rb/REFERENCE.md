@@ -147,11 +147,8 @@ custom_domain = client.CustomDomain
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `added_at` | `String` | No |  |
-| `data` | `Hash` | Yes |  |
 | `domain` | `String` | Yes |  |
-| `message` | `String` | No |  |
 | `mx_record` | `String` | Yes |  |
-| `success` | `Boolean` | No |  |
 | `txt_record` | `String` | Yes |  |
 | `verified` | `Boolean` | Yes |  |
 
@@ -163,7 +160,6 @@ Create a new entity with the given data. Raises on error.
 
 ```ruby
 result = client.CustomDomain.create({
-  "data" => {}, # Hash
   "domain" => "example_domain", # String
   "mx_record" => "example_mx_record", # String
   "txt_record" => "example_txt_record", # String
@@ -227,10 +223,11 @@ custom_domain_verify = client.CustomDomainVerify
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | Yes |  |
-| `message` | `String` | No |  |
-| `success` | `Boolean` | No |  |
-| `verified` | `Boolean` | No |  |
+| `added_at` | `String` | No |  |
+| `domain` | `String` | Yes |  |
+| `mx_record` | `String` | Yes |  |
+| `txt_record` | `String` | Yes |  |
+| `verified` | `Boolean` | Yes |  |
 
 ### Operations
 
@@ -241,6 +238,9 @@ Create a new entity with the given data. Raises on error.
 ```ruby
 result = client.CustomDomainVerify.create({
   "domain" => "example_domain", # String
+  "mx_record" => "example_mx_record", # String
+  "txt_record" => "example_txt_record", # String
+  "verified" => true, # Boolean
 })
 ```
 
@@ -286,9 +286,9 @@ domain = client.Domain
 | --- | --- | --- | --- |
 | `domain` | `String` | Yes |  |
 | `expires_at` | `String` | No |  |
-| `expires_in_day` | `Integer` | No |  |
+| `expires_in_days` | `Integer` | No |  |
 | `expiring_soon` | `Boolean` | No |  |
-| `tag` | `Array` | Yes |  |
+| `tags` | `Array` | Yes |  |
 | `tier` | `String` | Yes |  |
 
 ### Operations
@@ -344,9 +344,9 @@ domains_all = client.DomainsAll
 | `domain` | `String` | Yes |  |
 | `expired` | `Boolean` | Yes |  |
 | `expires_at` | `String` | No |  |
-| `expires_in_day` | `Integer` | No |  |
+| `expires_in_days` | `Integer` | No |  |
 | `expiring_soon` | `Boolean` | No |  |
-| `tag` | `Array` | Yes |  |
+| `tags` | `Array` | Yes |  |
 | `tier` | `String` | Yes |  |
 
 ### Field Usage by Operation
@@ -356,9 +356,9 @@ domains_all = client.DomainsAll
 | `domain` | - |
 | `expired` | - |
 | `expires_at` | Yes |
-| `expires_in_day` | Yes |
+| `expires_in_days` | Yes |
 | `expiring_soon` | Yes |
-| `tag` | - |
+| `tags` | - |
 | `tier` | - |
 
 ### Operations
@@ -411,9 +411,10 @@ inbox = client.Inbox
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | No |  |
+| `count` | `Integer` | No |  |
 | `inbox` | `String` | No |  |
-| `is_testing` | `Boolean` | No |  |
+| `inboxes` | `Array` | No |  |
+| `isTesting` | `Boolean` | No |  |
 | `message` | `String` | No |  |
 | `success` | `Boolean` | No |  |
 
@@ -421,9 +422,10 @@ inbox = client.Inbox
 
 | Field | load | create |
 | --- | --- | --- |
-| `data` | - | - |
+| `count` | - | - |
 | `inbox` | - | Yes |
-| `is_testing` | - | - |
+| `inboxes` | - | - |
+| `isTesting` | - | - |
 | `message` | - | - |
 | `success` | - | - |
 
@@ -486,8 +488,16 @@ men = client.Men
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | No |  |
-| `success` | `Boolean` | No |  |
+| `api_inbox_count` | `Integer` | No |  |
+| `api_inboxes` | `Array` | No |  |
+| `app_inbox_count` | `Integer` | No |  |
+| `app_inboxes` | `Array` | No |  |
+| `credits` | `Integer` | No |  |
+| `custom_domain_count` | `Integer` | No |  |
+| `custom_domains` | `Array` | No |  |
+| `features` | `Hash` | No |  |
+| `plan` | `String` | No |  |
+| `rate_limits` | `Hash` | No |  |
 
 ### Operations
 
@@ -539,8 +549,21 @@ message = client.Message
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | No |  |
-| `success` | `Boolean` | No |  |
+| `attachments` | `Array` | No |  |
+| `count` | `Integer` | No |  |
+| `date` | `String` | No |  |
+| `from` | `String` | No |  |
+| `has_attachment` | `Boolean` | No |  |
+| `has_more` | `Boolean` | No |  |
+| `html` | `String` | No |  |
+| `id` | `String` | No |  |
+| `inbox` | `String` | No |  |
+| `messages` | `Array` | No |  |
+| `otp` | `String` | No |  |
+| `subject` | `String` | No |  |
+| `text` | `String` | No |  |
+| `to` | `String` | No |  |
+| `verification_link` | `String` | No |  |
 
 ### Operations
 
@@ -592,8 +615,15 @@ otp = client.Otp
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | No |  |
-| `success` | `Boolean` | No |  |
+| `from` | `String` | No |  |
+| `inbox` | `String` | No |  |
+| `message` | `String` | No |  |
+| `message_id` | `String` | No |  |
+| `otp` | `String` | No |  |
+| `received_at` | `String` | No |  |
+| `score` | `Float` | No |  |
+| `subject` | `String` | No |  |
+| `verification_link` | `String` | No |  |
 
 ### Operations
 
@@ -645,8 +675,8 @@ plan = client.Plan
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | No |  |
-| `success` | `Boolean` | No |  |
+| `credit_packages` | `Array` | No |  |
+| `plans` | `Array` | No |  |
 
 ### Operations
 
@@ -698,8 +728,12 @@ public_v1_dashboard_analytics = client.PublicV1DashboardAnalytics
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | No |  |
-| `success` | `Boolean` | No |  |
+| `analyzed_at` | `String` | No |  |
+| `duration_hours` | `Integer` | No |  |
+| `event_count` | `Integer` | No |  |
+| `events` | `Array` | No |  |
+| `inbox` | `String` | No |  |
+| `insights` | `Array` | No |  |
 
 ### Operations
 
@@ -752,18 +786,19 @@ public_v1_inbox = client.PublicV1Inbox
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `count` | `Integer` | No |  |
-| `custom_firstname` | `Array` | No |  |
-| `custom_surname` | `Array` | No |  |
+| `custom_firstnames` | `Array` | No |  |
+| `custom_surnames` | `Array` | No |  |
 | `daily_limit` | `Integer` | No |  |
 | `daily_remaining` | `Integer` | No |  |
 | `daily_used` | `Integer` | No |  |
-| `data` | `Hash` | No |  |
-| `domain` | `Array` | No |  |
 | `domain_mode` | `String` | No |  |
-| `inbox` | `Array` | No |  |
+| `domains` | `Array` | No |  |
+| `inbox` | `String` | No |  |
+| `inboxes` | `Array` | No |  |
 | `output_format` | `String` | No |  |
-| `parse_code` | `Boolean` | No |  |
+| `parseCode` | `Boolean` | No |  |
 | `since` | `Integer` | No |  |
+| `started_at` | `String` | No |  |
 | `success` | `Boolean` | No |  |
 | `test_id` | `String` | No |  |
 | `username_style` | `String` | No |  |
@@ -827,9 +862,13 @@ public_v1_message = client.PublicV1Message
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | No |  |
-| `message` | `String` | No |  |
-| `success` | `Boolean` | No |  |
+| `date` | `String` | No |  |
+| `from` | `String` | No |  |
+| `has_attachment` | `Boolean` | No |  |
+| `id` | `String` | No |  |
+| `otp` | `String` | No |  |
+| `subject` | `String` | No |  |
+| `verification_link` | `String` | No |  |
 
 ### Operations
 
@@ -889,8 +928,8 @@ public_v1_webhook = client.PublicV1Webhook
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `String` | No |  |
-| `failure_count` | `Integer` | No |  |
+| `createdAt` | `String` | No |  |
+| `failureCount` | `Integer` | No |  |
 | `id` | `String` | No |  |
 | `inbox` | `String` | Yes |  |
 | `url` | `String` | Yes |  |
@@ -899,8 +938,8 @@ public_v1_webhook = client.PublicV1Webhook
 
 | Field | list | create | remove |
 | --- | --- | --- | --- |
-| `created_at` | - | - | - |
-| `failure_count` | - | - | - |
+| `createdAt` | - | - | - |
+| `failureCount` | - | - | - |
 | `id` | - | - | - |
 | `inbox` | Yes | - | - |
 | `url` | Yes | - | - |
@@ -974,8 +1013,11 @@ usage = client.Usage
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | No |  |
-| `success` | `Boolean` | No |  |
+| `credits` | `Hash` | No |  |
+| `period` | `Hash` | No |  |
+| `plan` | `String` | No |  |
+| `rate_limit` | `Hash` | No |  |
+| `requests` | `Hash` | No |  |
 
 ### Operations
 

@@ -6,21 +6,46 @@ main: kit: entity: public_v1_message: {
 
   fields: [
     {
-      name: "data"
-      req: false
-      type: "`$OBJECT`"
-    }
-    {
-      name: "message"
+      name: "date"
       req: false
       type: "`$STRING`"
     }
     {
-      name: "success"
+      name: "from"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "has_attachment"
       req: false
       type: "`$BOOLEAN`"
     }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "otp"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "subject"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "verification_link"
+      req: false
+      type: "`$STRING`"
+    }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "public_v1_message"
   op: {
@@ -78,7 +103,7 @@ main: kit: entity: public_v1_message: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

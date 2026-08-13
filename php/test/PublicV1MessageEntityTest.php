@@ -23,7 +23,7 @@ class PublicV1MessageEntityTest extends TestCase
         $setup = public_v1_message_basic_setup(null);
         // Per-op sdk-test-control.json skip.
         $_live = !empty($setup["live"]);
-        foreach (["load", "remove"] as $_op) {
+        foreach (["load"] as $_op) {
             [$_shouldSkip, $_reason] = Runner::is_control_skipped("entityOp", "public_v1_message." . $_op, $_live ? "live" : "unit");
             if ($_shouldSkip) {
                 $this->markTestSkipped($_reason ?? "skipped via sdk-test-control.json");
@@ -33,7 +33,7 @@ class PublicV1MessageEntityTest extends TestCase
         // The basic flow consumes synthetic IDs from the fixture. In live mode
         // without an *_ENTID env override, those IDs hit the live API and 4xx.
         if (!empty($setup["synthetic_only"])) {
-            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set CUSTOMTEMPMAIL_TEST_PUBLIC_V__MESSAGE_ENTID JSON to run live");
+            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID JSON to run live");
             return;
         }
         $client = $setup["client"];
@@ -48,9 +48,13 @@ class PublicV1MessageEntityTest extends TestCase
 
         // LOAD
         $public_v1_message_ref01_ent = $client->PublicV1Message(null);
-        $public_v1_message_ref01_match_dt0 = [];
+        $public_v1_message_ref01_match_dt0 = [
+            "id" => $public_v1_message_ref01_data["id"],
+        ];
         $public_v1_message_ref01_data_dt0_loaded = $public_v1_message_ref01_ent->load($public_v1_message_ref01_match_dt0, null);
-        $this->assertNotNull($public_v1_message_ref01_data_dt0_loaded);
+        $public_v1_message_ref01_data_dt0_load_result = Helpers::to_map(is_object($public_v1_message_ref01_data_dt0_loaded) && method_exists($public_v1_message_ref01_data_dt0_loaded, 'data_get') ? $public_v1_message_ref01_data_dt0_loaded->data_get() : $public_v1_message_ref01_data_dt0_loaded);
+        $this->assertNotNull($public_v1_message_ref01_data_dt0_load_result);
+        $this->assertEquals($public_v1_message_ref01_data_dt0_load_result["id"], $public_v1_message_ref01_data["id"]);
 
     }
 }
@@ -77,39 +81,39 @@ function public_v1_message_basic_setup($extra)
     // Detect ENTID env override before envOverride consumes it. When live
     // mode is on without a real override, the basic test runs against synthetic
     // IDs from the fixture and 4xx's. Surface this so the test can skip.
-    $entid_env_raw = getenv("CUSTOMTEMPMAIL_TEST_PUBLIC_V__MESSAGE_ENTID");
+    $entid_env_raw = getenv("CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID");
     $idmap_overridden = $entid_env_raw !== false && str_starts_with(trim($entid_env_raw), "{");
 
     $env = Runner::env_override([
-        "CUSTOMTEMPMAIL_TEST_PUBLIC_V__MESSAGE_ENTID" => $idmap,
-        "CUSTOMTEMPMAIL_TEST_LIVE" => "FALSE",
-        "CUSTOMTEMPMAIL_TEST_EXPLAIN" => "FALSE",
-        "CUSTOMTEMPMAIL_APIKEY" => "NONE",
+        "CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID" => $idmap,
+        "CUSTOM_TEMP_MAIL_TEST_LIVE" => "FALSE",
+        "CUSTOM_TEMP_MAIL_TEST_EXPLAIN" => "FALSE",
+        "CUSTOM_TEMP_MAIL_APIKEY" => "NONE",
     ]);
 
     $idmap_resolved = Helpers::to_map(
-        $env["CUSTOMTEMPMAIL_TEST_PUBLIC_V__MESSAGE_ENTID"]);
+        $env["CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID"]);
     if ($idmap_resolved === null) {
         $idmap_resolved = Helpers::to_map($idmap);
     }
 
-    if ($env["CUSTOMTEMPMAIL_TEST_LIVE"] === "TRUE") {
+    if ($env["CUSTOM_TEMP_MAIL_TEST_LIVE"] === "TRUE") {
         $merged_opts = Vs::merge([
             [
-                "apikey" => $env["CUSTOMTEMPMAIL_APIKEY"],
+                "apikey" => $env["CUSTOM_TEMP_MAIL_APIKEY"],
             ],
             $extra ?? [],
         ]);
         $client = new CustomTempMailSDK(Helpers::to_map($merged_opts));
     }
 
-    $live = $env["CUSTOMTEMPMAIL_TEST_LIVE"] === "TRUE";
+    $live = $env["CUSTOM_TEMP_MAIL_TEST_LIVE"] === "TRUE";
     return [
         "client" => $client,
         "data" => $entity_data,
         "idmap" => $idmap_resolved,
         "env" => $env,
-        "explain" => $env["CUSTOMTEMPMAIL_TEST_EXPLAIN"] === "TRUE",
+        "explain" => $env["CUSTOM_TEMP_MAIL_TEST_EXPLAIN"] === "TRUE",
         "live" => $live,
         "synthetic_only" => $live && !$idmap_overridden,
         "now" => (int)(microtime(true) * 1000),

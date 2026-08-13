@@ -37,7 +37,7 @@ class DomainsAllEntity extends CustomTempMailEntityBase<DomainsAll> {
 
 
 
-  async list(this: any, reqmatch?: DomainsAllListMatch, ctrl?: Control): Promise<DomainsAll[]> {
+  async list(this: any, reqmatch?: DomainsAllListMatch, ctrl?: Control): Promise<DomainsAllEntity[]> {
 
     const utility = this._utility
 

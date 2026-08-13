@@ -56,7 +56,7 @@ except Exception as err:
 ### 3. Load a message
 
 Message is nested under inbox, so provide the `inbox_id`.
-`load()` returns the bare record (a `dict`) and raises on error.
+`load()` returns the ENTITY — call data_get() for the record — and raises on error.
 
 ```python
 try:
@@ -69,8 +69,8 @@ except Exception as err:
 ### 4. Create, update, and remove
 
 ```python
-# Create — returns the bare created record (a dict)
-created = client.CustomDomain().create({"data": {}, "domain": "example_domain", "mx_record": "example_mx_record", "txt_record": "example_txt_record", "verified": True})
+# Create — returns the ENTITY (call data_get() for the record)
+created = client.CustomDomain().create({"domain": "example_domain", "mx_record": "example_mx_record", "txt_record": "example_txt_record", "verified": True})
 
 # Remove
 client.CustomDomain().remove({"id": "example_id"})
@@ -83,8 +83,8 @@ Entity operations raise on failure, so wrap them in `try` / `except`:
 
 ```python
 try:
-    customdomains = client.CustomDomain().list()
-    print(customdomains)
+    domains = client.Domain().list()
+    print(domains)
 except Exception as err:
     print(f"list failed: {err}")
 ```
@@ -150,9 +150,10 @@ Create a mock client for unit testing — no server required:
 ```python
 client = CustomTempMailSDK.test()
 
-# Entity ops return the bare record and raise on error.
-customdomain = client.CustomDomain().list()
-# customdomain contains the mock response record
+# Entity ops return the ENTITY and raises on error;
+# call data_get() for the record.
+domain = client.Domain().list()
+# domain contains the mock response record
 ```
 
 ### Use a custom fetch function
@@ -264,7 +265,7 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the bare result data (a `dict` for single-entity
+Entity operations return the ENTITY (call data_get() for the record) (a `dict` for single-entity
 ops, a `list` for `list`) and raise on error. Wrap calls in
 `try`/`except` to handle failures.
 
@@ -287,11 +288,8 @@ On error, `ok` is `False` and `err` contains the error value.
 | Field | Description |
 | --- | --- |
 | `added_at` |  |
-| `data` |  |
 | `domain` |  |
-| `message` |  |
 | `mx_record` |  |
-| `success` |  |
 | `txt_record` |  |
 | `verified` |  |
 
@@ -303,9 +301,10 @@ API path: `/v1/custom-domains`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `message` |  |
-| `success` |  |
+| `added_at` |  |
+| `domain` |  |
+| `mx_record` |  |
+| `txt_record` |  |
 | `verified` |  |
 
 Operations: Create.
@@ -318,9 +317,9 @@ API path: `/v1/custom-domains/{domain}/verify`
 | --- | --- |
 | `domain` |  |
 | `expires_at` |  |
-| `expires_in_day` |  |
+| `expires_in_days` |  |
 | `expiring_soon` |  |
-| `tag` |  |
+| `tags` |  |
 | `tier` |  |
 
 Operations: List.
@@ -334,9 +333,9 @@ API path: `/v1/domains`
 | `domain` |  |
 | `expired` |  |
 | `expires_at` |  |
-| `expires_in_day` |  |
+| `expires_in_days` |  |
 | `expiring_soon` |  |
-| `tag` |  |
+| `tags` |  |
 | `tier` |  |
 
 Operations: List.
@@ -347,9 +346,10 @@ API path: `/v1/domains/all`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
+| `count` |  |
 | `inbox` |  |
-| `is_testing` |  |
+| `inboxes` |  |
+| `isTesting` |  |
 | `message` |  |
 | `success` |  |
 
@@ -361,8 +361,16 @@ API path: `/v1/inboxes`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `api_inbox_count` |  |
+| `api_inboxes` |  |
+| `app_inbox_count` |  |
+| `app_inboxes` |  |
+| `credits` |  |
+| `custom_domain_count` |  |
+| `custom_domains` |  |
+| `features` |  |
+| `plan` |  |
+| `rate_limits` |  |
 
 Operations: Load.
 
@@ -372,8 +380,21 @@ API path: `/v1/me`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `attachments` |  |
+| `count` |  |
+| `date` |  |
+| `from` |  |
+| `has_attachment` |  |
+| `has_more` |  |
+| `html` |  |
+| `id` |  |
+| `inbox` |  |
+| `messages` |  |
+| `otp` |  |
+| `subject` |  |
+| `text` |  |
+| `to` |  |
+| `verification_link` |  |
 
 Operations: Load.
 
@@ -383,8 +404,15 @@ API path: `/v1/inboxes/{inbox}/messages`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `from` |  |
+| `inbox` |  |
+| `message` |  |
+| `message_id` |  |
+| `otp` |  |
+| `received_at` |  |
+| `score` |  |
+| `subject` |  |
+| `verification_link` |  |
 
 Operations: Load.
 
@@ -394,8 +422,8 @@ API path: `/v1/inboxes/{inbox}/otp`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `credit_packages` |  |
+| `plans` |  |
 
 Operations: Load.
 
@@ -405,8 +433,12 @@ API path: `/v1/plans`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `analyzed_at` |  |
+| `duration_hours` |  |
+| `event_count` |  |
+| `events` |  |
+| `inbox` |  |
+| `insights` |  |
 
 Operations: Load.
 
@@ -417,18 +449,19 @@ API path: `/v1/inboxes/{inbox}/timeline`
 | Field | Description |
 | --- | --- |
 | `count` |  |
-| `custom_firstname` |  |
-| `custom_surname` |  |
+| `custom_firstnames` |  |
+| `custom_surnames` |  |
 | `daily_limit` |  |
 | `daily_remaining` |  |
 | `daily_used` |  |
-| `data` |  |
-| `domain` |  |
 | `domain_mode` |  |
+| `domains` |  |
 | `inbox` |  |
+| `inboxes` |  |
 | `output_format` |  |
-| `parse_code` |  |
+| `parseCode` |  |
 | `since` |  |
+| `started_at` |  |
 | `success` |  |
 | `test_id` |  |
 | `username_style` |  |
@@ -441,9 +474,13 @@ API path: `/v1/inboxes/{inbox}/tests`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `message` |  |
-| `success` |  |
+| `date` |  |
+| `from` |  |
+| `has_attachment` |  |
+| `id` |  |
+| `otp` |  |
+| `subject` |  |
+| `verification_link` |  |
 
 Operations: Load, Remove.
 
@@ -453,8 +490,8 @@ API path: `/v1/inboxes/{inbox}/wait`
 
 | Field | Description |
 | --- | --- |
-| `created_at` |  |
-| `failure_count` |  |
+| `createdAt` |  |
+| `failureCount` |  |
 | `id` |  |
 | `inbox` |  |
 | `url` |  |
@@ -467,8 +504,11 @@ API path: `/v1/webhooks`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `credits` |  |
+| `period` |  |
+| `plan` |  |
+| `rate_limit` |  |
+| `requests` |  |
 
 Operations: Load.
 
@@ -496,11 +536,8 @@ Create an instance: `custom_domain = client.CustomDomain()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `added_at` | `str` |  |
-| `data` | `dict` |  |
 | `domain` | `str` |  |
-| `message` | `str` |  |
 | `mx_record` | `str` |  |
-| `success` | `bool` |  |
 | `txt_record` | `str` |  |
 | `verified` | `bool` |  |
 
@@ -514,7 +551,6 @@ custom_domains = client.CustomDomain().list()
 
 ```python
 custom_domain = client.CustomDomain().create({
-    "data": {},  # dict
     "domain": "example_domain",  # str
     "mx_record": "example_mx_record",  # str
     "txt_record": "example_txt_record",  # str
@@ -537,9 +573,10 @@ Create an instance: `custom_domain_verify = client.CustomDomainVerify()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` |  |
-| `message` | `str` |  |
-| `success` | `bool` |  |
+| `added_at` | `str` |  |
+| `domain` | `str` |  |
+| `mx_record` | `str` |  |
+| `txt_record` | `str` |  |
 | `verified` | `bool` |  |
 
 #### Example: Create
@@ -547,6 +584,9 @@ Create an instance: `custom_domain_verify = client.CustomDomainVerify()`
 ```python
 custom_domain_verify = client.CustomDomainVerify().create({
     "domain": "example_domain",  # str
+    "mx_record": "example_mx_record",  # str
+    "txt_record": "example_txt_record",  # str
+    "verified": True,  # bool
 })
 ```
 
@@ -567,9 +607,9 @@ Create an instance: `domain = client.Domain()`
 | --- | --- | --- |
 | `domain` | `str` |  |
 | `expires_at` | `str` |  |
-| `expires_in_day` | `int` |  |
+| `expires_in_days` | `int` |  |
 | `expiring_soon` | `bool` |  |
-| `tag` | `list` |  |
+| `tags` | `list` |  |
 | `tier` | `str` |  |
 
 #### Example: List
@@ -596,9 +636,9 @@ Create an instance: `domains_all = client.DomainsAll()`
 | `domain` | `str` |  |
 | `expired` | `bool` |  |
 | `expires_at` | `str` |  |
-| `expires_in_day` | `int` |  |
+| `expires_in_days` | `int` |  |
 | `expiring_soon` | `bool` |  |
-| `tag` | `list` |  |
+| `tags` | `list` |  |
 | `tier` | `str` |  |
 
 #### Example: List
@@ -623,9 +663,10 @@ Create an instance: `inbox = client.Inbox()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` |  |
+| `count` | `int` |  |
 | `inbox` | `str` |  |
-| `is_testing` | `bool` |  |
+| `inboxes` | `list` |  |
+| `isTesting` | `bool` |  |
 | `message` | `str` |  |
 | `success` | `bool` |  |
 
@@ -657,8 +698,16 @@ Create an instance: `men = client.Men()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` |  |
-| `success` | `bool` |  |
+| `api_inbox_count` | `int` |  |
+| `api_inboxes` | `list` |  |
+| `app_inbox_count` | `int` |  |
+| `app_inboxes` | `list` |  |
+| `credits` | `int` |  |
+| `custom_domain_count` | `int` |  |
+| `custom_domains` | `list` |  |
+| `features` | `dict` |  |
+| `plan` | `str` |  |
+| `rate_limits` | `dict` |  |
 
 #### Example: Load
 
@@ -681,8 +730,21 @@ Create an instance: `message = client.Message()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` |  |
-| `success` | `bool` |  |
+| `attachments` | `list` |  |
+| `count` | `int` |  |
+| `date` | `str` |  |
+| `from` | `str` |  |
+| `has_attachment` | `bool` |  |
+| `has_more` | `bool` |  |
+| `html` | `str` |  |
+| `id` | `str` |  |
+| `inbox` | `str` |  |
+| `messages` | `list` |  |
+| `otp` | `str` |  |
+| `subject` | `str` |  |
+| `text` | `str` |  |
+| `to` | `str` |  |
+| `verification_link` | `str` |  |
 
 #### Example: Load
 
@@ -705,8 +767,15 @@ Create an instance: `otp = client.Otp()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` |  |
-| `success` | `bool` |  |
+| `from` | `str` |  |
+| `inbox` | `str` |  |
+| `message` | `str` |  |
+| `message_id` | `str` |  |
+| `otp` | `str` |  |
+| `received_at` | `str` |  |
+| `score` | `float` |  |
+| `subject` | `str` |  |
+| `verification_link` | `str` |  |
 
 #### Example: Load
 
@@ -729,8 +798,8 @@ Create an instance: `plan = client.Plan()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` |  |
-| `success` | `bool` |  |
+| `credit_packages` | `list` |  |
+| `plans` | `list` |  |
 
 #### Example: Load
 
@@ -753,8 +822,12 @@ Create an instance: `public_v1_dashboard_analytics = client.PublicV1DashboardAna
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` |  |
-| `success` | `bool` |  |
+| `analyzed_at` | `str` |  |
+| `duration_hours` | `int` |  |
+| `event_count` | `int` |  |
+| `events` | `list` |  |
+| `inbox` | `str` |  |
+| `insights` | `list` |  |
 
 #### Example: Load
 
@@ -779,18 +852,19 @@ Create an instance: `public_v1_inbox = client.PublicV1Inbox()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `count` | `int` |  |
-| `custom_firstname` | `list` |  |
-| `custom_surname` | `list` |  |
+| `custom_firstnames` | `list` |  |
+| `custom_surnames` | `list` |  |
 | `daily_limit` | `int` |  |
 | `daily_remaining` | `int` |  |
 | `daily_used` | `int` |  |
-| `data` | `dict` |  |
-| `domain` | `list` |  |
 | `domain_mode` | `str` |  |
-| `inbox` | `list` |  |
+| `domains` | `list` |  |
+| `inbox` | `str` |  |
+| `inboxes` | `list` |  |
 | `output_format` | `str` |  |
-| `parse_code` | `bool` |  |
+| `parseCode` | `bool` |  |
 | `since` | `int` |  |
+| `started_at` | `str` |  |
 | `success` | `bool` |  |
 | `test_id` | `str` |  |
 | `username_style` | `str` |  |
@@ -818,9 +892,13 @@ Create an instance: `public_v1_message = client.PublicV1Message()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` |  |
-| `message` | `str` |  |
-| `success` | `bool` |  |
+| `date` | `str` |  |
+| `from` | `str` |  |
+| `has_attachment` | `bool` |  |
+| `id` | `str` |  |
+| `otp` | `str` |  |
+| `subject` | `str` |  |
+| `verification_link` | `str` |  |
 
 #### Example: Load
 
@@ -845,8 +923,8 @@ Create an instance: `public_v1_webhook = client.PublicV1Webhook()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `created_at` | `str` |  |
-| `failure_count` | `int` |  |
+| `createdAt` | `str` |  |
+| `failureCount` | `int` |  |
 | `id` | `str` |  |
 | `inbox` | `str` |  |
 | `url` | `str` |  |
@@ -881,8 +959,11 @@ Create an instance: `usage = client.Usage()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` |  |
-| `success` | `bool` |  |
+| `credits` | `dict` |  |
+| `period` | `dict` |  |
+| `plan` | `str` |  |
+| `rate_limit` | `dict` |  |
+| `requests` | `dict` |  |
 
 #### Example: Load
 
@@ -966,11 +1047,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```python
-customdomain = client.CustomDomain()
-customdomain.list()
+domain = client.Domain()
+domain.list()
 
-# customdomain.data_get() now returns the customdomain data from the last list
-# customdomain.match_get() returns the last match criteria
+# domain.data_get() now returns the domain data from the last list
+# domain.match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

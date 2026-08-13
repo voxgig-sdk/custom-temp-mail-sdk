@@ -13,20 +13,11 @@
 # @!attribute [rw] added_at
 #   @return [String, nil]
 #
-# @!attribute [rw] data
-#   @return [Hash]
-#
 # @!attribute [rw] domain
 #   @return [String]
 #
-# @!attribute [rw] message
-#   @return [String, nil]
-#
 # @!attribute [rw] mx_record
 #   @return [String]
-#
-# @!attribute [rw] success
-#   @return [Boolean, nil]
 #
 # @!attribute [rw] txt_record
 #   @return [String]
@@ -35,11 +26,8 @@
 #   @return [Boolean]
 CustomDomain = Struct.new(
   :added_at,
-  :data,
   :domain,
-  :message,
   :mx_record,
-  :success,
   :txt_record,
   :verified,
   keyword_init: true
@@ -50,20 +38,11 @@ CustomDomain = Struct.new(
 # @!attribute [rw] added_at
 #   @return [String, nil]
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
-#
 # @!attribute [rw] domain
-#   @return [String, nil]
-#
-# @!attribute [rw] message
 #   @return [String, nil]
 #
 # @!attribute [rw] mx_record
 #   @return [String, nil]
-#
-# @!attribute [rw] success
-#   @return [Boolean, nil]
 #
 # @!attribute [rw] txt_record
 #   @return [String, nil]
@@ -72,11 +51,8 @@ CustomDomain = Struct.new(
 #   @return [Boolean, nil]
 CustomDomainListMatch = Struct.new(
   :added_at,
-  :data,
   :domain,
-  :message,
   :mx_record,
-  :success,
   :txt_record,
   :verified,
   keyword_init: true
@@ -87,20 +63,11 @@ CustomDomainListMatch = Struct.new(
 # @!attribute [rw] added_at
 #   @return [String, nil]
 #
-# @!attribute [rw] data
-#   @return [Hash]
-#
 # @!attribute [rw] domain
 #   @return [String]
 #
-# @!attribute [rw] message
-#   @return [String, nil]
-#
 # @!attribute [rw] mx_record
 #   @return [String]
-#
-# @!attribute [rw] success
-#   @return [Boolean, nil]
 #
 # @!attribute [rw] txt_record
 #   @return [String]
@@ -109,11 +76,8 @@ CustomDomainListMatch = Struct.new(
 #   @return [Boolean]
 CustomDomainCreateData = Struct.new(
   :added_at,
-  :data,
   :domain,
-  :message,
   :mx_record,
-  :success,
   :txt_record,
   :verified,
   keyword_init: true
@@ -130,21 +94,25 @@ CustomDomainRemoveMatch = Struct.new(
 
 # CustomDomainVerify entity data model.
 #
-# @!attribute [rw] data
-#   @return [Hash]
-#
-# @!attribute [rw] message
+# @!attribute [rw] added_at
 #   @return [String, nil]
 #
-# @!attribute [rw] success
-#   @return [Boolean, nil]
+# @!attribute [rw] domain
+#   @return [String]
+#
+# @!attribute [rw] mx_record
+#   @return [String]
+#
+# @!attribute [rw] txt_record
+#   @return [String]
 #
 # @!attribute [rw] verified
-#   @return [Boolean, nil]
+#   @return [Boolean]
 CustomDomainVerify = Struct.new(
-  :data,
-  :message,
-  :success,
+  :added_at,
+  :domain,
+  :mx_record,
+  :txt_record,
   :verified,
   keyword_init: true
 )
@@ -153,8 +121,24 @@ CustomDomainVerify = Struct.new(
 #
 # @!attribute [rw] domain
 #   @return [String]
+#
+# @!attribute [rw] added_at
+#   @return [String, nil]
+#
+# @!attribute [rw] mx_record
+#   @return [String]
+#
+# @!attribute [rw] txt_record
+#   @return [String]
+#
+# @!attribute [rw] verified
+#   @return [Boolean]
 CustomDomainVerifyCreateData = Struct.new(
   :domain,
+  :added_at,
+  :mx_record,
+  :txt_record,
+  :verified,
   keyword_init: true
 )
 
@@ -166,13 +150,13 @@ CustomDomainVerifyCreateData = Struct.new(
 # @!attribute [rw] expires_at
 #   @return [String, nil]
 #
-# @!attribute [rw] expires_in_day
+# @!attribute [rw] expires_in_days
 #   @return [Integer, nil]
 #
 # @!attribute [rw] expiring_soon
 #   @return [Boolean, nil]
 #
-# @!attribute [rw] tag
+# @!attribute [rw] tags
 #   @return [Array]
 #
 # @!attribute [rw] tier
@@ -180,9 +164,9 @@ CustomDomainVerifyCreateData = Struct.new(
 Domain = Struct.new(
   :domain,
   :expires_at,
-  :expires_in_day,
+  :expires_in_days,
   :expiring_soon,
-  :tag,
+  :tags,
   :tier,
   keyword_init: true
 )
@@ -195,13 +179,13 @@ Domain = Struct.new(
 # @!attribute [rw] expires_at
 #   @return [String, nil]
 #
-# @!attribute [rw] expires_in_day
+# @!attribute [rw] expires_in_days
 #   @return [Integer, nil]
 #
 # @!attribute [rw] expiring_soon
 #   @return [Boolean, nil]
 #
-# @!attribute [rw] tag
+# @!attribute [rw] tags
 #   @return [Array, nil]
 #
 # @!attribute [rw] tier
@@ -209,9 +193,9 @@ Domain = Struct.new(
 DomainListMatch = Struct.new(
   :domain,
   :expires_at,
-  :expires_in_day,
+  :expires_in_days,
   :expiring_soon,
-  :tag,
+  :tags,
   :tier,
   keyword_init: true
 )
@@ -227,13 +211,13 @@ DomainListMatch = Struct.new(
 # @!attribute [rw] expires_at
 #   @return [String, nil]
 #
-# @!attribute [rw] expires_in_day
+# @!attribute [rw] expires_in_days
 #   @return [Integer, nil]
 #
 # @!attribute [rw] expiring_soon
 #   @return [Boolean, nil]
 #
-# @!attribute [rw] tag
+# @!attribute [rw] tags
 #   @return [Array]
 #
 # @!attribute [rw] tier
@@ -242,9 +226,9 @@ DomainsAll = Struct.new(
   :domain,
   :expired,
   :expires_at,
-  :expires_in_day,
+  :expires_in_days,
   :expiring_soon,
-  :tag,
+  :tags,
   :tier,
   keyword_init: true
 )
@@ -260,13 +244,13 @@ DomainsAll = Struct.new(
 # @!attribute [rw] expires_at
 #   @return [String, nil]
 #
-# @!attribute [rw] expires_in_day
+# @!attribute [rw] expires_in_days
 #   @return [Integer, nil]
 #
 # @!attribute [rw] expiring_soon
 #   @return [Boolean, nil]
 #
-# @!attribute [rw] tag
+# @!attribute [rw] tags
 #   @return [Array, nil]
 #
 # @!attribute [rw] tier
@@ -275,22 +259,25 @@ DomainsAllListMatch = Struct.new(
   :domain,
   :expired,
   :expires_at,
-  :expires_in_day,
+  :expires_in_days,
   :expiring_soon,
-  :tag,
+  :tags,
   :tier,
   keyword_init: true
 )
 
 # Inbox entity data model.
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
+# @!attribute [rw] count
+#   @return [Integer, nil]
 #
 # @!attribute [rw] inbox
 #   @return [String, nil]
 #
-# @!attribute [rw] is_testing
+# @!attribute [rw] inboxes
+#   @return [Array, nil]
+#
+# @!attribute [rw] isTesting
 #   @return [Boolean, nil]
 #
 # @!attribute [rw] message
@@ -299,9 +286,10 @@ DomainsAllListMatch = Struct.new(
 # @!attribute [rw] success
 #   @return [Boolean, nil]
 Inbox = Struct.new(
-  :data,
+  :count,
   :inbox,
-  :is_testing,
+  :inboxes,
+  :isTesting,
   :message,
   :success,
   keyword_init: true
@@ -309,13 +297,16 @@ Inbox = Struct.new(
 
 # Request payload for Inbox#load.
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
+# @!attribute [rw] count
+#   @return [Integer, nil]
 #
 # @!attribute [rw] inbox
 #   @return [String, nil]
 #
-# @!attribute [rw] is_testing
+# @!attribute [rw] inboxes
+#   @return [Array, nil]
+#
+# @!attribute [rw] isTesting
 #   @return [Boolean, nil]
 #
 # @!attribute [rw] message
@@ -324,9 +315,10 @@ Inbox = Struct.new(
 # @!attribute [rw] success
 #   @return [Boolean, nil]
 InboxLoadMatch = Struct.new(
-  :data,
+  :count,
   :inbox,
-  :is_testing,
+  :inboxes,
+  :isTesting,
   :message,
   :success,
   keyword_init: true
@@ -334,13 +326,16 @@ InboxLoadMatch = Struct.new(
 
 # Request payload for Inbox#create.
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
+# @!attribute [rw] count
+#   @return [Integer, nil]
 #
 # @!attribute [rw] inbox
 #   @return [String, nil]
 #
-# @!attribute [rw] is_testing
+# @!attribute [rw] inboxes
+#   @return [Array, nil]
+#
+# @!attribute [rw] isTesting
 #   @return [Boolean, nil]
 #
 # @!attribute [rw] message
@@ -349,9 +344,10 @@ InboxLoadMatch = Struct.new(
 # @!attribute [rw] success
 #   @return [Boolean, nil]
 InboxCreateData = Struct.new(
-  :data,
+  :count,
   :inbox,
-  :is_testing,
+  :inboxes,
+  :isTesting,
   :message,
   :success,
   keyword_init: true
@@ -359,40 +355,156 @@ InboxCreateData = Struct.new(
 
 # Men entity data model.
 #
-# @!attribute [rw] data
+# @!attribute [rw] api_inbox_count
+#   @return [Integer, nil]
+#
+# @!attribute [rw] api_inboxes
+#   @return [Array, nil]
+#
+# @!attribute [rw] app_inbox_count
+#   @return [Integer, nil]
+#
+# @!attribute [rw] app_inboxes
+#   @return [Array, nil]
+#
+# @!attribute [rw] credits
+#   @return [Integer, nil]
+#
+# @!attribute [rw] custom_domain_count
+#   @return [Integer, nil]
+#
+# @!attribute [rw] custom_domains
+#   @return [Array, nil]
+#
+# @!attribute [rw] features
 #   @return [Hash, nil]
 #
-# @!attribute [rw] success
-#   @return [Boolean, nil]
+# @!attribute [rw] plan
+#   @return [String, nil]
+#
+# @!attribute [rw] rate_limits
+#   @return [Hash, nil]
 Men = Struct.new(
-  :data,
-  :success,
+  :api_inbox_count,
+  :api_inboxes,
+  :app_inbox_count,
+  :app_inboxes,
+  :credits,
+  :custom_domain_count,
+  :custom_domains,
+  :features,
+  :plan,
+  :rate_limits,
   keyword_init: true
 )
 
 # Request payload for Men#load.
 #
-# @!attribute [rw] data
+# @!attribute [rw] api_inbox_count
+#   @return [Integer, nil]
+#
+# @!attribute [rw] api_inboxes
+#   @return [Array, nil]
+#
+# @!attribute [rw] app_inbox_count
+#   @return [Integer, nil]
+#
+# @!attribute [rw] app_inboxes
+#   @return [Array, nil]
+#
+# @!attribute [rw] credits
+#   @return [Integer, nil]
+#
+# @!attribute [rw] custom_domain_count
+#   @return [Integer, nil]
+#
+# @!attribute [rw] custom_domains
+#   @return [Array, nil]
+#
+# @!attribute [rw] features
 #   @return [Hash, nil]
 #
-# @!attribute [rw] success
-#   @return [Boolean, nil]
+# @!attribute [rw] plan
+#   @return [String, nil]
+#
+# @!attribute [rw] rate_limits
+#   @return [Hash, nil]
 MenLoadMatch = Struct.new(
-  :data,
-  :success,
+  :api_inbox_count,
+  :api_inboxes,
+  :app_inbox_count,
+  :app_inboxes,
+  :credits,
+  :custom_domain_count,
+  :custom_domains,
+  :features,
+  :plan,
+  :rate_limits,
   keyword_init: true
 )
 
 # Message entity data model.
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
+# @!attribute [rw] attachments
+#   @return [Array, nil]
 #
-# @!attribute [rw] success
+# @!attribute [rw] count
+#   @return [Integer, nil]
+#
+# @!attribute [rw] date
+#   @return [String, nil]
+#
+# @!attribute [rw] from
+#   @return [String, nil]
+#
+# @!attribute [rw] has_attachment
 #   @return [Boolean, nil]
+#
+# @!attribute [rw] has_more
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] html
+#   @return [String, nil]
+#
+# @!attribute [rw] id
+#   @return [String, nil]
+#
+# @!attribute [rw] inbox
+#   @return [String, nil]
+#
+# @!attribute [rw] messages
+#   @return [Array, nil]
+#
+# @!attribute [rw] otp
+#   @return [String, nil]
+#
+# @!attribute [rw] subject
+#   @return [String, nil]
+#
+# @!attribute [rw] text
+#   @return [String, nil]
+#
+# @!attribute [rw] to
+#   @return [String, nil]
+#
+# @!attribute [rw] verification_link
+#   @return [String, nil]
 Message = Struct.new(
-  :data,
-  :success,
+  :attachments,
+  :count,
+  :date,
+  :from,
+  :has_attachment,
+  :has_more,
+  :html,
+  :id,
+  :inbox,
+  :messages,
+  :otp,
+  :subject,
+  :text,
+  :to,
+  :verification_link,
   keyword_init: true
 )
 
@@ -411,14 +523,42 @@ MessageLoadMatch = Struct.new(
 
 # Otp entity data model.
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
+# @!attribute [rw] from
+#   @return [String, nil]
 #
-# @!attribute [rw] success
-#   @return [Boolean, nil]
+# @!attribute [rw] inbox
+#   @return [String, nil]
+#
+# @!attribute [rw] message
+#   @return [String, nil]
+#
+# @!attribute [rw] message_id
+#   @return [String, nil]
+#
+# @!attribute [rw] otp
+#   @return [String, nil]
+#
+# @!attribute [rw] received_at
+#   @return [String, nil]
+#
+# @!attribute [rw] score
+#   @return [Float, nil]
+#
+# @!attribute [rw] subject
+#   @return [String, nil]
+#
+# @!attribute [rw] verification_link
+#   @return [String, nil]
 Otp = Struct.new(
-  :data,
-  :success,
+  :from,
+  :inbox,
+  :message,
+  :message_id,
+  :otp,
+  :received_at,
+  :score,
+  :subject,
+  :verification_link,
   keyword_init: true
 )
 
@@ -433,40 +573,56 @@ OtpLoadMatch = Struct.new(
 
 # Plan entity data model.
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
+# @!attribute [rw] credit_packages
+#   @return [Array, nil]
 #
-# @!attribute [rw] success
-#   @return [Boolean, nil]
+# @!attribute [rw] plans
+#   @return [Array, nil]
 Plan = Struct.new(
-  :data,
-  :success,
+  :credit_packages,
+  :plans,
   keyword_init: true
 )
 
 # Request payload for Plan#load.
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
+# @!attribute [rw] credit_packages
+#   @return [Array, nil]
 #
-# @!attribute [rw] success
-#   @return [Boolean, nil]
+# @!attribute [rw] plans
+#   @return [Array, nil]
 PlanLoadMatch = Struct.new(
-  :data,
-  :success,
+  :credit_packages,
+  :plans,
   keyword_init: true
 )
 
 # PublicV1DashboardAnalytics entity data model.
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
+# @!attribute [rw] analyzed_at
+#   @return [String, nil]
 #
-# @!attribute [rw] success
-#   @return [Boolean, nil]
+# @!attribute [rw] duration_hours
+#   @return [Integer, nil]
+#
+# @!attribute [rw] event_count
+#   @return [Integer, nil]
+#
+# @!attribute [rw] events
+#   @return [Array, nil]
+#
+# @!attribute [rw] inbox
+#   @return [String, nil]
+#
+# @!attribute [rw] insights
+#   @return [Array, nil]
 PublicV1DashboardAnalytics = Struct.new(
-  :data,
-  :success,
+  :analyzed_at,
+  :duration_hours,
+  :event_count,
+  :events,
+  :inbox,
+  :insights,
   keyword_init: true
 )
 
@@ -484,10 +640,10 @@ PublicV1DashboardAnalyticsLoadMatch = Struct.new(
 # @!attribute [rw] count
 #   @return [Integer, nil]
 #
-# @!attribute [rw] custom_firstname
+# @!attribute [rw] custom_firstnames
 #   @return [Array, nil]
 #
-# @!attribute [rw] custom_surname
+# @!attribute [rw] custom_surnames
 #   @return [Array, nil]
 #
 # @!attribute [rw] daily_limit
@@ -499,26 +655,29 @@ PublicV1DashboardAnalyticsLoadMatch = Struct.new(
 # @!attribute [rw] daily_used
 #   @return [Integer, nil]
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
-#
-# @!attribute [rw] domain
-#   @return [Array, nil]
-#
 # @!attribute [rw] domain_mode
 #   @return [String, nil]
 #
+# @!attribute [rw] domains
+#   @return [Array, nil]
+#
 # @!attribute [rw] inbox
+#   @return [String, nil]
+#
+# @!attribute [rw] inboxes
 #   @return [Array, nil]
 #
 # @!attribute [rw] output_format
 #   @return [String, nil]
 #
-# @!attribute [rw] parse_code
+# @!attribute [rw] parseCode
 #   @return [Boolean, nil]
 #
 # @!attribute [rw] since
 #   @return [Integer, nil]
+#
+# @!attribute [rw] started_at
+#   @return [String, nil]
 #
 # @!attribute [rw] success
 #   @return [Boolean, nil]
@@ -530,18 +689,19 @@ PublicV1DashboardAnalyticsLoadMatch = Struct.new(
 #   @return [String, nil]
 PublicV1Inbox = Struct.new(
   :count,
-  :custom_firstname,
-  :custom_surname,
+  :custom_firstnames,
+  :custom_surnames,
   :daily_limit,
   :daily_remaining,
   :daily_used,
-  :data,
-  :domain,
   :domain_mode,
+  :domains,
   :inbox,
+  :inboxes,
   :output_format,
-  :parse_code,
+  :parseCode,
   :since,
+  :started_at,
   :success,
   :test_id,
   :username_style,
@@ -552,8 +712,76 @@ PublicV1Inbox = Struct.new(
 #
 # @!attribute [rw] inbox_id
 #   @return [String, nil]
+#
+# @!attribute [rw] count
+#   @return [Integer, nil]
+#
+# @!attribute [rw] custom_firstnames
+#   @return [Array, nil]
+#
+# @!attribute [rw] custom_surnames
+#   @return [Array, nil]
+#
+# @!attribute [rw] daily_limit
+#   @return [Integer, nil]
+#
+# @!attribute [rw] daily_remaining
+#   @return [Integer, nil]
+#
+# @!attribute [rw] daily_used
+#   @return [Integer, nil]
+#
+# @!attribute [rw] domain_mode
+#   @return [String, nil]
+#
+# @!attribute [rw] domains
+#   @return [Array, nil]
+#
+# @!attribute [rw] inbox
+#   @return [String, nil]
+#
+# @!attribute [rw] inboxes
+#   @return [Array, nil]
+#
+# @!attribute [rw] output_format
+#   @return [String, nil]
+#
+# @!attribute [rw] parseCode
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] since
+#   @return [Integer, nil]
+#
+# @!attribute [rw] started_at
+#   @return [String, nil]
+#
+# @!attribute [rw] success
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] test_id
+#   @return [String, nil]
+#
+# @!attribute [rw] username_style
+#   @return [String, nil]
 PublicV1InboxCreateData = Struct.new(
   :inbox_id,
+  :count,
+  :custom_firstnames,
+  :custom_surnames,
+  :daily_limit,
+  :daily_remaining,
+  :daily_used,
+  :domain_mode,
+  :domains,
+  :inbox,
+  :inboxes,
+  :output_format,
+  :parseCode,
+  :since,
+  :started_at,
+  :success,
+  :test_id,
+  :username_style,
   keyword_init: true
 )
 
@@ -568,18 +796,34 @@ PublicV1InboxRemoveMatch = Struct.new(
 
 # PublicV1Message entity data model.
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
-#
-# @!attribute [rw] message
+# @!attribute [rw] date
 #   @return [String, nil]
 #
-# @!attribute [rw] success
+# @!attribute [rw] from
+#   @return [String, nil]
+#
+# @!attribute [rw] has_attachment
 #   @return [Boolean, nil]
+#
+# @!attribute [rw] id
+#   @return [String, nil]
+#
+# @!attribute [rw] otp
+#   @return [String, nil]
+#
+# @!attribute [rw] subject
+#   @return [String, nil]
+#
+# @!attribute [rw] verification_link
+#   @return [String, nil]
 PublicV1Message = Struct.new(
-  :data,
-  :message,
-  :success,
+  :date,
+  :from,
+  :has_attachment,
+  :id,
+  :otp,
+  :subject,
+  :verification_link,
   keyword_init: true
 )
 
@@ -607,10 +851,10 @@ PublicV1MessageRemoveMatch = Struct.new(
 
 # PublicV1Webhook entity data model.
 #
-# @!attribute [rw] created_at
+# @!attribute [rw] createdAt
 #   @return [String, nil]
 #
-# @!attribute [rw] failure_count
+# @!attribute [rw] failureCount
 #   @return [Integer, nil]
 #
 # @!attribute [rw] id
@@ -622,8 +866,8 @@ PublicV1MessageRemoveMatch = Struct.new(
 # @!attribute [rw] url
 #   @return [String]
 PublicV1Webhook = Struct.new(
-  :created_at,
-  :failure_count,
+  :createdAt,
+  :failureCount,
   :id,
   :inbox,
   :url,
@@ -632,10 +876,10 @@ PublicV1Webhook = Struct.new(
 
 # Request payload for PublicV1Webhook#list.
 #
-# @!attribute [rw] created_at
+# @!attribute [rw] createdAt
 #   @return [String, nil]
 #
-# @!attribute [rw] failure_count
+# @!attribute [rw] failureCount
 #   @return [Integer, nil]
 #
 # @!attribute [rw] id
@@ -647,8 +891,8 @@ PublicV1Webhook = Struct.new(
 # @!attribute [rw] url
 #   @return [String, nil]
 PublicV1WebhookListMatch = Struct.new(
-  :created_at,
-  :failure_count,
+  :createdAt,
+  :failureCount,
   :id,
   :inbox,
   :url,
@@ -657,10 +901,10 @@ PublicV1WebhookListMatch = Struct.new(
 
 # Request payload for PublicV1Webhook#create.
 #
-# @!attribute [rw] created_at
+# @!attribute [rw] createdAt
 #   @return [String, nil]
 #
-# @!attribute [rw] failure_count
+# @!attribute [rw] failureCount
 #   @return [Integer, nil]
 #
 # @!attribute [rw] id
@@ -672,8 +916,8 @@ PublicV1WebhookListMatch = Struct.new(
 # @!attribute [rw] url
 #   @return [String]
 PublicV1WebhookCreateData = Struct.new(
-  :created_at,
-  :failure_count,
+  :createdAt,
+  :failureCount,
   :id,
   :inbox,
   :url,
@@ -691,27 +935,51 @@ PublicV1WebhookRemoveMatch = Struct.new(
 
 # Usage entity data model.
 #
-# @!attribute [rw] data
+# @!attribute [rw] credits
 #   @return [Hash, nil]
 #
-# @!attribute [rw] success
-#   @return [Boolean, nil]
+# @!attribute [rw] period
+#   @return [Hash, nil]
+#
+# @!attribute [rw] plan
+#   @return [String, nil]
+#
+# @!attribute [rw] rate_limit
+#   @return [Hash, nil]
+#
+# @!attribute [rw] requests
+#   @return [Hash, nil]
 Usage = Struct.new(
-  :data,
-  :success,
+  :credits,
+  :period,
+  :plan,
+  :rate_limit,
+  :requests,
   keyword_init: true
 )
 
 # Request payload for Usage#load.
 #
-# @!attribute [rw] data
+# @!attribute [rw] credits
 #   @return [Hash, nil]
 #
-# @!attribute [rw] success
-#   @return [Boolean, nil]
+# @!attribute [rw] period
+#   @return [Hash, nil]
+#
+# @!attribute [rw] plan
+#   @return [String, nil]
+#
+# @!attribute [rw] rate_limit
+#   @return [Hash, nil]
+#
+# @!attribute [rw] requests
+#   @return [Hash, nil]
 UsageLoadMatch = Struct.new(
-  :data,
-  :success,
+  :credits,
+  :period,
+  :plan,
+  :rate_limit,
+  :requests,
   keyword_init: true
 )
 

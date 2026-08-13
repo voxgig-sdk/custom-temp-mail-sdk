@@ -6,14 +6,34 @@ main: kit: entity: public_v1_dashboard_analytics: {
 
   fields: [
     {
-      name: "data"
+      name: "analyzed_at"
       req: false
-      type: "`$OBJECT`"
+      type: "`$STRING`"
     }
     {
-      name: "success"
+      name: "duration_hours"
       req: false
-      type: "`$BOOLEAN`"
+      type: "`$INTEGER`"
+    }
+    {
+      name: "event_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "events"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "inbox"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "insights"
+      req: false
+      type: "`$ARRAY`"
     }
   ]
 
@@ -65,7 +85,7 @@ main: kit: entity: public_v1_dashboard_analytics: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
         {
@@ -101,7 +121,7 @@ main: kit: entity: public_v1_dashboard_analytics: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

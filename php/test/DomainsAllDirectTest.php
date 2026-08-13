@@ -66,16 +66,16 @@ function domains_all_direct_setup($mockres)
     $calls = new \ArrayObject();
 
     $env = Runner::env_override([
-        "CUSTOMTEMPMAIL_TEST_DOMAINS_ALL_ENTID" => [],
-        "CUSTOMTEMPMAIL_TEST_LIVE" => "FALSE",
-        "CUSTOMTEMPMAIL_APIKEY" => "NONE",
+        "CUSTOM_TEMP_MAIL_TEST_DOMAINS_ALL_ENTID" => [],
+        "CUSTOM_TEMP_MAIL_TEST_LIVE" => "FALSE",
+        "CUSTOM_TEMP_MAIL_APIKEY" => "NONE",
     ]);
 
-    $live = $env["CUSTOMTEMPMAIL_TEST_LIVE"] === "TRUE";
+    $live = $env["CUSTOM_TEMP_MAIL_TEST_LIVE"] === "TRUE";
 
     if ($live) {
         $merged_opts = [
-            "apikey" => $env["CUSTOMTEMPMAIL_APIKEY"],
+            "apikey" => $env["CUSTOM_TEMP_MAIL_APIKEY"],
         ];
         $client = new CustomTempMailSDK($merged_opts);
         return [

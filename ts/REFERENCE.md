@@ -274,11 +274,8 @@ const custom_domain = client.CustomDomain()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `added_at` | `string` | No |  |
-| `data` | `Record<string, any>` | Yes |  |
 | `domain` | `string` | Yes |  |
-| `message` | `string` | No |  |
 | `mx_record` | `string` | Yes |  |
-| `success` | `boolean` | No |  |
 | `txt_record` | `string` | Yes |  |
 | `verified` | `boolean` | Yes |  |
 
@@ -290,7 +287,6 @@ Create a new entity with the given data.
 
 ```ts
 const result = await client.CustomDomain().create({
-  data: {},
   domain: 'example_domain',
   mx_record: 'example_mx_record',
   txt_record: 'example_txt_record',
@@ -352,10 +348,11 @@ const custom_domain_verify = client.CustomDomainVerify()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | Yes |  |
-| `message` | `string` | No |  |
-| `success` | `boolean` | No |  |
-| `verified` | `boolean` | No |  |
+| `added_at` | `string` | No |  |
+| `domain` | `string` | Yes |  |
+| `mx_record` | `string` | Yes |  |
+| `txt_record` | `string` | Yes |  |
+| `verified` | `boolean` | Yes |  |
 
 ### Operations
 
@@ -366,6 +363,9 @@ Create a new entity with the given data.
 ```ts
 const result = await client.CustomDomainVerify().create({
   domain: 'example_domain',
+  mx_record: 'example_mx_record',
+  txt_record: 'example_txt_record',
+  verified: true,
 })
 ```
 
@@ -409,9 +409,9 @@ const domain = client.Domain()
 | --- | --- | --- | --- |
 | `domain` | `string` | Yes |  |
 | `expires_at` | `string` | No |  |
-| `expires_in_day` | `number` | No |  |
+| `expires_in_days` | `number` | No |  |
 | `expiring_soon` | `boolean` | No |  |
-| `tag` | `any[]` | Yes |  |
+| `tags` | `any[]` | Yes |  |
 | `tier` | `string` | Yes |  |
 
 ### Operations
@@ -465,9 +465,9 @@ const domains_all = client.DomainsAll()
 | `domain` | `string` | Yes |  |
 | `expired` | `boolean` | Yes |  |
 | `expires_at` | `string` | No |  |
-| `expires_in_day` | `number` | No |  |
+| `expires_in_days` | `number` | No |  |
 | `expiring_soon` | `boolean` | No |  |
-| `tag` | `any[]` | Yes |  |
+| `tags` | `any[]` | Yes |  |
 | `tier` | `string` | Yes |  |
 
 ### Field Usage by Operation
@@ -477,9 +477,9 @@ const domains_all = client.DomainsAll()
 | `domain` | - |
 | `expired` | - |
 | `expires_at` | Yes |
-| `expires_in_day` | Yes |
+| `expires_in_days` | Yes |
 | `expiring_soon` | Yes |
-| `tag` | - |
+| `tags` | - |
 | `tier` | - |
 
 ### Operations
@@ -530,9 +530,10 @@ const inbox = client.Inbox()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | No |  |
+| `count` | `number` | No |  |
 | `inbox` | `string` | No |  |
-| `is_testing` | `boolean` | No |  |
+| `inboxes` | `any[]` | No |  |
+| `isTesting` | `boolean` | No |  |
 | `message` | `string` | No |  |
 | `success` | `boolean` | No |  |
 
@@ -540,9 +541,10 @@ const inbox = client.Inbox()
 
 | Field | load | create |
 | --- | --- | --- |
-| `data` | - | - |
+| `count` | - | - |
 | `inbox` | - | Yes |
-| `is_testing` | - | - |
+| `inboxes` | - | - |
+| `isTesting` | - | - |
 | `message` | - | - |
 | `success` | - | - |
 
@@ -603,8 +605,16 @@ const men = client.Men()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | No |  |
-| `success` | `boolean` | No |  |
+| `api_inbox_count` | `number` | No |  |
+| `api_inboxes` | `any[]` | No |  |
+| `app_inbox_count` | `number` | No |  |
+| `app_inboxes` | `any[]` | No |  |
+| `credits` | `number` | No |  |
+| `custom_domain_count` | `number` | No |  |
+| `custom_domains` | `any[]` | No |  |
+| `features` | `Record<string, any>` | No |  |
+| `plan` | `string` | No |  |
+| `rate_limits` | `Record<string, any>` | No |  |
 
 ### Operations
 
@@ -654,8 +664,21 @@ const message = client.Message()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | No |  |
-| `success` | `boolean` | No |  |
+| `attachments` | `any[]` | No |  |
+| `count` | `number` | No |  |
+| `date` | `string` | No |  |
+| `from` | `string` | No |  |
+| `has_attachment` | `boolean` | No |  |
+| `has_more` | `boolean` | No |  |
+| `html` | `string` | No |  |
+| `id` | `string` | No |  |
+| `inbox` | `string` | No |  |
+| `messages` | `any[]` | No |  |
+| `otp` | `string` | No |  |
+| `subject` | `string` | No |  |
+| `text` | `string` | No |  |
+| `to` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -705,8 +728,35 @@ const otp = client.Otp()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | No |  |
-| `success` | `boolean` | No |  |
+| `from` | `string` | No |  |
+| `inbox` | `string` | No |  |
+| `message` | `string` | No |  |
+| `message_id` | `string` | No |  |
+| `otp` | `string` | No |  |
+| `received_at` | `string` | No |  |
+| `score` | `number` | No |  |
+| `subject` | `string` | No |  |
+| `verification_link` | `string` | No |  |
+
+### Actions
+
+This entity exposes custom API actions in addition to the standard
+operations. Select one with `$action` in the call's argument; the
+remaining keys are sent as that action's payload.
+
+| Action | Route | Call |
+| --- | --- | --- |
+| `public` | `/v1/otp/public` | `client.Otp().load({ $action: 'public', ... })` |
+
+An action returns that action's OWN response, which is not necessarily a
+Otp record — check the API definition for its shape.
+
+```ts
+const result = await client.Otp().load({
+  $action: 'public',
+  /* ...the action's own arguments */
+})
+```
 
 ### Operations
 
@@ -756,8 +806,8 @@ const plan = client.Plan()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | No |  |
-| `success` | `boolean` | No |  |
+| `credit_packages` | `any[]` | No |  |
+| `plans` | `any[]` | No |  |
 
 ### Operations
 
@@ -807,8 +857,12 @@ const public_v1_dashboard_analytics = client.PublicV1DashboardAnalytics()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | No |  |
-| `success` | `boolean` | No |  |
+| `analyzed_at` | `string` | No |  |
+| `duration_hours` | `number` | No |  |
+| `event_count` | `number` | No |  |
+| `events` | `any[]` | No |  |
+| `inbox` | `string` | No |  |
+| `insights` | `any[]` | No |  |
 
 ### Operations
 
@@ -859,18 +913,19 @@ const public_v1_inbox = client.PublicV1Inbox()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `count` | `number` | No |  |
-| `custom_firstname` | `any[]` | No |  |
-| `custom_surname` | `any[]` | No |  |
+| `custom_firstnames` | `any[]` | No |  |
+| `custom_surnames` | `any[]` | No |  |
 | `daily_limit` | `number` | No |  |
 | `daily_remaining` | `number` | No |  |
 | `daily_used` | `number` | No |  |
-| `data` | `Record<string, any>` | No |  |
-| `domain` | `any[]` | No |  |
 | `domain_mode` | `string` | No |  |
-| `inbox` | `any[]` | No |  |
+| `domains` | `any[]` | No |  |
+| `inbox` | `string` | No |  |
+| `inboxes` | `any[]` | No |  |
 | `output_format` | `string` | No |  |
-| `parse_code` | `boolean` | No |  |
+| `parseCode` | `boolean` | No |  |
 | `since` | `number` | No |  |
+| `started_at` | `string` | No |  |
 | `success` | `boolean` | No |  |
 | `test_id` | `string` | No |  |
 | `username_style` | `string` | No |  |
@@ -932,9 +987,13 @@ const public_v1_message = client.PublicV1Message()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | No |  |
-| `message` | `string` | No |  |
-| `success` | `boolean` | No |  |
+| `date` | `string` | No |  |
+| `from` | `string` | No |  |
+| `has_attachment` | `boolean` | No |  |
+| `id` | `string` | No |  |
+| `otp` | `string` | No |  |
+| `subject` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -992,8 +1051,8 @@ const public_v1_webhook = client.PublicV1Webhook()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `string` | No |  |
-| `failure_count` | `number` | No |  |
+| `createdAt` | `string` | No |  |
+| `failureCount` | `number` | No |  |
 | `id` | `string` | No |  |
 | `inbox` | `string` | Yes |  |
 | `url` | `string` | Yes |  |
@@ -1002,8 +1061,8 @@ const public_v1_webhook = client.PublicV1Webhook()
 
 | Field | list | create | remove |
 | --- | --- | --- | --- |
-| `created_at` | - | - | - |
-| `failure_count` | - | - | - |
+| `createdAt` | - | - | - |
+| `failureCount` | - | - | - |
 | `id` | - | - | - |
 | `inbox` | Yes | - | - |
 | `url` | Yes | - | - |
@@ -1075,8 +1134,11 @@ const usage = client.Usage()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | No |  |
-| `success` | `boolean` | No |  |
+| `credits` | `Record<string, any>` | No |  |
+| `period` | `Record<string, any>` | No |  |
+| `plan` | `string` | No |  |
+| `rate_limit` | `Record<string, any>` | No |  |
+| `requests` | `Record<string, any>` | No |  |
 
 ### Operations
 

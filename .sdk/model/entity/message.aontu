@@ -6,16 +6,86 @@ main: kit: entity: message: {
 
   fields: [
     {
-      name: "data"
+      name: "attachments"
       req: false
-      type: "`$OBJECT`"
+      type: "`$ARRAY`"
     }
     {
-      name: "success"
+      name: "count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "date"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "from"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "has_attachment"
       req: false
       type: "`$BOOLEAN`"
     }
+    {
+      name: "has_more"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "html"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "inbox"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "messages"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "otp"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "subject"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "text"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "to"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "verification_link"
+      req: false
+      type: "`$STRING`"
+    }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "message"
   op: {
@@ -73,7 +143,7 @@ main: kit: entity: message: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
         {
@@ -117,7 +187,7 @@ main: kit: entity: message: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

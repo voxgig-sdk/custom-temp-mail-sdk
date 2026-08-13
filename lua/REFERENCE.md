@@ -144,11 +144,8 @@ local custom_domain = client:CustomDomain(nil)
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `added_at` | `string` | No |  |
-| `data` | `table` | Yes |  |
 | `domain` | `string` | Yes |  |
-| `message` | `string` | No |  |
 | `mx_record` | `string` | Yes |  |
-| `success` | `boolean` | No |  |
 | `txt_record` | `string` | Yes |  |
 | `verified` | `boolean` | Yes |  |
 
@@ -160,7 +157,6 @@ Create a new entity with the given data.
 
 ```lua
 local result, err = client:CustomDomain():create({
-  data = --[[ table ]],
   domain = --[[ string ]],
   mx_record = --[[ string ]],
   txt_record = --[[ string ]],
@@ -224,10 +220,11 @@ local custom_domain_verify = client:CustomDomainVerify(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `table` | Yes |  |
-| `message` | `string` | No |  |
-| `success` | `boolean` | No |  |
-| `verified` | `boolean` | No |  |
+| `added_at` | `string` | No |  |
+| `domain` | `string` | Yes |  |
+| `mx_record` | `string` | Yes |  |
+| `txt_record` | `string` | Yes |  |
+| `verified` | `boolean` | Yes |  |
 
 ### Operations
 
@@ -238,6 +235,9 @@ Create a new entity with the given data.
 ```lua
 local result, err = client:CustomDomainVerify():create({
   domain = --[[ string ]],
+  mx_record = --[[ string ]],
+  txt_record = --[[ string ]],
+  verified = --[[ boolean ]],
 })
 ```
 
@@ -283,9 +283,9 @@ local domain = client:Domain(nil)
 | --- | --- | --- | --- |
 | `domain` | `string` | Yes |  |
 | `expires_at` | `string` | No |  |
-| `expires_in_day` | `number` | No |  |
+| `expires_in_days` | `number` | No |  |
 | `expiring_soon` | `boolean` | No |  |
-| `tag` | `table` | Yes |  |
+| `tags` | `table` | Yes |  |
 | `tier` | `string` | Yes |  |
 
 ### Operations
@@ -341,9 +341,9 @@ local domains_all = client:DomainsAll(nil)
 | `domain` | `string` | Yes |  |
 | `expired` | `boolean` | Yes |  |
 | `expires_at` | `string` | No |  |
-| `expires_in_day` | `number` | No |  |
+| `expires_in_days` | `number` | No |  |
 | `expiring_soon` | `boolean` | No |  |
-| `tag` | `table` | Yes |  |
+| `tags` | `table` | Yes |  |
 | `tier` | `string` | Yes |  |
 
 ### Field Usage by Operation
@@ -353,9 +353,9 @@ local domains_all = client:DomainsAll(nil)
 | `domain` | - |
 | `expired` | - |
 | `expires_at` | Yes |
-| `expires_in_day` | Yes |
+| `expires_in_days` | Yes |
 | `expiring_soon` | Yes |
-| `tag` | - |
+| `tags` | - |
 | `tier` | - |
 
 ### Operations
@@ -408,9 +408,10 @@ local inbox = client:Inbox(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `table` | No |  |
+| `count` | `number` | No |  |
 | `inbox` | `string` | No |  |
-| `is_testing` | `boolean` | No |  |
+| `inboxes` | `table` | No |  |
+| `isTesting` | `boolean` | No |  |
 | `message` | `string` | No |  |
 | `success` | `boolean` | No |  |
 
@@ -418,9 +419,10 @@ local inbox = client:Inbox(nil)
 
 | Field | load | create |
 | --- | --- | --- |
-| `data` | - | - |
+| `count` | - | - |
 | `inbox` | - | Yes |
-| `is_testing` | - | - |
+| `inboxes` | - | - |
+| `isTesting` | - | - |
 | `message` | - | - |
 | `success` | - | - |
 
@@ -483,8 +485,16 @@ local men = client:Men(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `table` | No |  |
-| `success` | `boolean` | No |  |
+| `api_inbox_count` | `number` | No |  |
+| `api_inboxes` | `table` | No |  |
+| `app_inbox_count` | `number` | No |  |
+| `app_inboxes` | `table` | No |  |
+| `credits` | `number` | No |  |
+| `custom_domain_count` | `number` | No |  |
+| `custom_domains` | `table` | No |  |
+| `features` | `table` | No |  |
+| `plan` | `string` | No |  |
+| `rate_limits` | `table` | No |  |
 
 ### Operations
 
@@ -536,8 +546,21 @@ local message = client:Message(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `table` | No |  |
-| `success` | `boolean` | No |  |
+| `attachments` | `table` | No |  |
+| `count` | `number` | No |  |
+| `date` | `string` | No |  |
+| `from` | `string` | No |  |
+| `has_attachment` | `boolean` | No |  |
+| `has_more` | `boolean` | No |  |
+| `html` | `string` | No |  |
+| `id` | `string` | No |  |
+| `inbox` | `string` | No |  |
+| `messages` | `table` | No |  |
+| `otp` | `string` | No |  |
+| `subject` | `string` | No |  |
+| `text` | `string` | No |  |
+| `to` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -589,8 +612,15 @@ local otp = client:Otp(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `table` | No |  |
-| `success` | `boolean` | No |  |
+| `from` | `string` | No |  |
+| `inbox` | `string` | No |  |
+| `message` | `string` | No |  |
+| `message_id` | `string` | No |  |
+| `otp` | `string` | No |  |
+| `received_at` | `string` | No |  |
+| `score` | `number` | No |  |
+| `subject` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -642,8 +672,8 @@ local plan = client:Plan(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `table` | No |  |
-| `success` | `boolean` | No |  |
+| `credit_packages` | `table` | No |  |
+| `plans` | `table` | No |  |
 
 ### Operations
 
@@ -695,8 +725,12 @@ local public_v1_dashboard_analytics = client:PublicV1DashboardAnalytics(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `table` | No |  |
-| `success` | `boolean` | No |  |
+| `analyzed_at` | `string` | No |  |
+| `duration_hours` | `number` | No |  |
+| `event_count` | `number` | No |  |
+| `events` | `table` | No |  |
+| `inbox` | `string` | No |  |
+| `insights` | `table` | No |  |
 
 ### Operations
 
@@ -749,18 +783,19 @@ local public_v1_inbox = client:PublicV1Inbox(nil)
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `count` | `number` | No |  |
-| `custom_firstname` | `table` | No |  |
-| `custom_surname` | `table` | No |  |
+| `custom_firstnames` | `table` | No |  |
+| `custom_surnames` | `table` | No |  |
 | `daily_limit` | `number` | No |  |
 | `daily_remaining` | `number` | No |  |
 | `daily_used` | `number` | No |  |
-| `data` | `table` | No |  |
-| `domain` | `table` | No |  |
 | `domain_mode` | `string` | No |  |
-| `inbox` | `table` | No |  |
+| `domains` | `table` | No |  |
+| `inbox` | `string` | No |  |
+| `inboxes` | `table` | No |  |
 | `output_format` | `string` | No |  |
-| `parse_code` | `boolean` | No |  |
+| `parseCode` | `boolean` | No |  |
 | `since` | `number` | No |  |
+| `started_at` | `string` | No |  |
 | `success` | `boolean` | No |  |
 | `test_id` | `string` | No |  |
 | `username_style` | `string` | No |  |
@@ -824,9 +859,13 @@ local public_v1_message = client:PublicV1Message(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `table` | No |  |
-| `message` | `string` | No |  |
-| `success` | `boolean` | No |  |
+| `date` | `string` | No |  |
+| `from` | `string` | No |  |
+| `has_attachment` | `boolean` | No |  |
+| `id` | `string` | No |  |
+| `otp` | `string` | No |  |
+| `subject` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -886,8 +925,8 @@ local public_v1_webhook = client:PublicV1Webhook(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `string` | No |  |
-| `failure_count` | `number` | No |  |
+| `createdAt` | `string` | No |  |
+| `failureCount` | `number` | No |  |
 | `id` | `string` | No |  |
 | `inbox` | `string` | Yes |  |
 | `url` | `string` | Yes |  |
@@ -896,8 +935,8 @@ local public_v1_webhook = client:PublicV1Webhook(nil)
 
 | Field | list | create | remove |
 | --- | --- | --- | --- |
-| `created_at` | - | - | - |
-| `failure_count` | - | - | - |
+| `createdAt` | - | - | - |
+| `failureCount` | - | - | - |
 | `id` | - | - | - |
 | `inbox` | Yes | - | - |
 | `url` | Yes | - | - |
@@ -971,8 +1010,11 @@ local usage = client:Usage(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `table` | No |  |
-| `success` | `boolean` | No |  |
+| `credits` | `table` | No |  |
+| `period` | `table` | No |  |
+| `plan` | `string` | No |  |
+| `rate_limit` | `table` | No |  |
+| `requests` | `table` | No |  |
 
 ### Operations
 

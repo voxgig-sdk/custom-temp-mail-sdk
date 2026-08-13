@@ -16,7 +16,7 @@ main: kit: entity: domain: {
       type: "`$STRING`"
     }
     {
-      name: "expires_in_day"
+      name: "expires_in_days"
       req: false
       type: "`$INTEGER`"
     }
@@ -26,7 +26,7 @@ main: kit: entity: domain: {
       type: "`$BOOLEAN`"
     }
     {
-      name: "tag"
+      name: "tags"
       req: true
       type: "`$ARRAY`"
     }
@@ -51,7 +51,7 @@ main: kit: entity: domain: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

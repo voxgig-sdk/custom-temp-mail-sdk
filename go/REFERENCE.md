@@ -152,11 +152,8 @@ fmt.Println(customDomain.GetName()) // "custom_domain"
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `added_at` | `string` | No |  |
-| `data` | `map[string]any` | Yes |  |
 | `domain` | `string` | Yes |  |
-| `message` | `string` | No |  |
 | `mx_record` | `string` | Yes |  |
-| `success` | `bool` | No |  |
 | `txt_record` | `string` | Yes |  |
 | `verified` | `bool` | Yes |  |
 
@@ -180,7 +177,6 @@ Create a new entity with the given data.
 
 ```go
 result, err := client.CustomDomain(nil).Create(map[string]any{
-    "data": map[string]any{},
     "domain": "example_domain",
     "mx_record": "example_mx_record",
     "txt_record": "example_txt_record",
@@ -239,10 +235,11 @@ fmt.Println(customDomainVerify.GetName()) // "custom_domain_verify"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `map[string]any` | Yes |  |
-| `message` | `string` | No |  |
-| `success` | `bool` | No |  |
-| `verified` | `bool` | No |  |
+| `added_at` | `string` | No |  |
+| `domain` | `string` | Yes |  |
+| `mx_record` | `string` | Yes |  |
+| `txt_record` | `string` | Yes |  |
+| `verified` | `bool` | Yes |  |
 
 ### Operations
 
@@ -253,6 +250,9 @@ Create a new entity with the given data.
 ```go
 result, err := client.CustomDomainVerify(nil).Create(map[string]any{
     "domain": "example_domain",
+    "mx_record": "example_mx_record",
+    "txt_record": "example_txt_record",
+    "verified": true,
 }, nil)
 if err != nil {
     panic(err)
@@ -297,9 +297,9 @@ fmt.Println(domain.GetName()) // "domain"
 | --- | --- | --- | --- |
 | `domain` | `string` | Yes |  |
 | `expires_at` | `string` | No |  |
-| `expires_in_day` | `int` | No |  |
+| `expires_in_days` | `int` | No |  |
 | `expiring_soon` | `bool` | No |  |
-| `tag` | `[]any` | Yes |  |
+| `tags` | `[]any` | Yes |  |
 | `tier` | `string` | Yes |  |
 
 ### Operations
@@ -354,9 +354,9 @@ fmt.Println(domainsAll.GetName()) // "domains_all"
 | `domain` | `string` | Yes |  |
 | `expired` | `bool` | Yes |  |
 | `expires_at` | `string` | No |  |
-| `expires_in_day` | `int` | No |  |
+| `expires_in_days` | `int` | No |  |
 | `expiring_soon` | `bool` | No |  |
-| `tag` | `[]any` | Yes |  |
+| `tags` | `[]any` | Yes |  |
 | `tier` | `string` | Yes |  |
 
 ### Field Usage by Operation
@@ -366,9 +366,9 @@ fmt.Println(domainsAll.GetName()) // "domains_all"
 | `domain` | - |
 | `expired` | - |
 | `expires_at` | Yes |
-| `expires_in_day` | Yes |
+| `expires_in_days` | Yes |
 | `expiring_soon` | Yes |
-| `tag` | - |
+| `tags` | - |
 | `tier` | - |
 
 ### Operations
@@ -420,9 +420,10 @@ fmt.Println(inbox.GetName()) // "inbox"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `map[string]any` | No |  |
+| `count` | `int` | No |  |
 | `inbox` | `string` | No |  |
-| `is_testing` | `bool` | No |  |
+| `inboxes` | `[]any` | No |  |
+| `isTesting` | `bool` | No |  |
 | `message` | `string` | No |  |
 | `success` | `bool` | No |  |
 
@@ -430,9 +431,10 @@ fmt.Println(inbox.GetName()) // "inbox"
 
 | Field | load | create |
 | --- | --- | --- |
-| `data` | - | - |
+| `count` | - | - |
 | `inbox` | - | Yes |
-| `is_testing` | - | - |
+| `inboxes` | - | - |
+| `isTesting` | - | - |
 | `message` | - | - |
 | `success` | - | - |
 
@@ -498,8 +500,16 @@ fmt.Println(men.GetName()) // "men"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `map[string]any` | No |  |
-| `success` | `bool` | No |  |
+| `api_inbox_count` | `int` | No |  |
+| `api_inboxes` | `[]any` | No |  |
+| `app_inbox_count` | `int` | No |  |
+| `app_inboxes` | `[]any` | No |  |
+| `credits` | `int` | No |  |
+| `custom_domain_count` | `int` | No |  |
+| `custom_domains` | `[]any` | No |  |
+| `features` | `map[string]any` | No |  |
+| `plan` | `string` | No |  |
+| `rate_limits` | `map[string]any` | No |  |
 
 ### Operations
 
@@ -550,8 +560,21 @@ fmt.Println(message.GetName()) // "message"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `map[string]any` | No |  |
-| `success` | `bool` | No |  |
+| `attachments` | `[]any` | No |  |
+| `count` | `int` | No |  |
+| `date` | `string` | No |  |
+| `from` | `string` | No |  |
+| `has_attachment` | `bool` | No |  |
+| `has_more` | `bool` | No |  |
+| `html` | `string` | No |  |
+| `id` | `string` | No |  |
+| `inbox` | `string` | No |  |
+| `messages` | `[]any` | No |  |
+| `otp` | `string` | No |  |
+| `subject` | `string` | No |  |
+| `text` | `string` | No |  |
+| `to` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -602,8 +625,15 @@ fmt.Println(otp.GetName()) // "otp"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `map[string]any` | No |  |
-| `success` | `bool` | No |  |
+| `from` | `string` | No |  |
+| `inbox` | `string` | No |  |
+| `message` | `string` | No |  |
+| `message_id` | `string` | No |  |
+| `otp` | `string` | No |  |
+| `received_at` | `string` | No |  |
+| `score` | `float64` | No |  |
+| `subject` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -654,8 +684,8 @@ fmt.Println(plan.GetName()) // "plan"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `map[string]any` | No |  |
-| `success` | `bool` | No |  |
+| `credit_packages` | `[]any` | No |  |
+| `plans` | `[]any` | No |  |
 
 ### Operations
 
@@ -706,8 +736,12 @@ fmt.Println(publicV1DashboardAnalytics.GetName()) // "public_v1_dashboard_analyt
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `map[string]any` | No |  |
-| `success` | `bool` | No |  |
+| `analyzed_at` | `string` | No |  |
+| `duration_hours` | `int` | No |  |
+| `event_count` | `int` | No |  |
+| `events` | `[]any` | No |  |
+| `inbox` | `string` | No |  |
+| `insights` | `[]any` | No |  |
 
 ### Operations
 
@@ -759,18 +793,19 @@ fmt.Println(publicV1Inbox.GetName()) // "public_v1_inbox"
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `count` | `int` | No |  |
-| `custom_firstname` | `[]any` | No |  |
-| `custom_surname` | `[]any` | No |  |
+| `custom_firstnames` | `[]any` | No |  |
+| `custom_surnames` | `[]any` | No |  |
 | `daily_limit` | `int` | No |  |
 | `daily_remaining` | `int` | No |  |
 | `daily_used` | `int` | No |  |
-| `data` | `map[string]any` | No |  |
-| `domain` | `[]any` | No |  |
 | `domain_mode` | `string` | No |  |
-| `inbox` | `[]any` | No |  |
+| `domains` | `[]any` | No |  |
+| `inbox` | `string` | No |  |
+| `inboxes` | `[]any` | No |  |
 | `output_format` | `string` | No |  |
-| `parse_code` | `bool` | No |  |
+| `parseCode` | `bool` | No |  |
 | `since` | `int` | No |  |
+| `started_at` | `string` | No |  |
 | `success` | `bool` | No |  |
 | `test_id` | `string` | No |  |
 | `username_style` | `string` | No |  |
@@ -837,9 +872,13 @@ fmt.Println(publicV1Message.GetName()) // "public_v1_message"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `map[string]any` | No |  |
-| `message` | `string` | No |  |
-| `success` | `bool` | No |  |
+| `date` | `string` | No |  |
+| `from` | `string` | No |  |
+| `has_attachment` | `bool` | No |  |
+| `id` | `string` | No |  |
+| `otp` | `string` | No |  |
+| `subject` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -902,8 +941,8 @@ fmt.Println(publicV1Webhook.GetName()) // "public_v1_webhook"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `string` | No |  |
-| `failure_count` | `int` | No |  |
+| `createdAt` | `string` | No |  |
+| `failureCount` | `int` | No |  |
 | `id` | `string` | No |  |
 | `inbox` | `string` | Yes |  |
 | `url` | `string` | Yes |  |
@@ -912,8 +951,8 @@ fmt.Println(publicV1Webhook.GetName()) // "public_v1_webhook"
 
 | Field | list | create | remove |
 | --- | --- | --- | --- |
-| `created_at` | - | - | - |
-| `failure_count` | - | - | - |
+| `createdAt` | - | - | - |
+| `failureCount` | - | - | - |
 | `id` | - | - | - |
 | `inbox` | Yes | - | - |
 | `url` | Yes | - | - |
@@ -994,8 +1033,11 @@ fmt.Println(usage.GetName()) // "usage"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `map[string]any` | No |  |
-| `success` | `bool` | No |  |
+| `credits` | `map[string]any` | No |  |
+| `period` | `map[string]any` | No |  |
+| `plan` | `string` | No |  |
+| `rate_limit` | `map[string]any` | No |  |
+| `requests` | `map[string]any` | No |  |
 
 ### Operations
 

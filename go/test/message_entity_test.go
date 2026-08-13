@@ -44,7 +44,7 @@ func TestMessageEntity(t *testing.T) {
 		// The basic flow consumes synthetic IDs from the fixture. In live mode
 		// without an *_ENTID env override, those IDs hit the live API and 4xx.
 		if setup.syntheticOnly {
-			t.Skip("live entity test uses synthetic IDs from fixture — set CUSTOMTEMPMAIL_TEST_MESSAGE_ENTID JSON to run live")
+			t.Skip("live entity test uses synthetic IDs from fixture — set CUSTOM_TEMP_MAIL_TEST_MESSAGE_ENTID JSON to run live")
 			return
 		}
 		client := setup.client
@@ -61,13 +61,19 @@ func TestMessageEntity(t *testing.T) {
 
 		// LOAD
 		messageRef01Ent := client.Message(nil)
-		messageRef01MatchDt0 := map[string]any{}
+		messageRef01MatchDt0 := map[string]any{
+			"id": messageRef01Data["id"],
+		}
 		messageRef01DataDt0Loaded, err := messageRef01Ent.Load(messageRef01MatchDt0, nil)
 		if err != nil {
 			t.Fatalf("load failed: %v", err)
 		}
-		if messageRef01DataDt0Loaded == nil {
-			t.Fatal("expected load result to be non-nil")
+		messageRef01DataDt0LoadResult := core.ToMapAny(entityData(messageRef01DataDt0Loaded))
+		if messageRef01DataDt0LoadResult == nil {
+			t.Fatal("expected load result to be a map")
+		}
+		if messageRef01DataDt0LoadResult["id"] != messageRef01Data["id"] {
+			t.Fatal("expected load result id to match")
 		}
 
 	})
@@ -110,38 +116,38 @@ func messageBasicSetup(extra map[string]any) *entityTestSetup {
 	// Detect ENTID env override before envOverride consumes it. When live
 	// mode is on without a real override, the basic test runs against synthetic
 	// IDs from the fixture and 4xx's. Surface this so the test can skip.
-	entidEnvRaw := os.Getenv("CUSTOMTEMPMAIL_TEST_MESSAGE_ENTID")
+	entidEnvRaw := os.Getenv("CUSTOM_TEMP_MAIL_TEST_MESSAGE_ENTID")
 	idmapOverridden := entidEnvRaw != "" && strings.HasPrefix(strings.TrimSpace(entidEnvRaw), "{")
 
 	env := envOverride(map[string]any{
-		"CUSTOMTEMPMAIL_TEST_MESSAGE_ENTID": idmap,
-		"CUSTOMTEMPMAIL_TEST_LIVE":      "FALSE",
-		"CUSTOMTEMPMAIL_TEST_EXPLAIN":   "FALSE",
-		"CUSTOMTEMPMAIL_APIKEY":         "NONE",
+		"CUSTOM_TEMP_MAIL_TEST_MESSAGE_ENTID": idmap,
+		"CUSTOM_TEMP_MAIL_TEST_LIVE":      "FALSE",
+		"CUSTOM_TEMP_MAIL_TEST_EXPLAIN":   "FALSE",
+		"CUSTOM_TEMP_MAIL_APIKEY":         "NONE",
 	})
 
-	idmapResolved := core.ToMapAny(env["CUSTOMTEMPMAIL_TEST_MESSAGE_ENTID"])
+	idmapResolved := core.ToMapAny(env["CUSTOM_TEMP_MAIL_TEST_MESSAGE_ENTID"])
 	if idmapResolved == nil {
 		idmapResolved = core.ToMapAny(idmap)
 	}
 
-	if env["CUSTOMTEMPMAIL_TEST_LIVE"] == "TRUE" {
+	if env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE" {
 		mergedOpts := vs.Merge([]any{
 			map[string]any{
-				"apikey": env["CUSTOMTEMPMAIL_APIKEY"],
+				"apikey": env["CUSTOM_TEMP_MAIL_APIKEY"],
 			},
 			extra,
 		})
 		client = sdk.NewCustomTempMailSDK(core.ToMapAny(mergedOpts))
 	}
 
-	live := env["CUSTOMTEMPMAIL_TEST_LIVE"] == "TRUE"
+	live := env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE"
 	return &entityTestSetup{
 		client:        client,
 		data:          entityData,
 		idmap:         idmapResolved,
 		env:           env,
-		explain:       env["CUSTOMTEMPMAIL_TEST_EXPLAIN"] == "TRUE",
+		explain:       env["CUSTOM_TEMP_MAIL_TEST_EXPLAIN"] == "TRUE",
 		live:          live,
 		syntheticOnly: live && !idmapOverridden,
 		now:           time.Now().UnixMilli(),

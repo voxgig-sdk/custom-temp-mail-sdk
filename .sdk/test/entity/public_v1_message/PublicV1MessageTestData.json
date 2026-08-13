@@ -2,34 +2,46 @@
   "existing": {
     "public_v1_message": {
       "PUBLIC_V1_MESSAGE00": {
-        "data": {},
-        "message": "s1f",
-        "success": true,
-        "inbox_id": "INBOX01",
-        "id": "PUBLIC_V1_MESSAGE00"
+        "date": "s46",
+        "from": "s47",
+        "has_attachment": true,
+        "id": "PUBLIC_V1_MESSAGE00",
+        "otp": "s4a",
+        "subject": "s4b",
+        "verification_link": "s4c",
+        "inbox_id": "INBOX01"
       },
       "PUBLIC_V1_MESSAGE01": {
-        "data": {},
-        "message": "s3d",
-        "success": true,
-        "inbox_id": "INBOX01",
-        "id": "PUBLIC_V1_MESSAGE01"
+        "date": "s8c",
+        "from": "s8d",
+        "has_attachment": true,
+        "id": "PUBLIC_V1_MESSAGE01",
+        "otp": "s90",
+        "subject": "s91",
+        "verification_link": "s92",
+        "inbox_id": "INBOX01"
       },
       "PUBLIC_V1_MESSAGE02": {
-        "data": {},
-        "message": "s5b",
-        "success": true,
-        "inbox_id": "INBOX01",
-        "id": "PUBLIC_V1_MESSAGE02"
+        "date": "sd2",
+        "from": "sd3",
+        "has_attachment": true,
+        "id": "PUBLIC_V1_MESSAGE02",
+        "otp": "sd6",
+        "subject": "sd7",
+        "verification_link": "sd8",
+        "inbox_id": "INBOX01"
       }
     }
   },
   "new": {
     "public_v1_message": {
       "public_v1_message_ref01": {
-        "data": {},
-        "message": "s79",
-        "success": true
+        "date": "s118",
+        "from": "s119",
+        "has_attachment": true,
+        "otp": "s11c",
+        "subject": "s11d",
+        "verification_link": "s11e"
       }
     }
   }

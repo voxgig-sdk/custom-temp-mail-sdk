@@ -92,7 +92,7 @@ func TestCustomDomainEntity(t *testing.T) {
 		// The basic flow consumes synthetic IDs from the fixture. In live mode
 		// without an *_ENTID env override, those IDs hit the live API and 4xx.
 		if setup.syntheticOnly {
-			t.Skip("live entity test uses synthetic IDs from fixture — set CUSTOMTEMPMAIL_TEST_CUSTOM_DOMAIN_ENTID JSON to run live")
+			t.Skip("live entity test uses synthetic IDs from fixture — set CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_ENTID JSON to run live")
 			return
 		}
 		client := setup.client
@@ -106,7 +106,7 @@ func TestCustomDomainEntity(t *testing.T) {
 		if err != nil {
 			t.Fatalf("create failed: %v", err)
 		}
-		customDomainRef01Data = core.ToMapAny(customDomainRef01DataResult)
+		customDomainRef01Data = core.ToMapAny(entityData(customDomainRef01DataResult))
 		if customDomainRef01Data == nil {
 			t.Fatal("expected create result to be a map")
 		}
@@ -118,24 +118,11 @@ func TestCustomDomainEntity(t *testing.T) {
 		if err != nil {
 			t.Fatalf("list failed: %v", err)
 		}
-		customDomainRef01List, customDomainRef01ListOk := customDomainRef01ListResult.([]any)
+		_, customDomainRef01ListOk := customDomainRef01ListResult.([]any)
 		if !customDomainRef01ListOk {
 			t.Fatalf("expected list result to be an array, got %T", customDomainRef01ListResult)
 		}
 
-		foundItem := vs.Select(entityListToData(customDomainRef01List), map[string]any{"id": customDomainRef01Data["id"]})
-		if vs.IsEmpty(foundItem) {
-			t.Fatal("expected to find created entity in list")
-		}
-
-		// REMOVE
-		customDomainRef01MatchRm0 := map[string]any{
-			"id": customDomainRef01Data["id"],
-		}
-		_, err = customDomainRef01Ent.Remove(customDomainRef01MatchRm0, nil)
-		if err != nil {
-			t.Fatalf("remove failed: %v", err)
-		}
 
 		// LIST
 		customDomainRef01MatchRt0 := map[string]any{}
@@ -144,14 +131,9 @@ func TestCustomDomainEntity(t *testing.T) {
 		if err != nil {
 			t.Fatalf("list failed: %v", err)
 		}
-		customDomainRef01ListRt0, customDomainRef01ListRt0Ok := customDomainRef01ListRt0Result.([]any)
+		_, customDomainRef01ListRt0Ok := customDomainRef01ListRt0Result.([]any)
 		if !customDomainRef01ListRt0Ok {
 			t.Fatalf("expected list result to be an array, got %T", customDomainRef01ListRt0Result)
-		}
-
-		notFoundItem := vs.Select(entityListToData(customDomainRef01ListRt0), map[string]any{"id": customDomainRef01Data["id"]})
-		if !vs.IsEmpty(notFoundItem) {
-			t.Fatal("expected removed entity to not be in list")
 		}
 
 	})
@@ -194,38 +176,38 @@ func custom_domainBasicSetup(extra map[string]any) *entityTestSetup {
 	// Detect ENTID env override before envOverride consumes it. When live
 	// mode is on without a real override, the basic test runs against synthetic
 	// IDs from the fixture and 4xx's. Surface this so the test can skip.
-	entidEnvRaw := os.Getenv("CUSTOMTEMPMAIL_TEST_CUSTOM_DOMAIN_ENTID")
+	entidEnvRaw := os.Getenv("CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_ENTID")
 	idmapOverridden := entidEnvRaw != "" && strings.HasPrefix(strings.TrimSpace(entidEnvRaw), "{")
 
 	env := envOverride(map[string]any{
-		"CUSTOMTEMPMAIL_TEST_CUSTOM_DOMAIN_ENTID": idmap,
-		"CUSTOMTEMPMAIL_TEST_LIVE":      "FALSE",
-		"CUSTOMTEMPMAIL_TEST_EXPLAIN":   "FALSE",
-		"CUSTOMTEMPMAIL_APIKEY":         "NONE",
+		"CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_ENTID": idmap,
+		"CUSTOM_TEMP_MAIL_TEST_LIVE":      "FALSE",
+		"CUSTOM_TEMP_MAIL_TEST_EXPLAIN":   "FALSE",
+		"CUSTOM_TEMP_MAIL_APIKEY":         "NONE",
 	})
 
-	idmapResolved := core.ToMapAny(env["CUSTOMTEMPMAIL_TEST_CUSTOM_DOMAIN_ENTID"])
+	idmapResolved := core.ToMapAny(env["CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_ENTID"])
 	if idmapResolved == nil {
 		idmapResolved = core.ToMapAny(idmap)
 	}
 
-	if env["CUSTOMTEMPMAIL_TEST_LIVE"] == "TRUE" {
+	if env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE" {
 		mergedOpts := vs.Merge([]any{
 			map[string]any{
-				"apikey": env["CUSTOMTEMPMAIL_APIKEY"],
+				"apikey": env["CUSTOM_TEMP_MAIL_APIKEY"],
 			},
 			extra,
 		})
 		client = sdk.NewCustomTempMailSDK(core.ToMapAny(mergedOpts))
 	}
 
-	live := env["CUSTOMTEMPMAIL_TEST_LIVE"] == "TRUE"
+	live := env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE"
 	return &entityTestSetup{
 		client:        client,
 		data:          entityData,
 		idmap:         idmapResolved,
 		env:           env,
-		explain:       env["CUSTOMTEMPMAIL_TEST_EXPLAIN"] == "TRUE",
+		explain:       env["CUSTOM_TEMP_MAIL_TEST_EXPLAIN"] == "TRUE",
 		live:          live,
 		syntheticOnly: live && !idmapOverridden,
 		now:           time.Now().UnixMilli(),

@@ -19,7 +19,7 @@ describe("PublicV1MessageEntity", function()
     local setup = public_v1_message_basic_setup(nil)
     -- Per-op sdk-test-control.json skip.
     local _live = setup.live or false
-    for _, _op in ipairs({"load", "remove"}) do
+    for _, _op in ipairs({"load"}) do
       local _should_skip, _reason = runner.is_control_skipped("entityOp", "public_v1_message." .. _op, _live and "live" or "unit")
       if _should_skip then
         pending(_reason or "skipped via sdk-test-control.json")
@@ -29,7 +29,7 @@ describe("PublicV1MessageEntity", function()
     -- The basic flow consumes synthetic IDs from the fixture. In live mode
     -- without an *_ENTID env override, those IDs hit the live API and 4xx.
     if setup.synthetic_only then
-      pending("live entity test uses synthetic IDs from fixture — set CUSTOMTEMPMAIL_TEST_PUBLIC_V__MESSAGE_ENTID JSON to run live")
+      pending("live entity test uses synthetic IDs from fixture — set CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID JSON to run live")
       return
     end
     local client = setup.client
@@ -44,10 +44,14 @@ describe("PublicV1MessageEntity", function()
 
     -- LOAD
     local public_v1_message_ref01_ent = client:PublicV1Message(nil)
-    local public_v1_message_ref01_match_dt0 = {}
+    local public_v1_message_ref01_match_dt0 = {
+      id = public_v1_message_ref01_data["id"],
+    }
     local public_v1_message_ref01_data_dt0_loaded, err = public_v1_message_ref01_ent:load(public_v1_message_ref01_match_dt0, nil)
     assert.is_nil(err)
-    assert.is_not_nil(public_v1_message_ref01_data_dt0_loaded)
+    local public_v1_message_ref01_data_dt0_load_result = helpers.to_map(type(public_v1_message_ref01_data_dt0_loaded) == 'table' and public_v1_message_ref01_data_dt0_loaded.data_get and public_v1_message_ref01_data_dt0_loaded:data_get() or public_v1_message_ref01_data_dt0_loaded)
+    assert.is_not_nil(public_v1_message_ref01_data_dt0_load_result)
+    assert.are.equal(public_v1_message_ref01_data_dt0_load_result["id"], public_v1_message_ref01_data["id"])
 
   end)
 end)
@@ -84,39 +88,39 @@ function public_v1_message_basic_setup(extra)
   -- Detect ENTID env override before envOverride consumes it. When live
   -- mode is on without a real override, the basic test runs against synthetic
   -- IDs from the fixture and 4xx's. Surface this so the test can skip.
-  local entid_env_raw = os.getenv("CUSTOMTEMPMAIL_TEST_PUBLIC_V__MESSAGE_ENTID")
+  local entid_env_raw = os.getenv("CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID")
   local idmap_overridden = entid_env_raw ~= nil and entid_env_raw:match("^%s*{") ~= nil
 
   local env = runner.env_override({
-    ["CUSTOMTEMPMAIL_TEST_PUBLIC_V__MESSAGE_ENTID"] = idmap,
-    ["CUSTOMTEMPMAIL_TEST_LIVE"] = "FALSE",
-    ["CUSTOMTEMPMAIL_TEST_EXPLAIN"] = "FALSE",
-    ["CUSTOMTEMPMAIL_APIKEY"] = "NONE",
+    ["CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID"] = idmap,
+    ["CUSTOM_TEMP_MAIL_TEST_LIVE"] = "FALSE",
+    ["CUSTOM_TEMP_MAIL_TEST_EXPLAIN"] = "FALSE",
+    ["CUSTOM_TEMP_MAIL_APIKEY"] = "NONE",
   })
 
   local idmap_resolved = helpers.to_map(
-    env["CUSTOMTEMPMAIL_TEST_PUBLIC_V__MESSAGE_ENTID"])
+    env["CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID"])
   if idmap_resolved == nil then
     idmap_resolved = helpers.to_map(idmap)
   end
 
-  if env["CUSTOMTEMPMAIL_TEST_LIVE"] == "TRUE" then
+  if env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE" then
     local merged_opts = vs.merge({
       {
-        apikey = env["CUSTOMTEMPMAIL_APIKEY"],
+        apikey = env["CUSTOM_TEMP_MAIL_APIKEY"],
       },
       extra or {},
     })
     client = sdk.new(helpers.to_map(merged_opts))
   end
 
-  local live = env["CUSTOMTEMPMAIL_TEST_LIVE"] == "TRUE"
+  local live = env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE"
   return {
     client = client,
     data = entity_data,
     idmap = idmap_resolved,
     env = env,
-    explain = env["CUSTOMTEMPMAIL_TEST_EXPLAIN"] == "TRUE",
+    explain = env["CUSTOM_TEMP_MAIL_TEST_EXPLAIN"] == "TRUE",
     live = live,
     synthetic_only = live and not idmap_overridden,
     now = os.time() * 1000,

@@ -26,8 +26,8 @@ import {
 describe('DomainsAllEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when CUSTOMTEMPMAIL_TEST_LIVE=TRUE.
-  afterEach(liveDelay('CUSTOMTEMPMAIL_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when CUSTOM_TEMP_MAIL_TEST_LIVE=TRUE.
+  afterEach(liveDelay('CUSTOM_TEMP_MAIL_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = CustomTempMailSDK.test()
@@ -63,7 +63,7 @@ describe('DomainsAllEntity', async () => {
     const domains_all_ref01_ent = client.DomainsAll()
     const domains_all_ref01_match: any = {}
 
-    const domains_all_ref01_list = await domains_all_ref01_ent.list(domains_all_ref01_match)
+    const domains_all_ref01_list = (await domains_all_ref01_ent.list(domains_all_ref01_match)).map((e: any) => e.data())
 
 
   })

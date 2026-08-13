@@ -2,27 +2,30 @@
   "existing": {
     "inbox": {
       "INBOX00": {
-        "data": {},
-        "inbox": "s33",
-        "is_testing": true,
-        "message": "s35",
-        "success": true,
+        "count": "s3c",
+        "inbox": "s3d",
+        "inboxes": [],
+        "isTesting": false,
+        "message": "s40",
+        "success": false,
         "id": "INBOX00"
       },
       "INBOX01": {
-        "data": {},
-        "inbox": "s65",
-        "is_testing": true,
-        "message": "s67",
-        "success": true,
+        "count": "s78",
+        "inbox": "s79",
+        "inboxes": [],
+        "isTesting": false,
+        "message": "s7c",
+        "success": false,
         "id": "INBOX01"
       },
       "INBOX02": {
-        "data": {},
-        "inbox": "s97",
-        "is_testing": true,
-        "message": "s99",
-        "success": true,
+        "count": "sb4",
+        "inbox": "sb5",
+        "inboxes": [],
+        "isTesting": false,
+        "message": "sb8",
+        "success": false,
         "id": "INBOX02"
       }
     }
@@ -30,11 +33,12 @@
   "new": {
     "inbox": {
       "inbox_ref01": {
-        "data": {},
-        "inbox": "sc9",
-        "is_testing": true,
-        "message": "scb",
-        "success": true
+        "count": "sf0",
+        "inbox": "sf1",
+        "inboxes": [],
+        "isTesting": false,
+        "message": "sf4",
+        "success": false
       }
     }
   }

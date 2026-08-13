@@ -52,7 +52,7 @@ Message is nested under inbox, so provide the `inbox_id`.
 
 ```ruby
 begin
-  # load returns the bare Message record (raises on error).
+  # load returns the ENTITY — call data_get for the Message record (raises on error).
   message = client.Message.load({ "inbox_id" => "example_inbox_id" })
   puts message
 rescue => err
@@ -63,8 +63,8 @@ end
 ### 4. Create, update, and remove
 
 ```ruby
-# create returns the bare created CustomDomain record.
-created = client.CustomDomain.create({ "data" => {}, "domain" => "example_domain", "mx_record" => "example_mx_record", "txt_record" => "example_txt_record", "verified" => true })
+# create returns the ENTITY — call data_get for the created CustomDomain record.
+created = client.CustomDomain.create({ "domain" => "example_domain", "mx_record" => "example_mx_record", "txt_record" => "example_txt_record", "verified" => true })
 
 # Remove
 client.CustomDomain.remove({ "id" => "example_id" })
@@ -77,7 +77,7 @@ Entity operations raise on failure, so rescue them:
 
 ```ruby
 begin
-  customdomains = client.CustomDomain.list()
+  domains = client.Domain.list()
 rescue => err
   warn "list failed: #{err}"
 end
@@ -145,9 +145,10 @@ Create a mock client for unit testing — no server required:
 ```ruby
 client = CustomTempMailSDK.test
 
-# Entity ops return the bare mock record (raises on error).
-customdomain = client.CustomDomain.list()
-puts customdomain
+# Entity ops return the ENTITY (raises on error);
+# call data_get for the mock record.
+domain = client.Domain.list()
+puts domain
 ```
 
 ### Use a custom fetch function
@@ -281,11 +282,8 @@ returns a result `Hash` with these keys:
 | Field | Description |
 | --- | --- |
 | `added_at` |  |
-| `data` |  |
 | `domain` |  |
-| `message` |  |
 | `mx_record` |  |
-| `success` |  |
 | `txt_record` |  |
 | `verified` |  |
 
@@ -297,9 +295,10 @@ API path: `/v1/custom-domains`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `message` |  |
-| `success` |  |
+| `added_at` |  |
+| `domain` |  |
+| `mx_record` |  |
+| `txt_record` |  |
 | `verified` |  |
 
 Operations: Create.
@@ -312,9 +311,9 @@ API path: `/v1/custom-domains/{domain}/verify`
 | --- | --- |
 | `domain` |  |
 | `expires_at` |  |
-| `expires_in_day` |  |
+| `expires_in_days` |  |
 | `expiring_soon` |  |
-| `tag` |  |
+| `tags` |  |
 | `tier` |  |
 
 Operations: List.
@@ -328,9 +327,9 @@ API path: `/v1/domains`
 | `domain` |  |
 | `expired` |  |
 | `expires_at` |  |
-| `expires_in_day` |  |
+| `expires_in_days` |  |
 | `expiring_soon` |  |
-| `tag` |  |
+| `tags` |  |
 | `tier` |  |
 
 Operations: List.
@@ -341,9 +340,10 @@ API path: `/v1/domains/all`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
+| `count` |  |
 | `inbox` |  |
-| `is_testing` |  |
+| `inboxes` |  |
+| `isTesting` |  |
 | `message` |  |
 | `success` |  |
 
@@ -355,8 +355,16 @@ API path: `/v1/inboxes`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `api_inbox_count` |  |
+| `api_inboxes` |  |
+| `app_inbox_count` |  |
+| `app_inboxes` |  |
+| `credits` |  |
+| `custom_domain_count` |  |
+| `custom_domains` |  |
+| `features` |  |
+| `plan` |  |
+| `rate_limits` |  |
 
 Operations: Load.
 
@@ -366,8 +374,21 @@ API path: `/v1/me`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `attachments` |  |
+| `count` |  |
+| `date` |  |
+| `from` |  |
+| `has_attachment` |  |
+| `has_more` |  |
+| `html` |  |
+| `id` |  |
+| `inbox` |  |
+| `messages` |  |
+| `otp` |  |
+| `subject` |  |
+| `text` |  |
+| `to` |  |
+| `verification_link` |  |
 
 Operations: Load.
 
@@ -377,8 +398,15 @@ API path: `/v1/inboxes/{inbox}/messages`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `from` |  |
+| `inbox` |  |
+| `message` |  |
+| `message_id` |  |
+| `otp` |  |
+| `received_at` |  |
+| `score` |  |
+| `subject` |  |
+| `verification_link` |  |
 
 Operations: Load.
 
@@ -388,8 +416,8 @@ API path: `/v1/inboxes/{inbox}/otp`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `credit_packages` |  |
+| `plans` |  |
 
 Operations: Load.
 
@@ -399,8 +427,12 @@ API path: `/v1/plans`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `analyzed_at` |  |
+| `duration_hours` |  |
+| `event_count` |  |
+| `events` |  |
+| `inbox` |  |
+| `insights` |  |
 
 Operations: Load.
 
@@ -411,18 +443,19 @@ API path: `/v1/inboxes/{inbox}/timeline`
 | Field | Description |
 | --- | --- |
 | `count` |  |
-| `custom_firstname` |  |
-| `custom_surname` |  |
+| `custom_firstnames` |  |
+| `custom_surnames` |  |
 | `daily_limit` |  |
 | `daily_remaining` |  |
 | `daily_used` |  |
-| `data` |  |
-| `domain` |  |
 | `domain_mode` |  |
+| `domains` |  |
 | `inbox` |  |
+| `inboxes` |  |
 | `output_format` |  |
-| `parse_code` |  |
+| `parseCode` |  |
 | `since` |  |
+| `started_at` |  |
 | `success` |  |
 | `test_id` |  |
 | `username_style` |  |
@@ -435,9 +468,13 @@ API path: `/v1/inboxes/{inbox}/tests`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `message` |  |
-| `success` |  |
+| `date` |  |
+| `from` |  |
+| `has_attachment` |  |
+| `id` |  |
+| `otp` |  |
+| `subject` |  |
+| `verification_link` |  |
 
 Operations: Load, Remove.
 
@@ -447,8 +484,8 @@ API path: `/v1/inboxes/{inbox}/wait`
 
 | Field | Description |
 | --- | --- |
-| `created_at` |  |
-| `failure_count` |  |
+| `createdAt` |  |
+| `failureCount` |  |
 | `id` |  |
 | `inbox` |  |
 | `url` |  |
@@ -461,8 +498,11 @@ API path: `/v1/webhooks`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `credits` |  |
+| `period` |  |
+| `plan` |  |
+| `rate_limit` |  |
+| `requests` |  |
 
 Operations: Load.
 
@@ -490,11 +530,8 @@ Create an instance: `custom_domain = client.CustomDomain`
 | Field | Type | Description |
 | --- | --- | --- |
 | `added_at` | `String` |  |
-| `data` | `Hash` |  |
 | `domain` | `String` |  |
-| `message` | `String` |  |
 | `mx_record` | `String` |  |
-| `success` | `Boolean` |  |
 | `txt_record` | `String` |  |
 | `verified` | `Boolean` |  |
 
@@ -509,7 +546,6 @@ custom_domains = client.CustomDomain.list
 
 ```ruby
 custom_domain = client.CustomDomain.create({
-  "data" => {}, # Hash
   "domain" => "example_domain", # String
   "mx_record" => "example_mx_record", # String
   "txt_record" => "example_txt_record", # String
@@ -532,9 +568,10 @@ Create an instance: `custom_domain_verify = client.CustomDomainVerify`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` |  |
-| `message` | `String` |  |
-| `success` | `Boolean` |  |
+| `added_at` | `String` |  |
+| `domain` | `String` |  |
+| `mx_record` | `String` |  |
+| `txt_record` | `String` |  |
 | `verified` | `Boolean` |  |
 
 #### Example: Create
@@ -542,6 +579,9 @@ Create an instance: `custom_domain_verify = client.CustomDomainVerify`
 ```ruby
 custom_domain_verify = client.CustomDomainVerify.create({
   "domain" => "example_domain", # String
+  "mx_record" => "example_mx_record", # String
+  "txt_record" => "example_txt_record", # String
+  "verified" => true, # Boolean
 })
 ```
 
@@ -562,9 +602,9 @@ Create an instance: `domain = client.Domain`
 | --- | --- | --- |
 | `domain` | `String` |  |
 | `expires_at` | `String` |  |
-| `expires_in_day` | `Integer` |  |
+| `expires_in_days` | `Integer` |  |
 | `expiring_soon` | `Boolean` |  |
-| `tag` | `Array` |  |
+| `tags` | `Array` |  |
 | `tier` | `String` |  |
 
 #### Example: List
@@ -592,9 +632,9 @@ Create an instance: `domains_all = client.DomainsAll`
 | `domain` | `String` |  |
 | `expired` | `Boolean` |  |
 | `expires_at` | `String` |  |
-| `expires_in_day` | `Integer` |  |
+| `expires_in_days` | `Integer` |  |
 | `expiring_soon` | `Boolean` |  |
-| `tag` | `Array` |  |
+| `tags` | `Array` |  |
 | `tier` | `String` |  |
 
 #### Example: List
@@ -620,16 +660,17 @@ Create an instance: `inbox = client.Inbox`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` |  |
+| `count` | `Integer` |  |
 | `inbox` | `String` |  |
-| `is_testing` | `Boolean` |  |
+| `inboxes` | `Array` |  |
+| `isTesting` | `Boolean` |  |
 | `message` | `String` |  |
 | `success` | `Boolean` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare Inbox record (raises on error).
+# load returns the ENTITY — call data_get for the Inbox record (raises on error).
 inbox = client.Inbox.load()
 ```
 
@@ -655,13 +696,21 @@ Create an instance: `men = client.Men`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` |  |
-| `success` | `Boolean` |  |
+| `api_inbox_count` | `Integer` |  |
+| `api_inboxes` | `Array` |  |
+| `app_inbox_count` | `Integer` |  |
+| `app_inboxes` | `Array` |  |
+| `credits` | `Integer` |  |
+| `custom_domain_count` | `Integer` |  |
+| `custom_domains` | `Array` |  |
+| `features` | `Hash` |  |
+| `plan` | `String` |  |
+| `rate_limits` | `Hash` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare Men record (raises on error).
+# load returns the ENTITY — call data_get for the Men record (raises on error).
 men = client.Men.load()
 ```
 
@@ -680,13 +729,26 @@ Create an instance: `message = client.Message`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` |  |
-| `success` | `Boolean` |  |
+| `attachments` | `Array` |  |
+| `count` | `Integer` |  |
+| `date` | `String` |  |
+| `from` | `String` |  |
+| `has_attachment` | `Boolean` |  |
+| `has_more` | `Boolean` |  |
+| `html` | `String` |  |
+| `id` | `String` |  |
+| `inbox` | `String` |  |
+| `messages` | `Array` |  |
+| `otp` | `String` |  |
+| `subject` | `String` |  |
+| `text` | `String` |  |
+| `to` | `String` |  |
+| `verification_link` | `String` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare Message record (raises on error).
+# load returns the ENTITY — call data_get for the Message record (raises on error).
 message = client.Message.load({ "id" => "message_id", "inbox_id" => "inbox_id" })
 ```
 
@@ -705,13 +767,20 @@ Create an instance: `otp = client.Otp`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` |  |
-| `success` | `Boolean` |  |
+| `from` | `String` |  |
+| `inbox` | `String` |  |
+| `message` | `String` |  |
+| `message_id` | `String` |  |
+| `otp` | `String` |  |
+| `received_at` | `String` |  |
+| `score` | `Float` |  |
+| `subject` | `String` |  |
+| `verification_link` | `String` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare Otp record (raises on error).
+# load returns the ENTITY — call data_get for the Otp record (raises on error).
 otp = client.Otp.load({ "inbox_id" => "inbox_id" })
 ```
 
@@ -730,13 +799,13 @@ Create an instance: `plan = client.Plan`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` |  |
-| `success` | `Boolean` |  |
+| `credit_packages` | `Array` |  |
+| `plans` | `Array` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare Plan record (raises on error).
+# load returns the ENTITY — call data_get for the Plan record (raises on error).
 plan = client.Plan.load()
 ```
 
@@ -755,13 +824,17 @@ Create an instance: `public_v1_dashboard_analytics = client.PublicV1DashboardAna
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` |  |
-| `success` | `Boolean` |  |
+| `analyzed_at` | `String` |  |
+| `duration_hours` | `Integer` |  |
+| `event_count` | `Integer` |  |
+| `events` | `Array` |  |
+| `inbox` | `String` |  |
+| `insights` | `Array` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare PublicV1DashboardAnalytics record (raises on error).
+# load returns the ENTITY — call data_get for the PublicV1DashboardAnalytics record (raises on error).
 public_v1_dashboard_analytics = client.PublicV1DashboardAnalytics.load({ "inbox_id" => "inbox_id" })
 ```
 
@@ -782,18 +855,19 @@ Create an instance: `public_v1_inbox = client.PublicV1Inbox`
 | Field | Type | Description |
 | --- | --- | --- |
 | `count` | `Integer` |  |
-| `custom_firstname` | `Array` |  |
-| `custom_surname` | `Array` |  |
+| `custom_firstnames` | `Array` |  |
+| `custom_surnames` | `Array` |  |
 | `daily_limit` | `Integer` |  |
 | `daily_remaining` | `Integer` |  |
 | `daily_used` | `Integer` |  |
-| `data` | `Hash` |  |
-| `domain` | `Array` |  |
 | `domain_mode` | `String` |  |
-| `inbox` | `Array` |  |
+| `domains` | `Array` |  |
+| `inbox` | `String` |  |
+| `inboxes` | `Array` |  |
 | `output_format` | `String` |  |
-| `parse_code` | `Boolean` |  |
+| `parseCode` | `Boolean` |  |
 | `since` | `Integer` |  |
+| `started_at` | `String` |  |
 | `success` | `Boolean` |  |
 | `test_id` | `String` |  |
 | `username_style` | `String` |  |
@@ -821,14 +895,18 @@ Create an instance: `public_v1_message = client.PublicV1Message`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` |  |
-| `message` | `String` |  |
-| `success` | `Boolean` |  |
+| `date` | `String` |  |
+| `from` | `String` |  |
+| `has_attachment` | `Boolean` |  |
+| `id` | `String` |  |
+| `otp` | `String` |  |
+| `subject` | `String` |  |
+| `verification_link` | `String` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare PublicV1Message record (raises on error).
+# load returns the ENTITY — call data_get for the PublicV1Message record (raises on error).
 public_v1_message = client.PublicV1Message.load({ "inbox_id" => "inbox_id" })
 ```
 
@@ -849,8 +927,8 @@ Create an instance: `public_v1_webhook = client.PublicV1Webhook`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `created_at` | `String` |  |
-| `failure_count` | `Integer` |  |
+| `createdAt` | `String` |  |
+| `failureCount` | `Integer` |  |
 | `id` | `String` |  |
 | `inbox` | `String` |  |
 | `url` | `String` |  |
@@ -886,13 +964,16 @@ Create an instance: `usage = client.Usage`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` |  |
-| `success` | `Boolean` |  |
+| `credits` | `Hash` |  |
+| `period` | `Hash` |  |
+| `plan` | `String` |  |
+| `rate_limit` | `Hash` |  |
+| `requests` | `Hash` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare Usage record (raises on error).
+# load returns the ENTITY — call data_get for the Usage record (raises on error).
 usage = client.Usage.load()
 ```
 
@@ -973,11 +1054,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```ruby
-customdomain = client.CustomDomain
-customdomain.list()
+domain = client.Domain
+domain.list()
 
-# customdomain.data_get now returns the customdomain data from the last list
-# customdomain.match_get returns the last match criteria
+# domain.data_get now returns the domain data from the last list
+# domain.match_get returns the last match criteria
 ```
 
 Call `make` to create a fresh instance with the same configuration

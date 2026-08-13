@@ -7,33 +7,24 @@
 
 export interface CustomDomain {
   added_at?: string
-  data: Record<string, any>
   domain: string
-  message?: string
   mx_record: string
-  success?: boolean
   txt_record: string
   verified: boolean
 }
 
 export interface CustomDomainListMatch {
   added_at?: string
-  data?: Record<string, any>
   domain?: string
-  message?: string
   mx_record?: string
-  success?: boolean
   txt_record?: string
   verified?: boolean
 }
 
 export interface CustomDomainCreateData {
   added_at?: string
-  data: Record<string, any>
   domain: string
-  message?: string
   mx_record: string
-  success?: boolean
   txt_record: string
   verified: boolean
 }
@@ -43,31 +34,36 @@ export interface CustomDomainRemoveMatch {
 }
 
 export interface CustomDomainVerify {
-  data: Record<string, any>
-  message?: string
-  success?: boolean
-  verified?: boolean
+  added_at?: string
+  domain: string
+  mx_record: string
+  txt_record: string
+  verified: boolean
 }
 
 export interface CustomDomainVerifyCreateData {
   domain: string
+  added_at?: string
+  mx_record: string
+  txt_record: string
+  verified: boolean
 }
 
 export interface Domain {
   domain: string
   expires_at?: string
-  expires_in_day?: number
+  expires_in_days?: number
   expiring_soon?: boolean
-  tag: any[]
+  tags: any[]
   tier: string
 }
 
 export interface DomainListMatch {
   domain?: string
   expires_at?: string
-  expires_in_day?: number
+  expires_in_days?: number
   expiring_soon?: boolean
-  tag?: any[]
+  tags?: any[]
   tier?: string
 }
 
@@ -75,9 +71,9 @@ export interface DomainsAll {
   domain: string
   expired: boolean
   expires_at?: string
-  expires_in_day?: number
+  expires_in_days?: number
   expiring_soon?: boolean
-  tag: any[]
+  tags: any[]
   tier: string
 }
 
@@ -85,49 +81,81 @@ export interface DomainsAllListMatch {
   domain?: string
   expired?: boolean
   expires_at?: string
-  expires_in_day?: number
+  expires_in_days?: number
   expiring_soon?: boolean
-  tag?: any[]
+  tags?: any[]
   tier?: string
 }
 
 export interface Inbox {
-  data?: Record<string, any>
+  count?: number
   inbox?: string
-  is_testing?: boolean
+  inboxes?: any[]
+  isTesting?: boolean
   message?: string
   success?: boolean
 }
 
 export interface InboxLoadMatch {
-  data?: Record<string, any>
+  count?: number
   inbox?: string
-  is_testing?: boolean
+  inboxes?: any[]
+  isTesting?: boolean
   message?: string
   success?: boolean
 }
 
 export interface InboxCreateData {
-  data?: Record<string, any>
+  count?: number
   inbox?: string
-  is_testing?: boolean
+  inboxes?: any[]
+  isTesting?: boolean
   message?: string
   success?: boolean
 }
 
 export interface Men {
-  data?: Record<string, any>
-  success?: boolean
+  api_inbox_count?: number
+  api_inboxes?: any[]
+  app_inbox_count?: number
+  app_inboxes?: any[]
+  credits?: number
+  custom_domain_count?: number
+  custom_domains?: any[]
+  features?: Record<string, any>
+  plan?: string
+  rate_limits?: Record<string, any>
 }
 
 export interface MenLoadMatch {
-  data?: Record<string, any>
-  success?: boolean
+  api_inbox_count?: number
+  api_inboxes?: any[]
+  app_inbox_count?: number
+  app_inboxes?: any[]
+  credits?: number
+  custom_domain_count?: number
+  custom_domains?: any[]
+  features?: Record<string, any>
+  plan?: string
+  rate_limits?: Record<string, any>
 }
 
 export interface Message {
-  data?: Record<string, any>
-  success?: boolean
+  attachments?: any[]
+  count?: number
+  date?: string
+  from?: string
+  has_attachment?: boolean
+  has_more?: boolean
+  html?: string
+  id?: string
+  inbox?: string
+  messages?: any[]
+  otp?: string
+  subject?: string
+  text?: string
+  to?: string
+  verification_link?: string
 }
 
 export interface MessageLoadMatch {
@@ -136,27 +164,44 @@ export interface MessageLoadMatch {
 }
 
 export interface Otp {
-  data?: Record<string, any>
-  success?: boolean
+  from?: string
+  inbox?: string
+  message?: string
+  message_id?: string
+  otp?: string
+  received_at?: string
+  score?: number
+  subject?: string
+  verification_link?: string
 }
 
 export interface OtpLoadMatch {
   inbox_id: string
+
+  // Selects a custom action instead of the plain load:
+  //   'public'
+  // The remaining keys are that action's own payload.
+  $action?: string
+  [action: string]: any
 }
 
 export interface Plan {
-  data?: Record<string, any>
-  success?: boolean
+  credit_packages?: any[]
+  plans?: any[]
 }
 
 export interface PlanLoadMatch {
-  data?: Record<string, any>
-  success?: boolean
+  credit_packages?: any[]
+  plans?: any[]
 }
 
 export interface PublicV1DashboardAnalytics {
-  data?: Record<string, any>
-  success?: boolean
+  analyzed_at?: string
+  duration_hours?: number
+  event_count?: number
+  events?: any[]
+  inbox?: string
+  insights?: any[]
 }
 
 export interface PublicV1DashboardAnalyticsLoadMatch {
@@ -165,18 +210,19 @@ export interface PublicV1DashboardAnalyticsLoadMatch {
 
 export interface PublicV1Inbox {
   count?: number
-  custom_firstname?: any[]
-  custom_surname?: any[]
+  custom_firstnames?: any[]
+  custom_surnames?: any[]
   daily_limit?: number
   daily_remaining?: number
   daily_used?: number
-  data?: Record<string, any>
-  domain?: any[]
   domain_mode?: string
-  inbox?: any[]
+  domains?: any[]
+  inbox?: string
+  inboxes?: any[]
   output_format?: string
-  parse_code?: boolean
+  parseCode?: boolean
   since?: number
+  started_at?: string
   success?: boolean
   test_id?: string
   username_style?: string
@@ -184,6 +230,23 @@ export interface PublicV1Inbox {
 
 export interface PublicV1InboxCreateData {
   inbox_id?: string
+  count?: number
+  custom_firstnames?: any[]
+  custom_surnames?: any[]
+  daily_limit?: number
+  daily_remaining?: number
+  daily_used?: number
+  domain_mode?: string
+  domains?: any[]
+  inbox?: string
+  inboxes?: any[]
+  output_format?: string
+  parseCode?: boolean
+  since?: number
+  started_at?: string
+  success?: boolean
+  test_id?: string
+  username_style?: string
 }
 
 export interface PublicV1InboxRemoveMatch {
@@ -191,9 +254,13 @@ export interface PublicV1InboxRemoveMatch {
 }
 
 export interface PublicV1Message {
-  data?: Record<string, any>
-  message?: string
-  success?: boolean
+  date?: string
+  from?: string
+  has_attachment?: boolean
+  id?: string
+  otp?: string
+  subject?: string
+  verification_link?: string
 }
 
 export interface PublicV1MessageLoadMatch {
@@ -206,24 +273,24 @@ export interface PublicV1MessageRemoveMatch {
 }
 
 export interface PublicV1Webhook {
-  created_at?: string
-  failure_count?: number
+  createdAt?: string
+  failureCount?: number
   id?: string
   inbox: string
   url: string
 }
 
 export interface PublicV1WebhookListMatch {
-  created_at?: string
-  failure_count?: number
+  createdAt?: string
+  failureCount?: number
   id?: string
   inbox?: string
   url?: string
 }
 
 export interface PublicV1WebhookCreateData {
-  created_at?: string
-  failure_count?: number
+  createdAt?: string
+  failureCount?: number
   id?: string
   inbox: string
   url: string
@@ -234,12 +301,18 @@ export interface PublicV1WebhookRemoveMatch {
 }
 
 export interface Usage {
-  data?: Record<string, any>
-  success?: boolean
+  credits?: Record<string, any>
+  period?: Record<string, any>
+  plan?: string
+  rate_limit?: Record<string, any>
+  requests?: Record<string, any>
 }
 
 export interface UsageLoadMatch {
-  data?: Record<string, any>
-  success?: boolean
+  credits?: Record<string, any>
+  period?: Record<string, any>
+  plan?: string
+  rate_limit?: Record<string, any>
+  requests?: Record<string, any>
 }
 

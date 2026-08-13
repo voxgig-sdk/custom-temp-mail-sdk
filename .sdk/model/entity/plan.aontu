@@ -6,14 +6,14 @@ main: kit: entity: plan: {
 
   fields: [
     {
-      name: "data"
+      name: "credit_packages"
       req: false
-      type: "`$OBJECT`"
+      type: "`$ARRAY`"
     }
     {
-      name: "success"
+      name: "plans"
       req: false
-      type: "`$BOOLEAN`"
+      type: "`$ARRAY`"
     }
   ]
 
@@ -31,7 +31,7 @@ main: kit: entity: plan: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

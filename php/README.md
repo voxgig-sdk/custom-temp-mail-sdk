@@ -53,7 +53,7 @@ Message is nested under inbox, so provide the `inbox_id`.
 
 ```php
 try {
-    // load() returns the bare Message record (throws on error).
+    // load() returns the ENTITY — call data_get() for the Message record (throws on error).
     $message = $client->Message()->load(["inbox_id" => "example_inbox_id"]);
     print_r($message);
 } catch (\Throwable $err) {
@@ -64,8 +64,8 @@ try {
 ### 4. Create, update, and remove
 
 ```php
-// create() returns the bare created CustomDomain record.
-$created = $client->CustomDomain()->create(["data" => [], "domain" => "example_domain", "mx_record" => "example_mx_record", "txt_record" => "example_txt_record", "verified" => true]);
+// create() returns the ENTITY — call data_get() for the created CustomDomain record.
+$created = $client->CustomDomain()->create(["domain" => "example_domain", "mx_record" => "example_mx_record", "txt_record" => "example_txt_record", "verified" => true]);
 
 // Remove
 $client->CustomDomain()->remove(["id" => "example_id"]);
@@ -79,7 +79,7 @@ Entity operations throw a `\Throwable` on failure, so wrap them in
 
 ```php
 try {
-    $customdomains = $client->CustomDomain()->list();
+    $domains = $client->Domain()->list();
 } catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
 }
@@ -151,9 +151,10 @@ Create a mock client for unit testing — no server required:
 ```php
 $client = CustomTempMailSDK::test();
 
-// Entity ops return the bare mock record (throws on error).
-$customdomain = $client->CustomDomain()->list();
-print_r($customdomain);
+// Entity ops return the ENTITY (throws on error);
+// call data_get() for the mock record.
+$domain = $client->Domain()->list();
+print_r($domain);
 ```
 
 ### Use a custom fetch function
@@ -268,7 +269,7 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the bare result data (an `array` for single-entity
+Entity operations return the ENTITY (call data_get() for the record) (an `array` for single-entity
 ops, a `list` for `list`) and throw on error. Wrap calls in
 `try`/`catch` to handle failures.
 
@@ -291,11 +292,8 @@ On error, `ok` is `false` and `$err` contains the error value.
 | Field | Description |
 | --- | --- |
 | `added_at` |  |
-| `data` |  |
 | `domain` |  |
-| `message` |  |
 | `mx_record` |  |
-| `success` |  |
 | `txt_record` |  |
 | `verified` |  |
 
@@ -307,9 +305,10 @@ API path: `/v1/custom-domains`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `message` |  |
-| `success` |  |
+| `added_at` |  |
+| `domain` |  |
+| `mx_record` |  |
+| `txt_record` |  |
 | `verified` |  |
 
 Operations: Create.
@@ -322,9 +321,9 @@ API path: `/v1/custom-domains/{domain}/verify`
 | --- | --- |
 | `domain` |  |
 | `expires_at` |  |
-| `expires_in_day` |  |
+| `expires_in_days` |  |
 | `expiring_soon` |  |
-| `tag` |  |
+| `tags` |  |
 | `tier` |  |
 
 Operations: List.
@@ -338,9 +337,9 @@ API path: `/v1/domains`
 | `domain` |  |
 | `expired` |  |
 | `expires_at` |  |
-| `expires_in_day` |  |
+| `expires_in_days` |  |
 | `expiring_soon` |  |
-| `tag` |  |
+| `tags` |  |
 | `tier` |  |
 
 Operations: List.
@@ -351,9 +350,10 @@ API path: `/v1/domains/all`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
+| `count` |  |
 | `inbox` |  |
-| `is_testing` |  |
+| `inboxes` |  |
+| `isTesting` |  |
 | `message` |  |
 | `success` |  |
 
@@ -365,8 +365,16 @@ API path: `/v1/inboxes`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `api_inbox_count` |  |
+| `api_inboxes` |  |
+| `app_inbox_count` |  |
+| `app_inboxes` |  |
+| `credits` |  |
+| `custom_domain_count` |  |
+| `custom_domains` |  |
+| `features` |  |
+| `plan` |  |
+| `rate_limits` |  |
 
 Operations: Load.
 
@@ -376,8 +384,21 @@ API path: `/v1/me`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `attachments` |  |
+| `count` |  |
+| `date` |  |
+| `from` |  |
+| `has_attachment` |  |
+| `has_more` |  |
+| `html` |  |
+| `id` |  |
+| `inbox` |  |
+| `messages` |  |
+| `otp` |  |
+| `subject` |  |
+| `text` |  |
+| `to` |  |
+| `verification_link` |  |
 
 Operations: Load.
 
@@ -387,8 +408,15 @@ API path: `/v1/inboxes/{inbox}/messages`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `from` |  |
+| `inbox` |  |
+| `message` |  |
+| `message_id` |  |
+| `otp` |  |
+| `received_at` |  |
+| `score` |  |
+| `subject` |  |
+| `verification_link` |  |
 
 Operations: Load.
 
@@ -398,8 +426,8 @@ API path: `/v1/inboxes/{inbox}/otp`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `credit_packages` |  |
+| `plans` |  |
 
 Operations: Load.
 
@@ -409,8 +437,12 @@ API path: `/v1/plans`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `analyzed_at` |  |
+| `duration_hours` |  |
+| `event_count` |  |
+| `events` |  |
+| `inbox` |  |
+| `insights` |  |
 
 Operations: Load.
 
@@ -421,18 +453,19 @@ API path: `/v1/inboxes/{inbox}/timeline`
 | Field | Description |
 | --- | --- |
 | `count` |  |
-| `custom_firstname` |  |
-| `custom_surname` |  |
+| `custom_firstnames` |  |
+| `custom_surnames` |  |
 | `daily_limit` |  |
 | `daily_remaining` |  |
 | `daily_used` |  |
-| `data` |  |
-| `domain` |  |
 | `domain_mode` |  |
+| `domains` |  |
 | `inbox` |  |
+| `inboxes` |  |
 | `output_format` |  |
-| `parse_code` |  |
+| `parseCode` |  |
 | `since` |  |
+| `started_at` |  |
 | `success` |  |
 | `test_id` |  |
 | `username_style` |  |
@@ -445,9 +478,13 @@ API path: `/v1/inboxes/{inbox}/tests`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `message` |  |
-| `success` |  |
+| `date` |  |
+| `from` |  |
+| `has_attachment` |  |
+| `id` |  |
+| `otp` |  |
+| `subject` |  |
+| `verification_link` |  |
 
 Operations: Load, Remove.
 
@@ -457,8 +494,8 @@ API path: `/v1/inboxes/{inbox}/wait`
 
 | Field | Description |
 | --- | --- |
-| `created_at` |  |
-| `failure_count` |  |
+| `createdAt` |  |
+| `failureCount` |  |
 | `id` |  |
 | `inbox` |  |
 | `url` |  |
@@ -471,8 +508,11 @@ API path: `/v1/webhooks`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `credits` |  |
+| `period` |  |
+| `plan` |  |
+| `rate_limit` |  |
+| `requests` |  |
 
 Operations: Load.
 
@@ -500,11 +540,8 @@ Create an instance: `$custom_domain = $client->CustomDomain();`
 | Field | Type | Description |
 | --- | --- | --- |
 | `added_at` | `string` |  |
-| `data` | `array` |  |
 | `domain` | `string` |  |
-| `message` | `string` |  |
 | `mx_record` | `string` |  |
-| `success` | `bool` |  |
 | `txt_record` | `string` |  |
 | `verified` | `bool` |  |
 
@@ -519,7 +556,6 @@ $custom_domains = $client->CustomDomain()->list();
 
 ```php
 $custom_domain = $client->CustomDomain()->create([
-    "data" => null, // array
     "domain" => null, // string
     "mx_record" => null, // string
     "txt_record" => null, // string
@@ -542,9 +578,10 @@ Create an instance: `$custom_domain_verify = $client->CustomDomainVerify();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `array` |  |
-| `message` | `string` |  |
-| `success` | `bool` |  |
+| `added_at` | `string` |  |
+| `domain` | `string` |  |
+| `mx_record` | `string` |  |
+| `txt_record` | `string` |  |
 | `verified` | `bool` |  |
 
 #### Example: Create
@@ -552,6 +589,9 @@ Create an instance: `$custom_domain_verify = $client->CustomDomainVerify();`
 ```php
 $custom_domain_verify = $client->CustomDomainVerify()->create([
     "domain" => null, // string
+    "mx_record" => null, // string
+    "txt_record" => null, // string
+    "verified" => null, // bool
 ]);
 ```
 
@@ -572,9 +612,9 @@ Create an instance: `$domain = $client->Domain();`
 | --- | --- | --- |
 | `domain` | `string` |  |
 | `expires_at` | `string` |  |
-| `expires_in_day` | `int` |  |
+| `expires_in_days` | `int` |  |
 | `expiring_soon` | `bool` |  |
-| `tag` | `array` |  |
+| `tags` | `array` |  |
 | `tier` | `string` |  |
 
 #### Example: List
@@ -602,9 +642,9 @@ Create an instance: `$domains_all = $client->DomainsAll();`
 | `domain` | `string` |  |
 | `expired` | `bool` |  |
 | `expires_at` | `string` |  |
-| `expires_in_day` | `int` |  |
+| `expires_in_days` | `int` |  |
 | `expiring_soon` | `bool` |  |
-| `tag` | `array` |  |
+| `tags` | `array` |  |
 | `tier` | `string` |  |
 
 #### Example: List
@@ -630,16 +670,17 @@ Create an instance: `$inbox = $client->Inbox();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `array` |  |
+| `count` | `int` |  |
 | `inbox` | `string` |  |
-| `is_testing` | `bool` |  |
+| `inboxes` | `array` |  |
+| `isTesting` | `bool` |  |
 | `message` | `string` |  |
 | `success` | `bool` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare Inbox record (throws on error).
+// load() returns the ENTITY — call data_get() for the Inbox record (throws on error).
 $inbox = $client->Inbox()->load();
 ```
 
@@ -665,13 +706,21 @@ Create an instance: `$men = $client->Men();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `array` |  |
-| `success` | `bool` |  |
+| `api_inbox_count` | `int` |  |
+| `api_inboxes` | `array` |  |
+| `app_inbox_count` | `int` |  |
+| `app_inboxes` | `array` |  |
+| `credits` | `int` |  |
+| `custom_domain_count` | `int` |  |
+| `custom_domains` | `array` |  |
+| `features` | `array` |  |
+| `plan` | `string` |  |
+| `rate_limits` | `array` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare Men record (throws on error).
+// load() returns the ENTITY — call data_get() for the Men record (throws on error).
 $men = $client->Men()->load();
 ```
 
@@ -690,13 +739,26 @@ Create an instance: `$message = $client->Message();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `array` |  |
-| `success` | `bool` |  |
+| `attachments` | `array` |  |
+| `count` | `int` |  |
+| `date` | `string` |  |
+| `from` | `string` |  |
+| `has_attachment` | `bool` |  |
+| `has_more` | `bool` |  |
+| `html` | `string` |  |
+| `id` | `string` |  |
+| `inbox` | `string` |  |
+| `messages` | `array` |  |
+| `otp` | `string` |  |
+| `subject` | `string` |  |
+| `text` | `string` |  |
+| `to` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare Message record (throws on error).
+// load() returns the ENTITY — call data_get() for the Message record (throws on error).
 $message = $client->Message()->load(["id" => "message_id", "inbox_id" => "inbox_id"]);
 ```
 
@@ -715,13 +777,20 @@ Create an instance: `$otp = $client->Otp();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `array` |  |
-| `success` | `bool` |  |
+| `from` | `string` |  |
+| `inbox` | `string` |  |
+| `message` | `string` |  |
+| `message_id` | `string` |  |
+| `otp` | `string` |  |
+| `received_at` | `string` |  |
+| `score` | `float` |  |
+| `subject` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare Otp record (throws on error).
+// load() returns the ENTITY — call data_get() for the Otp record (throws on error).
 $otp = $client->Otp()->load(["inbox_id" => "inbox_id"]);
 ```
 
@@ -740,13 +809,13 @@ Create an instance: `$plan = $client->Plan();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `array` |  |
-| `success` | `bool` |  |
+| `credit_packages` | `array` |  |
+| `plans` | `array` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare Plan record (throws on error).
+// load() returns the ENTITY — call data_get() for the Plan record (throws on error).
 $plan = $client->Plan()->load();
 ```
 
@@ -765,13 +834,17 @@ Create an instance: `$public_v1_dashboard_analytics = $client->PublicV1Dashboard
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `array` |  |
-| `success` | `bool` |  |
+| `analyzed_at` | `string` |  |
+| `duration_hours` | `int` |  |
+| `event_count` | `int` |  |
+| `events` | `array` |  |
+| `inbox` | `string` |  |
+| `insights` | `array` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare PublicV1DashboardAnalytics record (throws on error).
+// load() returns the ENTITY — call data_get() for the PublicV1DashboardAnalytics record (throws on error).
 $public_v1_dashboard_analytics = $client->PublicV1DashboardAnalytics()->load(["inbox_id" => "inbox_id"]);
 ```
 
@@ -792,18 +865,19 @@ Create an instance: `$public_v1_inbox = $client->PublicV1Inbox();`
 | Field | Type | Description |
 | --- | --- | --- |
 | `count` | `int` |  |
-| `custom_firstname` | `array` |  |
-| `custom_surname` | `array` |  |
+| `custom_firstnames` | `array` |  |
+| `custom_surnames` | `array` |  |
 | `daily_limit` | `int` |  |
 | `daily_remaining` | `int` |  |
 | `daily_used` | `int` |  |
-| `data` | `array` |  |
-| `domain` | `array` |  |
 | `domain_mode` | `string` |  |
-| `inbox` | `array` |  |
+| `domains` | `array` |  |
+| `inbox` | `string` |  |
+| `inboxes` | `array` |  |
 | `output_format` | `string` |  |
-| `parse_code` | `bool` |  |
+| `parseCode` | `bool` |  |
 | `since` | `int` |  |
+| `started_at` | `string` |  |
 | `success` | `bool` |  |
 | `test_id` | `string` |  |
 | `username_style` | `string` |  |
@@ -831,14 +905,18 @@ Create an instance: `$public_v1_message = $client->PublicV1Message();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `array` |  |
-| `message` | `string` |  |
-| `success` | `bool` |  |
+| `date` | `string` |  |
+| `from` | `string` |  |
+| `has_attachment` | `bool` |  |
+| `id` | `string` |  |
+| `otp` | `string` |  |
+| `subject` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare PublicV1Message record (throws on error).
+// load() returns the ENTITY — call data_get() for the PublicV1Message record (throws on error).
 $public_v1_message = $client->PublicV1Message()->load(["inbox_id" => "inbox_id"]);
 ```
 
@@ -859,8 +937,8 @@ Create an instance: `$public_v1_webhook = $client->PublicV1Webhook();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `created_at` | `string` |  |
-| `failure_count` | `int` |  |
+| `createdAt` | `string` |  |
+| `failureCount` | `int` |  |
 | `id` | `string` |  |
 | `inbox` | `string` |  |
 | `url` | `string` |  |
@@ -896,13 +974,16 @@ Create an instance: `$usage = $client->Usage();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `array` |  |
-| `success` | `bool` |  |
+| `credits` | `array` |  |
+| `period` | `array` |  |
+| `plan` | `string` |  |
+| `rate_limit` | `array` |  |
+| `requests` | `array` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare Usage record (throws on error).
+// load() returns the ENTITY — call data_get() for the Usage record (throws on error).
 $usage = $client->Usage()->load();
 ```
 
@@ -983,11 +1064,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```php
-$customdomain = $client->CustomDomain();
-$customdomain->list();
+$domain = $client->Domain();
+$domain->list();
 
-// $customdomain->data_get() now returns the customdomain data from the last list
-// $customdomain->match_get() returns the last match criteria
+// $domain->data_get() now returns the domain data from the last list
+// $domain->match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

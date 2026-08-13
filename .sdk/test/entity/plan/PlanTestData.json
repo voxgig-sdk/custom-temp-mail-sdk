@@ -2,18 +2,18 @@
   "existing": {
     "plan": {
       "PLAN00": {
-        "data": {},
-        "success": false,
+        "credit_packages": [],
+        "plans": [],
         "id": "PLAN00"
       },
       "PLAN01": {
-        "data": {},
-        "success": false,
+        "credit_packages": [],
+        "plans": [],
         "id": "PLAN01"
       },
       "PLAN02": {
-        "data": {},
-        "success": false,
+        "credit_packages": [],
+        "plans": [],
         "id": "PLAN02"
       }
     }
@@ -21,8 +21,8 @@
   "new": {
     "plan": {
       "plan_ref01": {
-        "data": {},
-        "success": false
+        "credit_packages": [],
+        "plans": []
       }
     }
   }

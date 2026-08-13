@@ -6,14 +6,54 @@ main: kit: entity: men: {
 
   fields: [
     {
-      name: "data"
+      name: "api_inbox_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "api_inboxes"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "app_inbox_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "app_inboxes"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "credits"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "custom_domain_count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "custom_domains"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "features"
       req: false
       type: "`$OBJECT`"
     }
     {
-      name: "success"
+      name: "plan"
       req: false
-      type: "`$BOOLEAN`"
+      type: "`$STRING`"
+    }
+    {
+      name: "rate_limits"
+      req: false
+      type: "`$OBJECT`"
     }
   ]
 
@@ -31,7 +71,7 @@ main: kit: entity: men: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

@@ -26,8 +26,8 @@ import {
 describe('InboxEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when CUSTOMTEMPMAIL_TEST_LIVE=TRUE.
-  afterEach(liveDelay('CUSTOMTEMPMAIL_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when CUSTOM_TEMP_MAIL_TEST_LIVE=TRUE.
+  afterEach(liveDelay('CUSTOM_TEMP_MAIL_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = CustomTempMailSDK.test()
@@ -62,13 +62,13 @@ describe('InboxEntity', async () => {
     const inbox_ref01_ent = client.Inbox()
     let inbox_ref01_data = setup.data.new.inbox['inbox_ref01']
 
-    inbox_ref01_data = await inbox_ref01_ent.create(inbox_ref01_data)
+    inbox_ref01_data = (await inbox_ref01_ent.create(inbox_ref01_data)).data()
     assert(null != inbox_ref01_data)
 
 
     // LOAD
     const inbox_ref01_match_dt0: any = {}
-    const inbox_ref01_data_dt0 = await inbox_ref01_ent.load(inbox_ref01_match_dt0)
+    const inbox_ref01_data_dt0 = (await inbox_ref01_ent.load(inbox_ref01_match_dt0)).data()
     assert(null != inbox_ref01_data_dt0)
 
 

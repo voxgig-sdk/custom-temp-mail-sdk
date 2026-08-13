@@ -146,11 +146,8 @@ $custom_domain = $client->CustomDomain();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `added_at` | `string` | No |  |
-| `data` | `array` | Yes |  |
 | `domain` | `string` | Yes |  |
-| `message` | `string` | No |  |
 | `mx_record` | `string` | Yes |  |
-| `success` | `bool` | No |  |
 | `txt_record` | `string` | Yes |  |
 | `verified` | `bool` | Yes |  |
 
@@ -162,7 +159,6 @@ Create a new entity with the given data. Throws on error.
 
 ```php
 $result = $client->CustomDomain()->create([
-  "data" => null, // array
   "domain" => null, // string
   "mx_record" => null, // string
   "txt_record" => null, // string
@@ -226,10 +222,11 @@ $custom_domain_verify = $client->CustomDomainVerify();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `array` | Yes |  |
-| `message` | `string` | No |  |
-| `success` | `bool` | No |  |
-| `verified` | `bool` | No |  |
+| `added_at` | `string` | No |  |
+| `domain` | `string` | Yes |  |
+| `mx_record` | `string` | Yes |  |
+| `txt_record` | `string` | Yes |  |
+| `verified` | `bool` | Yes |  |
 
 ### Operations
 
@@ -240,6 +237,9 @@ Create a new entity with the given data. Throws on error.
 ```php
 $result = $client->CustomDomainVerify()->create([
   "domain" => null, // string
+  "mx_record" => null, // string
+  "txt_record" => null, // string
+  "verified" => null, // bool
 ]);
 ```
 
@@ -285,9 +285,9 @@ $domain = $client->Domain();
 | --- | --- | --- | --- |
 | `domain` | `string` | Yes |  |
 | `expires_at` | `string` | No |  |
-| `expires_in_day` | `int` | No |  |
+| `expires_in_days` | `int` | No |  |
 | `expiring_soon` | `bool` | No |  |
-| `tag` | `array` | Yes |  |
+| `tags` | `array` | Yes |  |
 | `tier` | `string` | Yes |  |
 
 ### Operations
@@ -343,9 +343,9 @@ $domains_all = $client->DomainsAll();
 | `domain` | `string` | Yes |  |
 | `expired` | `bool` | Yes |  |
 | `expires_at` | `string` | No |  |
-| `expires_in_day` | `int` | No |  |
+| `expires_in_days` | `int` | No |  |
 | `expiring_soon` | `bool` | No |  |
-| `tag` | `array` | Yes |  |
+| `tags` | `array` | Yes |  |
 | `tier` | `string` | Yes |  |
 
 ### Field Usage by Operation
@@ -355,9 +355,9 @@ $domains_all = $client->DomainsAll();
 | `domain` | - |
 | `expired` | - |
 | `expires_at` | Yes |
-| `expires_in_day` | Yes |
+| `expires_in_days` | Yes |
 | `expiring_soon` | Yes |
-| `tag` | - |
+| `tags` | - |
 | `tier` | - |
 
 ### Operations
@@ -410,9 +410,10 @@ $inbox = $client->Inbox();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `array` | No |  |
+| `count` | `int` | No |  |
 | `inbox` | `string` | No |  |
-| `is_testing` | `bool` | No |  |
+| `inboxes` | `array` | No |  |
+| `isTesting` | `bool` | No |  |
 | `message` | `string` | No |  |
 | `success` | `bool` | No |  |
 
@@ -420,9 +421,10 @@ $inbox = $client->Inbox();
 
 | Field | load | create |
 | --- | --- | --- |
-| `data` | - | - |
+| `count` | - | - |
 | `inbox` | - | Yes |
-| `is_testing` | - | - |
+| `inboxes` | - | - |
+| `isTesting` | - | - |
 | `message` | - | - |
 | `success` | - | - |
 
@@ -485,8 +487,16 @@ $men = $client->Men();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `array` | No |  |
-| `success` | `bool` | No |  |
+| `api_inbox_count` | `int` | No |  |
+| `api_inboxes` | `array` | No |  |
+| `app_inbox_count` | `int` | No |  |
+| `app_inboxes` | `array` | No |  |
+| `credits` | `int` | No |  |
+| `custom_domain_count` | `int` | No |  |
+| `custom_domains` | `array` | No |  |
+| `features` | `array` | No |  |
+| `plan` | `string` | No |  |
+| `rate_limits` | `array` | No |  |
 
 ### Operations
 
@@ -538,8 +548,21 @@ $message = $client->Message();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `array` | No |  |
-| `success` | `bool` | No |  |
+| `attachments` | `array` | No |  |
+| `count` | `int` | No |  |
+| `date` | `string` | No |  |
+| `from` | `string` | No |  |
+| `has_attachment` | `bool` | No |  |
+| `has_more` | `bool` | No |  |
+| `html` | `string` | No |  |
+| `id` | `string` | No |  |
+| `inbox` | `string` | No |  |
+| `messages` | `array` | No |  |
+| `otp` | `string` | No |  |
+| `subject` | `string` | No |  |
+| `text` | `string` | No |  |
+| `to` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -591,8 +614,15 @@ $otp = $client->Otp();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `array` | No |  |
-| `success` | `bool` | No |  |
+| `from` | `string` | No |  |
+| `inbox` | `string` | No |  |
+| `message` | `string` | No |  |
+| `message_id` | `string` | No |  |
+| `otp` | `string` | No |  |
+| `received_at` | `string` | No |  |
+| `score` | `float` | No |  |
+| `subject` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -644,8 +674,8 @@ $plan = $client->Plan();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `array` | No |  |
-| `success` | `bool` | No |  |
+| `credit_packages` | `array` | No |  |
+| `plans` | `array` | No |  |
 
 ### Operations
 
@@ -697,8 +727,12 @@ $public_v1_dashboard_analytics = $client->PublicV1DashboardAnalytics();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `array` | No |  |
-| `success` | `bool` | No |  |
+| `analyzed_at` | `string` | No |  |
+| `duration_hours` | `int` | No |  |
+| `event_count` | `int` | No |  |
+| `events` | `array` | No |  |
+| `inbox` | `string` | No |  |
+| `insights` | `array` | No |  |
 
 ### Operations
 
@@ -751,18 +785,19 @@ $public_v1_inbox = $client->PublicV1Inbox();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `count` | `int` | No |  |
-| `custom_firstname` | `array` | No |  |
-| `custom_surname` | `array` | No |  |
+| `custom_firstnames` | `array` | No |  |
+| `custom_surnames` | `array` | No |  |
 | `daily_limit` | `int` | No |  |
 | `daily_remaining` | `int` | No |  |
 | `daily_used` | `int` | No |  |
-| `data` | `array` | No |  |
-| `domain` | `array` | No |  |
 | `domain_mode` | `string` | No |  |
-| `inbox` | `array` | No |  |
+| `domains` | `array` | No |  |
+| `inbox` | `string` | No |  |
+| `inboxes` | `array` | No |  |
 | `output_format` | `string` | No |  |
-| `parse_code` | `bool` | No |  |
+| `parseCode` | `bool` | No |  |
 | `since` | `int` | No |  |
+| `started_at` | `string` | No |  |
 | `success` | `bool` | No |  |
 | `test_id` | `string` | No |  |
 | `username_style` | `string` | No |  |
@@ -826,9 +861,13 @@ $public_v1_message = $client->PublicV1Message();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `array` | No |  |
-| `message` | `string` | No |  |
-| `success` | `bool` | No |  |
+| `date` | `string` | No |  |
+| `from` | `string` | No |  |
+| `has_attachment` | `bool` | No |  |
+| `id` | `string` | No |  |
+| `otp` | `string` | No |  |
+| `subject` | `string` | No |  |
+| `verification_link` | `string` | No |  |
 
 ### Operations
 
@@ -888,8 +927,8 @@ $public_v1_webhook = $client->PublicV1Webhook();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `string` | No |  |
-| `failure_count` | `int` | No |  |
+| `createdAt` | `string` | No |  |
+| `failureCount` | `int` | No |  |
 | `id` | `string` | No |  |
 | `inbox` | `string` | Yes |  |
 | `url` | `string` | Yes |  |
@@ -898,8 +937,8 @@ $public_v1_webhook = $client->PublicV1Webhook();
 
 | Field | list | create | remove |
 | --- | --- | --- | --- |
-| `created_at` | - | - | - |
-| `failure_count` | - | - | - |
+| `createdAt` | - | - | - |
+| `failureCount` | - | - | - |
 | `id` | - | - | - |
 | `inbox` | Yes | - | - |
 | `url` | Yes | - | - |
@@ -973,8 +1012,11 @@ $usage = $client->Usage();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `array` | No |  |
-| `success` | `bool` | No |  |
+| `credits` | `array` | No |  |
+| `period` | `array` | No |  |
+| `plan` | `string` | No |  |
+| `rate_limit` | `array` | No |  |
+| `requests` | `array` | No |  |
 
 ### Operations
 

@@ -8,7 +8,9 @@ guide: {
   entity: custom_domain: {
     path: "/v1/custom-domains": {
       op: create: method: *POST
+      op: create: transform: res: *("`body.data`")|top
       op: list: method: *GET
+      op: list: transform: res: *("`body.data`")|top
     }
     path: "/v1/custom-domains/{domain}": {
       rename: param: "domain": *"id"
@@ -19,31 +21,37 @@ guide: {
   entity: custom_domain_verify: {
     path: "/v1/custom-domains/{domain}/verify": {
       op: create: method: *POST
+      op: create: transform: res: *("`body.data`")|top
     }
   }
 
   entity: domain: {
     path: "/v1/domains": {
       op: list: method: *GET
+      op: list: transform: res: *("`body.data`")|top
     }
   }
 
   entity: domains_all: {
     path: "/v1/domains/all": {
       op: list: method: *GET
+      op: list: transform: res: *("`body.data`")|top
     }
   }
 
   entity: inbox: {
     path: "/v1/inboxes": {
       op: create: method: *POST
+      op: create: transform: req: "inbox": *("`reqdata`")|top
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
   }
 
   entity: men: {
     path: "/v1/me": {
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
   }
 
@@ -51,10 +59,12 @@ guide: {
     path: "/v1/inboxes/{inbox}/messages": {
       rename: param: "inbox": *"inbox_id"
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
     path: "/v1/inboxes/{inbox}/messages/{id}": {
       rename: param: "inbox": *"inbox_id"
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
   }
 
@@ -62,16 +72,19 @@ guide: {
     path: "/v1/inboxes/{inbox}/otp": {
       rename: param: "inbox": *"inbox_id"
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
     path: "/v1/otp/public": {
       action: "public": {}
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
   }
 
   entity: plan: {
     path: "/v1/plans": {
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
   }
 
@@ -79,10 +92,12 @@ guide: {
     path: "/v1/inboxes/{inbox}/insights": {
       rename: param: "inbox": *"inbox_id"
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
     path: "/v1/inboxes/{inbox}/timeline": {
       rename: param: "inbox": *"inbox_id"
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
   }
 
@@ -97,6 +112,7 @@ guide: {
     path: "/v1/inboxes/{inbox}/tests": {
       rename: param: "inbox": *"inbox_id"
       op: create: method: *POST
+      op: create: transform: res: *("`body.data`")|top
     }
   }
 
@@ -108,6 +124,7 @@ guide: {
     path: "/v1/inboxes/{inbox}/wait": {
       rename: param: "inbox": *"inbox_id"
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
   }
 
@@ -115,6 +132,7 @@ guide: {
     path: "/v1/webhooks": {
       op: create: method: *POST
       op: list: method: *GET
+      op: list: transform: res: *("`body.data`")|top
     }
     path: "/v1/webhooks/{id}": {
       op: remove: method: *DELETE
@@ -124,6 +142,7 @@ guide: {
   entity: usage: {
     path: "/v1/usage": {
       op: load: method: *GET
+      op: load: transform: res: *("`body.data`")|top
     }
   }
 

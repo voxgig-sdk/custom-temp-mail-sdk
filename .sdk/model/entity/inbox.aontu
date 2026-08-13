@@ -6,9 +6,9 @@ main: kit: entity: inbox: {
 
   fields: [
     {
-      name: "data"
+      name: "count"
       req: false
-      type: "`$OBJECT`"
+      type: "`$INTEGER`"
     }
     {
       name: "inbox"
@@ -22,7 +22,12 @@ main: kit: entity: inbox: {
       type: "`$STRING`"
     }
     {
-      name: "is_testing"
+      name: "inboxes"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "isTesting"
       req: false
       type: "`$BOOLEAN`"
     }
@@ -51,7 +56,9 @@ main: kit: entity: inbox: {
             "inboxes"
           ]
           transform: {
-            req: "`reqdata`"
+            req: {
+              inbox: "`reqdata`"
+            }
             res: "`body`"
           }
         }
@@ -69,7 +76,7 @@ main: kit: entity: inbox: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

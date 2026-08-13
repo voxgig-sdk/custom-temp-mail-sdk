@@ -63,7 +63,7 @@ func main() {
     }
 
     // Create a customDomain.
-    created, err := client.CustomDomain(nil).Create(map[string]any{"data": map[string]any{}, "domain": "example_domain", "mx_record": "example_mx_record", "txt_record": "example_txt_record", "verified": true}, nil)
+    created, err := client.CustomDomain(nil).Create(map[string]any{"domain": "example_domain", "mx_record": "example_mx_record", "txt_record": "example_txt_record", "verified": true}, nil)
     if err != nil {
         panic(err)
     }
@@ -85,12 +85,12 @@ Every entity operation returns `(value, error)`. Check `err` before
 using the value — there is no exception to catch:
 
 ```go
-customdomains, err := client.CustomDomain(nil).List(nil, nil)
+domains, err := client.Domain(nil).List(nil, nil)
 if err != nil {
     // handle err
     return
 }
-_ = customdomains
+_ = domains
 ```
 
 `Direct` follows the same `(value, error)` convention:
@@ -154,13 +154,13 @@ Create a mock client for unit testing — no server required:
 ```go
 client := sdk.Test()
 
-customDomain, err := client.CustomDomain(nil).List(
+domain, err := client.Domain(nil).List(
     nil, nil,
 )
 if err != nil {
     panic(err)
 }
-fmt.Println(customDomain) // the returned mock data
+fmt.Println(domain) // the returned mock data
 ```
 
 ### Use a custom fetch function
@@ -297,11 +297,8 @@ Only `Direct()` returns a response envelope — a `map[string]any` with
 | Field | Description |
 | --- | --- |
 | `"added_at"` |  |
-| `"data"` |  |
 | `"domain"` |  |
-| `"message"` |  |
 | `"mx_record"` |  |
-| `"success"` |  |
 | `"txt_record"` |  |
 | `"verified"` |  |
 
@@ -313,9 +310,10 @@ API path: `/v1/custom-domains`
 
 | Field | Description |
 | --- | --- |
-| `"data"` |  |
-| `"message"` |  |
-| `"success"` |  |
+| `"added_at"` |  |
+| `"domain"` |  |
+| `"mx_record"` |  |
+| `"txt_record"` |  |
 | `"verified"` |  |
 
 Operations: Create.
@@ -328,9 +326,9 @@ API path: `/v1/custom-domains/{domain}/verify`
 | --- | --- |
 | `"domain"` |  |
 | `"expires_at"` |  |
-| `"expires_in_day"` |  |
+| `"expires_in_days"` |  |
 | `"expiring_soon"` |  |
-| `"tag"` |  |
+| `"tags"` |  |
 | `"tier"` |  |
 
 Operations: List.
@@ -344,9 +342,9 @@ API path: `/v1/domains`
 | `"domain"` |  |
 | `"expired"` |  |
 | `"expires_at"` |  |
-| `"expires_in_day"` |  |
+| `"expires_in_days"` |  |
 | `"expiring_soon"` |  |
-| `"tag"` |  |
+| `"tags"` |  |
 | `"tier"` |  |
 
 Operations: List.
@@ -357,9 +355,10 @@ API path: `/v1/domains/all`
 
 | Field | Description |
 | --- | --- |
-| `"data"` |  |
+| `"count"` |  |
 | `"inbox"` |  |
-| `"is_testing"` |  |
+| `"inboxes"` |  |
+| `"isTesting"` |  |
 | `"message"` |  |
 | `"success"` |  |
 
@@ -371,8 +370,16 @@ API path: `/v1/inboxes`
 
 | Field | Description |
 | --- | --- |
-| `"data"` |  |
-| `"success"` |  |
+| `"api_inbox_count"` |  |
+| `"api_inboxes"` |  |
+| `"app_inbox_count"` |  |
+| `"app_inboxes"` |  |
+| `"credits"` |  |
+| `"custom_domain_count"` |  |
+| `"custom_domains"` |  |
+| `"features"` |  |
+| `"plan"` |  |
+| `"rate_limits"` |  |
 
 Operations: Load.
 
@@ -382,8 +389,21 @@ API path: `/v1/me`
 
 | Field | Description |
 | --- | --- |
-| `"data"` |  |
-| `"success"` |  |
+| `"attachments"` |  |
+| `"count"` |  |
+| `"date"` |  |
+| `"from"` |  |
+| `"has_attachment"` |  |
+| `"has_more"` |  |
+| `"html"` |  |
+| `"id"` |  |
+| `"inbox"` |  |
+| `"messages"` |  |
+| `"otp"` |  |
+| `"subject"` |  |
+| `"text"` |  |
+| `"to"` |  |
+| `"verification_link"` |  |
 
 Operations: Load.
 
@@ -393,8 +413,15 @@ API path: `/v1/inboxes/{inbox}/messages`
 
 | Field | Description |
 | --- | --- |
-| `"data"` |  |
-| `"success"` |  |
+| `"from"` |  |
+| `"inbox"` |  |
+| `"message"` |  |
+| `"message_id"` |  |
+| `"otp"` |  |
+| `"received_at"` |  |
+| `"score"` |  |
+| `"subject"` |  |
+| `"verification_link"` |  |
 
 Operations: Load.
 
@@ -404,8 +431,8 @@ API path: `/v1/inboxes/{inbox}/otp`
 
 | Field | Description |
 | --- | --- |
-| `"data"` |  |
-| `"success"` |  |
+| `"credit_packages"` |  |
+| `"plans"` |  |
 
 Operations: Load.
 
@@ -415,8 +442,12 @@ API path: `/v1/plans`
 
 | Field | Description |
 | --- | --- |
-| `"data"` |  |
-| `"success"` |  |
+| `"analyzed_at"` |  |
+| `"duration_hours"` |  |
+| `"event_count"` |  |
+| `"events"` |  |
+| `"inbox"` |  |
+| `"insights"` |  |
 
 Operations: Load.
 
@@ -427,18 +458,19 @@ API path: `/v1/inboxes/{inbox}/timeline`
 | Field | Description |
 | --- | --- |
 | `"count"` |  |
-| `"custom_firstname"` |  |
-| `"custom_surname"` |  |
+| `"custom_firstnames"` |  |
+| `"custom_surnames"` |  |
 | `"daily_limit"` |  |
 | `"daily_remaining"` |  |
 | `"daily_used"` |  |
-| `"data"` |  |
-| `"domain"` |  |
 | `"domain_mode"` |  |
+| `"domains"` |  |
 | `"inbox"` |  |
+| `"inboxes"` |  |
 | `"output_format"` |  |
-| `"parse_code"` |  |
+| `"parseCode"` |  |
 | `"since"` |  |
+| `"started_at"` |  |
 | `"success"` |  |
 | `"test_id"` |  |
 | `"username_style"` |  |
@@ -451,9 +483,13 @@ API path: `/v1/inboxes/{inbox}/tests`
 
 | Field | Description |
 | --- | --- |
-| `"data"` |  |
-| `"message"` |  |
-| `"success"` |  |
+| `"date"` |  |
+| `"from"` |  |
+| `"has_attachment"` |  |
+| `"id"` |  |
+| `"otp"` |  |
+| `"subject"` |  |
+| `"verification_link"` |  |
 
 Operations: Load, Remove.
 
@@ -463,8 +499,8 @@ API path: `/v1/inboxes/{inbox}/wait`
 
 | Field | Description |
 | --- | --- |
-| `"created_at"` |  |
-| `"failure_count"` |  |
+| `"createdAt"` |  |
+| `"failureCount"` |  |
 | `"id"` |  |
 | `"inbox"` |  |
 | `"url"` |  |
@@ -477,8 +513,11 @@ API path: `/v1/webhooks`
 
 | Field | Description |
 | --- | --- |
-| `"data"` |  |
-| `"success"` |  |
+| `"credits"` |  |
+| `"period"` |  |
+| `"plan"` |  |
+| `"rate_limit"` |  |
+| `"requests"` |  |
 
 Operations: Load.
 
@@ -506,11 +545,8 @@ Create an instance: `customDomain := client.CustomDomain(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `added_at` | `string` |  |
-| `data` | `map[string]any` |  |
 | `domain` | `string` |  |
-| `message` | `string` |  |
 | `mx_record` | `string` |  |
-| `success` | `bool` |  |
 | `txt_record` | `string` |  |
 | `verified` | `bool` |  |
 
@@ -528,7 +564,6 @@ fmt.Println(customDomains) // the array of records
 
 ```go
 result, err := client.CustomDomain(nil).Create(map[string]any{
-    "data": map[string]any{},
     "domain": "example_domain",
     "mx_record": "example_mx_record",
     "txt_record": "example_txt_record",
@@ -555,9 +590,10 @@ Create an instance: `customDomainVerify := client.CustomDomainVerify(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` |  |
-| `message` | `string` |  |
-| `success` | `bool` |  |
+| `added_at` | `string` |  |
+| `domain` | `string` |  |
+| `mx_record` | `string` |  |
+| `txt_record` | `string` |  |
 | `verified` | `bool` |  |
 
 #### Example: Create
@@ -565,6 +601,9 @@ Create an instance: `customDomainVerify := client.CustomDomainVerify(nil)`
 ```go
 result, err := client.CustomDomainVerify(nil).Create(map[string]any{
     "domain": "example_domain",
+    "mx_record": "example_mx_record",
+    "txt_record": "example_txt_record",
+    "verified": true,
 }, nil)
 if err != nil {
     panic(err)
@@ -589,9 +628,9 @@ Create an instance: `domain := client.Domain(nil)`
 | --- | --- | --- |
 | `domain` | `string` |  |
 | `expires_at` | `string` |  |
-| `expires_in_day` | `int` |  |
+| `expires_in_days` | `int` |  |
 | `expiring_soon` | `bool` |  |
-| `tag` | `[]any` |  |
+| `tags` | `[]any` |  |
 | `tier` | `string` |  |
 
 #### Example: List
@@ -622,9 +661,9 @@ Create an instance: `domainsAll := client.DomainsAll(nil)`
 | `domain` | `string` |  |
 | `expired` | `bool` |  |
 | `expires_at` | `string` |  |
-| `expires_in_day` | `int` |  |
+| `expires_in_days` | `int` |  |
 | `expiring_soon` | `bool` |  |
-| `tag` | `[]any` |  |
+| `tags` | `[]any` |  |
 | `tier` | `string` |  |
 
 #### Example: List
@@ -653,9 +692,10 @@ Create an instance: `inbox := client.Inbox(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` |  |
+| `count` | `int` |  |
 | `inbox` | `string` |  |
-| `is_testing` | `bool` |  |
+| `inboxes` | `[]any` |  |
+| `isTesting` | `bool` |  |
 | `message` | `string` |  |
 | `success` | `bool` |  |
 
@@ -695,8 +735,16 @@ Create an instance: `men := client.Men(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` |  |
-| `success` | `bool` |  |
+| `api_inbox_count` | `int` |  |
+| `api_inboxes` | `[]any` |  |
+| `app_inbox_count` | `int` |  |
+| `app_inboxes` | `[]any` |  |
+| `credits` | `int` |  |
+| `custom_domain_count` | `int` |  |
+| `custom_domains` | `[]any` |  |
+| `features` | `map[string]any` |  |
+| `plan` | `string` |  |
+| `rate_limits` | `map[string]any` |  |
 
 #### Example: Load
 
@@ -723,8 +771,21 @@ Create an instance: `message := client.Message(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` |  |
-| `success` | `bool` |  |
+| `attachments` | `[]any` |  |
+| `count` | `int` |  |
+| `date` | `string` |  |
+| `from` | `string` |  |
+| `has_attachment` | `bool` |  |
+| `has_more` | `bool` |  |
+| `html` | `string` |  |
+| `id` | `string` |  |
+| `inbox` | `string` |  |
+| `messages` | `[]any` |  |
+| `otp` | `string` |  |
+| `subject` | `string` |  |
+| `text` | `string` |  |
+| `to` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
@@ -751,8 +812,15 @@ Create an instance: `otp := client.Otp(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` |  |
-| `success` | `bool` |  |
+| `from` | `string` |  |
+| `inbox` | `string` |  |
+| `message` | `string` |  |
+| `message_id` | `string` |  |
+| `otp` | `string` |  |
+| `received_at` | `string` |  |
+| `score` | `float64` |  |
+| `subject` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
@@ -779,8 +847,8 @@ Create an instance: `plan := client.Plan(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` |  |
-| `success` | `bool` |  |
+| `credit_packages` | `[]any` |  |
+| `plans` | `[]any` |  |
 
 #### Example: Load
 
@@ -807,8 +875,12 @@ Create an instance: `publicV1DashboardAnalytics := client.PublicV1DashboardAnaly
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` |  |
-| `success` | `bool` |  |
+| `analyzed_at` | `string` |  |
+| `duration_hours` | `int` |  |
+| `event_count` | `int` |  |
+| `events` | `[]any` |  |
+| `inbox` | `string` |  |
+| `insights` | `[]any` |  |
 
 #### Example: Load
 
@@ -837,18 +909,19 @@ Create an instance: `publicV1Inbox := client.PublicV1Inbox(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `count` | `int` |  |
-| `custom_firstname` | `[]any` |  |
-| `custom_surname` | `[]any` |  |
+| `custom_firstnames` | `[]any` |  |
+| `custom_surnames` | `[]any` |  |
 | `daily_limit` | `int` |  |
 | `daily_remaining` | `int` |  |
 | `daily_used` | `int` |  |
-| `data` | `map[string]any` |  |
-| `domain` | `[]any` |  |
 | `domain_mode` | `string` |  |
-| `inbox` | `[]any` |  |
+| `domains` | `[]any` |  |
+| `inbox` | `string` |  |
+| `inboxes` | `[]any` |  |
 | `output_format` | `string` |  |
-| `parse_code` | `bool` |  |
+| `parseCode` | `bool` |  |
 | `since` | `int` |  |
+| `started_at` | `string` |  |
 | `success` | `bool` |  |
 | `test_id` | `string` |  |
 | `username_style` | `string` |  |
@@ -880,9 +953,13 @@ Create an instance: `publicV1Message := client.PublicV1Message(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` |  |
-| `message` | `string` |  |
-| `success` | `bool` |  |
+| `date` | `string` |  |
+| `from` | `string` |  |
+| `has_attachment` | `bool` |  |
+| `id` | `string` |  |
+| `otp` | `string` |  |
+| `subject` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
@@ -911,8 +988,8 @@ Create an instance: `publicV1Webhook := client.PublicV1Webhook(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `created_at` | `string` |  |
-| `failure_count` | `int` |  |
+| `createdAt` | `string` |  |
+| `failureCount` | `int` |  |
 | `id` | `string` |  |
 | `inbox` | `string` |  |
 | `url` | `string` |  |
@@ -955,8 +1032,11 @@ Create an instance: `usage := client.Usage(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` |  |
-| `success` | `bool` |  |
+| `credits` | `map[string]any` |  |
+| `period` | `map[string]any` |  |
+| `plan` | `string` |  |
+| `rate_limit` | `map[string]any` |  |
+| `requests` | `map[string]any` |  |
 
 #### Example: Load
 
@@ -1042,11 +1122,11 @@ Entity instances are stateful. After a successful `List`, the entity
 stores the returned data and match criteria internally.
 
 ```go
-customdomain := client.CustomDomain(nil)
-customdomain.List(nil, nil)
+domain := client.Domain(nil)
+domain.List(nil, nil)
 
-// customdomain.Data() now returns the customdomain data from the last list
-// customdomain.Match() returns the last match criteria
+// domain.Data() now returns the domain data from the last list
+// domain.Match() returns the last match criteria
 ```
 
 Call `Make()` to create a fresh instance with the same configuration

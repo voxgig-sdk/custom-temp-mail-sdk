@@ -11,29 +11,14 @@ main: kit: entity: custom_domain: {
       type: "`$STRING`"
     }
     {
-      name: "data"
-      req: true
-      type: "`$OBJECT`"
-    }
-    {
       name: "domain"
       req: true
-      type: "`$STRING`"
-    }
-    {
-      name: "message"
-      req: false
       type: "`$STRING`"
     }
     {
       name: "mx_record"
       req: true
       type: "`$STRING`"
-    }
-    {
-      name: "success"
-      req: false
-      type: "`$BOOLEAN`"
     }
     {
       name: "txt_record"
@@ -61,7 +46,7 @@ main: kit: entity: custom_domain: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]
@@ -78,7 +63,7 @@ main: kit: entity: custom_domain: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

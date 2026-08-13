@@ -26,8 +26,8 @@ import {
 describe('MessageEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when CUSTOMTEMPMAIL_TEST_LIVE=TRUE.
-  afterEach(liveDelay('CUSTOMTEMPMAIL_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when CUSTOM_TEMP_MAIL_TEST_LIVE=TRUE.
+  afterEach(liveDelay('CUSTOM_TEMP_MAIL_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = CustomTempMailSDK.test()
@@ -59,9 +59,12 @@ describe('MessageEntity', async () => {
 
     let message_ref01_data = Object.values(setup.data.existing.message)[0] as any
 
-    // LOAD: skipped — no entity id field and load requires path params.
-    // Entity-var is declared here so later flow steps still compile.
+    // LOAD
     const message_ref01_ent = client.Message()
+    const message_ref01_match_dt0: any = {}
+    message_ref01_match_dt0.id = message_ref01_data.id
+    const message_ref01_data_dt0 = (await message_ref01_ent.load(message_ref01_match_dt0)).data()
+    assert(message_ref01_data_dt0.id === message_ref01_data.id)
 
 
   })

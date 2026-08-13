@@ -63,7 +63,7 @@ print(message)
 
 ```lua
 -- Create
-local created, err = client:CustomDomain():create({ data = {}, domain = "example_domain", mx_record = "example_mx_record", txt_record = "example_txt_record", verified = true })
+local created, err = client:CustomDomain():create({ domain = "example_domain", mx_record = "example_mx_record", txt_record = "example_txt_record", verified = true })
 if err then error(err) end
 
 -- Remove
@@ -77,7 +77,7 @@ Entity operations return `(value, err)`. Check `err` before using
 the value:
 
 ```lua
-local customdomains, err = client:CustomDomain():list()
+local domains, err = client:Domain():list()
 if err then error(err) end
 ```
 
@@ -135,7 +135,7 @@ Create a mock client for unit testing — no server required:
 ```lua
 local client = sdk.test()
 
-local result, err = client:CustomDomain():list()
+local result, err = client:Domain():list()
 -- result is the returned data; err is set on failure
 ```
 
@@ -260,9 +260,9 @@ data **directly** — there is no wrapper:
 
 Check `err` first (it is non-`nil` on failure), then use `value`:
 
-    local custom_domain, err = client:CustomDomain():load()
+    local inbox, err = client:Inbox():load()
     if err then error(err) end
-    -- custom_domain is the loaded record
+    -- inbox is the loaded record
 
 Only `direct()` returns a response envelope — a `table` with `ok`,
 `status`, `headers`, and `data` keys.
@@ -274,11 +274,8 @@ Only `direct()` returns a response envelope — a `table` with `ok`,
 | Field | Description |
 | --- | --- |
 | `added_at` |  |
-| `data` |  |
 | `domain` |  |
-| `message` |  |
 | `mx_record` |  |
-| `success` |  |
 | `txt_record` |  |
 | `verified` |  |
 
@@ -290,9 +287,10 @@ API path: `/v1/custom-domains`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `message` |  |
-| `success` |  |
+| `added_at` |  |
+| `domain` |  |
+| `mx_record` |  |
+| `txt_record` |  |
 | `verified` |  |
 
 Operations: Create.
@@ -305,9 +303,9 @@ API path: `/v1/custom-domains/{domain}/verify`
 | --- | --- |
 | `domain` |  |
 | `expires_at` |  |
-| `expires_in_day` |  |
+| `expires_in_days` |  |
 | `expiring_soon` |  |
-| `tag` |  |
+| `tags` |  |
 | `tier` |  |
 
 Operations: List.
@@ -321,9 +319,9 @@ API path: `/v1/domains`
 | `domain` |  |
 | `expired` |  |
 | `expires_at` |  |
-| `expires_in_day` |  |
+| `expires_in_days` |  |
 | `expiring_soon` |  |
-| `tag` |  |
+| `tags` |  |
 | `tier` |  |
 
 Operations: List.
@@ -334,9 +332,10 @@ API path: `/v1/domains/all`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
+| `count` |  |
 | `inbox` |  |
-| `is_testing` |  |
+| `inboxes` |  |
+| `isTesting` |  |
 | `message` |  |
 | `success` |  |
 
@@ -348,8 +347,16 @@ API path: `/v1/inboxes`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `api_inbox_count` |  |
+| `api_inboxes` |  |
+| `app_inbox_count` |  |
+| `app_inboxes` |  |
+| `credits` |  |
+| `custom_domain_count` |  |
+| `custom_domains` |  |
+| `features` |  |
+| `plan` |  |
+| `rate_limits` |  |
 
 Operations: Load.
 
@@ -359,8 +366,21 @@ API path: `/v1/me`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `attachments` |  |
+| `count` |  |
+| `date` |  |
+| `from` |  |
+| `has_attachment` |  |
+| `has_more` |  |
+| `html` |  |
+| `id` |  |
+| `inbox` |  |
+| `messages` |  |
+| `otp` |  |
+| `subject` |  |
+| `text` |  |
+| `to` |  |
+| `verification_link` |  |
 
 Operations: Load.
 
@@ -370,8 +390,15 @@ API path: `/v1/inboxes/{inbox}/messages`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `from` |  |
+| `inbox` |  |
+| `message` |  |
+| `message_id` |  |
+| `otp` |  |
+| `received_at` |  |
+| `score` |  |
+| `subject` |  |
+| `verification_link` |  |
 
 Operations: Load.
 
@@ -381,8 +408,8 @@ API path: `/v1/inboxes/{inbox}/otp`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `credit_packages` |  |
+| `plans` |  |
 
 Operations: Load.
 
@@ -392,8 +419,12 @@ API path: `/v1/plans`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `analyzed_at` |  |
+| `duration_hours` |  |
+| `event_count` |  |
+| `events` |  |
+| `inbox` |  |
+| `insights` |  |
 
 Operations: Load.
 
@@ -404,18 +435,19 @@ API path: `/v1/inboxes/{inbox}/timeline`
 | Field | Description |
 | --- | --- |
 | `count` |  |
-| `custom_firstname` |  |
-| `custom_surname` |  |
+| `custom_firstnames` |  |
+| `custom_surnames` |  |
 | `daily_limit` |  |
 | `daily_remaining` |  |
 | `daily_used` |  |
-| `data` |  |
-| `domain` |  |
 | `domain_mode` |  |
+| `domains` |  |
 | `inbox` |  |
+| `inboxes` |  |
 | `output_format` |  |
-| `parse_code` |  |
+| `parseCode` |  |
 | `since` |  |
+| `started_at` |  |
 | `success` |  |
 | `test_id` |  |
 | `username_style` |  |
@@ -428,9 +460,13 @@ API path: `/v1/inboxes/{inbox}/tests`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `message` |  |
-| `success` |  |
+| `date` |  |
+| `from` |  |
+| `has_attachment` |  |
+| `id` |  |
+| `otp` |  |
+| `subject` |  |
+| `verification_link` |  |
 
 Operations: Load, Remove.
 
@@ -440,8 +476,8 @@ API path: `/v1/inboxes/{inbox}/wait`
 
 | Field | Description |
 | --- | --- |
-| `created_at` |  |
-| `failure_count` |  |
+| `createdAt` |  |
+| `failureCount` |  |
 | `id` |  |
 | `inbox` |  |
 | `url` |  |
@@ -454,8 +490,11 @@ API path: `/v1/webhooks`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `credits` |  |
+| `period` |  |
+| `plan` |  |
+| `rate_limit` |  |
+| `requests` |  |
 
 Operations: Load.
 
@@ -483,11 +522,8 @@ Create an instance: `local custom_domain = client:CustomDomain(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `added_at` | `string` |  |
-| `data` | `table` |  |
 | `domain` | `string` |  |
-| `message` | `string` |  |
 | `mx_record` | `string` |  |
-| `success` | `boolean` |  |
 | `txt_record` | `string` |  |
 | `verified` | `boolean` |  |
 
@@ -501,7 +537,6 @@ local custom_domains, err = client:CustomDomain():list()
 
 ```lua
 local custom_domain, err = client:CustomDomain():create({
-  data = {}, -- table
   domain = "example_domain", -- string
   mx_record = "example_mx_record", -- string
   txt_record = "example_txt_record", -- string
@@ -524,9 +559,10 @@ Create an instance: `local custom_domain_verify = client:CustomDomainVerify(nil)
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `table` |  |
-| `message` | `string` |  |
-| `success` | `boolean` |  |
+| `added_at` | `string` |  |
+| `domain` | `string` |  |
+| `mx_record` | `string` |  |
+| `txt_record` | `string` |  |
 | `verified` | `boolean` |  |
 
 #### Example: Create
@@ -534,6 +570,9 @@ Create an instance: `local custom_domain_verify = client:CustomDomainVerify(nil)
 ```lua
 local custom_domain_verify, err = client:CustomDomainVerify():create({
   domain = "example_domain", -- string
+  mx_record = "example_mx_record", -- string
+  txt_record = "example_txt_record", -- string
+  verified = true, -- boolean
 })
 ```
 
@@ -554,9 +593,9 @@ Create an instance: `local domain = client:Domain(nil)`
 | --- | --- | --- |
 | `domain` | `string` |  |
 | `expires_at` | `string` |  |
-| `expires_in_day` | `number` |  |
+| `expires_in_days` | `number` |  |
 | `expiring_soon` | `boolean` |  |
-| `tag` | `table` |  |
+| `tags` | `table` |  |
 | `tier` | `string` |  |
 
 #### Example: List
@@ -583,9 +622,9 @@ Create an instance: `local domains_all = client:DomainsAll(nil)`
 | `domain` | `string` |  |
 | `expired` | `boolean` |  |
 | `expires_at` | `string` |  |
-| `expires_in_day` | `number` |  |
+| `expires_in_days` | `number` |  |
 | `expiring_soon` | `boolean` |  |
-| `tag` | `table` |  |
+| `tags` | `table` |  |
 | `tier` | `string` |  |
 
 #### Example: List
@@ -610,9 +649,10 @@ Create an instance: `local inbox = client:Inbox(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `table` |  |
+| `count` | `number` |  |
 | `inbox` | `string` |  |
-| `is_testing` | `boolean` |  |
+| `inboxes` | `table` |  |
+| `isTesting` | `boolean` |  |
 | `message` | `string` |  |
 | `success` | `boolean` |  |
 
@@ -644,8 +684,16 @@ Create an instance: `local men = client:Men(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `table` |  |
-| `success` | `boolean` |  |
+| `api_inbox_count` | `number` |  |
+| `api_inboxes` | `table` |  |
+| `app_inbox_count` | `number` |  |
+| `app_inboxes` | `table` |  |
+| `credits` | `number` |  |
+| `custom_domain_count` | `number` |  |
+| `custom_domains` | `table` |  |
+| `features` | `table` |  |
+| `plan` | `string` |  |
+| `rate_limits` | `table` |  |
 
 #### Example: Load
 
@@ -668,8 +716,21 @@ Create an instance: `local message = client:Message(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `table` |  |
-| `success` | `boolean` |  |
+| `attachments` | `table` |  |
+| `count` | `number` |  |
+| `date` | `string` |  |
+| `from` | `string` |  |
+| `has_attachment` | `boolean` |  |
+| `has_more` | `boolean` |  |
+| `html` | `string` |  |
+| `id` | `string` |  |
+| `inbox` | `string` |  |
+| `messages` | `table` |  |
+| `otp` | `string` |  |
+| `subject` | `string` |  |
+| `text` | `string` |  |
+| `to` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
@@ -692,8 +753,15 @@ Create an instance: `local otp = client:Otp(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `table` |  |
-| `success` | `boolean` |  |
+| `from` | `string` |  |
+| `inbox` | `string` |  |
+| `message` | `string` |  |
+| `message_id` | `string` |  |
+| `otp` | `string` |  |
+| `received_at` | `string` |  |
+| `score` | `number` |  |
+| `subject` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
@@ -716,8 +784,8 @@ Create an instance: `local plan = client:Plan(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `table` |  |
-| `success` | `boolean` |  |
+| `credit_packages` | `table` |  |
+| `plans` | `table` |  |
 
 #### Example: Load
 
@@ -740,8 +808,12 @@ Create an instance: `local public_v1_dashboard_analytics = client:PublicV1Dashbo
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `table` |  |
-| `success` | `boolean` |  |
+| `analyzed_at` | `string` |  |
+| `duration_hours` | `number` |  |
+| `event_count` | `number` |  |
+| `events` | `table` |  |
+| `inbox` | `string` |  |
+| `insights` | `table` |  |
 
 #### Example: Load
 
@@ -766,18 +838,19 @@ Create an instance: `local public_v1_inbox = client:PublicV1Inbox(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `count` | `number` |  |
-| `custom_firstname` | `table` |  |
-| `custom_surname` | `table` |  |
+| `custom_firstnames` | `table` |  |
+| `custom_surnames` | `table` |  |
 | `daily_limit` | `number` |  |
 | `daily_remaining` | `number` |  |
 | `daily_used` | `number` |  |
-| `data` | `table` |  |
-| `domain` | `table` |  |
 | `domain_mode` | `string` |  |
-| `inbox` | `table` |  |
+| `domains` | `table` |  |
+| `inbox` | `string` |  |
+| `inboxes` | `table` |  |
 | `output_format` | `string` |  |
-| `parse_code` | `boolean` |  |
+| `parseCode` | `boolean` |  |
 | `since` | `number` |  |
+| `started_at` | `string` |  |
 | `success` | `boolean` |  |
 | `test_id` | `string` |  |
 | `username_style` | `string` |  |
@@ -805,9 +878,13 @@ Create an instance: `local public_v1_message = client:PublicV1Message(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `table` |  |
-| `message` | `string` |  |
-| `success` | `boolean` |  |
+| `date` | `string` |  |
+| `from` | `string` |  |
+| `has_attachment` | `boolean` |  |
+| `id` | `string` |  |
+| `otp` | `string` |  |
+| `subject` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
@@ -832,8 +909,8 @@ Create an instance: `local public_v1_webhook = client:PublicV1Webhook(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `created_at` | `string` |  |
-| `failure_count` | `number` |  |
+| `createdAt` | `string` |  |
+| `failureCount` | `number` |  |
 | `id` | `string` |  |
 | `inbox` | `string` |  |
 | `url` | `string` |  |
@@ -868,8 +945,11 @@ Create an instance: `local usage = client:Usage(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `table` |  |
-| `success` | `boolean` |  |
+| `credits` | `table` |  |
+| `period` | `table` |  |
+| `plan` | `string` |  |
+| `rate_limit` | `table` |  |
+| `requests` | `table` |  |
 
 #### Example: Load
 
@@ -954,11 +1034,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```lua
-local customdomain = client:CustomDomain()
-customdomain:list()
+local domain = client:Domain()
+domain:list()
 
--- customdomain:data_get() now returns the customdomain data from the last list
--- customdomain:match_get() returns the last match criteria
+-- domain:data_get() now returns the domain data from the last list
+-- domain:match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

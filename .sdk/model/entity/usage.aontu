@@ -6,14 +6,29 @@ main: kit: entity: usage: {
 
   fields: [
     {
-      name: "data"
+      name: "credits"
       req: false
       type: "`$OBJECT`"
     }
     {
-      name: "success"
+      name: "period"
       req: false
-      type: "`$BOOLEAN`"
+      type: "`$OBJECT`"
+    }
+    {
+      name: "plan"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "rate_limit"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "requests"
+      req: false
+      type: "`$OBJECT`"
     }
   ]
 
@@ -31,7 +46,7 @@ main: kit: entity: usage: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

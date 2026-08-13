@@ -61,16 +61,16 @@ function custom_domain_direct_setup(mockres)
   local calls = {}
 
   local env = runner.env_override({
-    ["CUSTOMTEMPMAIL_TEST_CUSTOM_DOMAIN_ENTID"] = {},
-    ["CUSTOMTEMPMAIL_TEST_LIVE"] = "FALSE",
-    ["CUSTOMTEMPMAIL_APIKEY"] = "NONE",
+    ["CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_ENTID"] = {},
+    ["CUSTOM_TEMP_MAIL_TEST_LIVE"] = "FALSE",
+    ["CUSTOM_TEMP_MAIL_APIKEY"] = "NONE",
   })
 
-  local live = env["CUSTOMTEMPMAIL_TEST_LIVE"] == "TRUE"
+  local live = env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE"
 
   if live then
     local merged_opts = {
-      apikey = env["CUSTOMTEMPMAIL_APIKEY"],
+      apikey = env["CUSTOM_TEMP_MAIL_APIKEY"],
     }
     local client = sdk.new(merged_opts)
     return {

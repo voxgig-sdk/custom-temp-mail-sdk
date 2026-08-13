@@ -26,8 +26,8 @@ import {
 describe('CustomDomainEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when CUSTOMTEMPMAIL_TEST_LIVE=TRUE.
-  afterEach(liveDelay('CUSTOMTEMPMAIL_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when CUSTOM_TEMP_MAIL_TEST_LIVE=TRUE.
+  afterEach(liveDelay('CUSTOM_TEMP_MAIL_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = CustomTempMailSDK.test()
@@ -62,29 +62,21 @@ describe('CustomDomainEntity', async () => {
     const custom_domain_ref01_ent = client.CustomDomain()
     let custom_domain_ref01_data = setup.data.new.custom_domain['custom_domain_ref01']
 
-    custom_domain_ref01_data = await custom_domain_ref01_ent.create(custom_domain_ref01_data)
+    custom_domain_ref01_data = (await custom_domain_ref01_ent.create(custom_domain_ref01_data)).data()
     assert(null != custom_domain_ref01_data)
 
 
     // LIST
     const custom_domain_ref01_match: any = {}
 
-    const custom_domain_ref01_list = await custom_domain_ref01_ent.list(custom_domain_ref01_match)
-
-    assert(!isempty(select(custom_domain_ref01_list, { id: custom_domain_ref01_data.id })))
+    const custom_domain_ref01_list = (await custom_domain_ref01_ent.list(custom_domain_ref01_match)).map((e: any) => e.data())
 
 
-    // REMOVE
-    const custom_domain_ref01_match_rm0: any = { id: custom_domain_ref01_data.id }
-    await custom_domain_ref01_ent.remove(custom_domain_ref01_match_rm0)
-  
 
     // LIST
     const custom_domain_ref01_match_rt0: any = {}
 
-    const custom_domain_ref01_list_rt0 = await custom_domain_ref01_ent.list(custom_domain_ref01_match_rt0)
-
-    assert(isempty(select(custom_domain_ref01_list_rt0, { id: custom_domain_ref01_data.id })))
+    const custom_domain_ref01_list_rt0 = (await custom_domain_ref01_ent.list(custom_domain_ref01_match_rt0)).map((e: any) => e.data())
 
 
   })

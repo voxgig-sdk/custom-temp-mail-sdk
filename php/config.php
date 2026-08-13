@@ -55,52 +55,31 @@ class CustomTempMailConfig
             ],
             [
               'active' => true,
-              'name' => 'data',
-              'req' => true,
-              'type' => '`$OBJECT`',
-              'index$' => 1,
-            ],
-            [
-              'active' => true,
               'name' => 'domain',
               'req' => true,
               'type' => '`$STRING`',
-              'index$' => 2,
-            ],
-            [
-              'active' => true,
-              'name' => 'message',
-              'req' => false,
-              'type' => '`$STRING`',
-              'index$' => 3,
+              'index$' => 1,
             ],
             [
               'active' => true,
               'name' => 'mx_record',
               'req' => true,
               'type' => '`$STRING`',
-              'index$' => 4,
-            ],
-            [
-              'active' => true,
-              'name' => 'success',
-              'req' => false,
-              'type' => '`$BOOLEAN`',
-              'index$' => 5,
+              'index$' => 2,
             ],
             [
               'active' => true,
               'name' => 'txt_record',
               'req' => true,
               'type' => '`$STRING`',
-              'index$' => 6,
+              'index$' => 3,
             ],
             [
               'active' => true,
               'name' => 'verified',
               'req' => true,
               'type' => '`$BOOLEAN`',
-              'index$' => 7,
+              'index$' => 4,
             ],
           ],
           'name' => 'custom_domain',
@@ -112,6 +91,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/custom-domains',
                   'parts' => [
@@ -121,7 +101,7 @@ class CustomTempMailConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -135,6 +115,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/custom-domains',
                   'parts' => [
@@ -144,7 +125,7 @@ class CustomTempMailConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -171,6 +152,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/v1/custom-domains/{domain}',
                   'parts' => [
@@ -206,31 +188,38 @@ class CustomTempMailConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'data',
-              'req' => true,
-              'type' => '`$OBJECT`',
+              'name' => 'added_at',
+              'req' => false,
+              'type' => '`$STRING`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'message',
-              'req' => false,
+              'name' => 'domain',
+              'req' => true,
               'type' => '`$STRING`',
               'index$' => 1,
             ],
             [
               'active' => true,
-              'name' => 'success',
-              'req' => false,
-              'type' => '`$BOOLEAN`',
+              'name' => 'mx_record',
+              'req' => true,
+              'type' => '`$STRING`',
               'index$' => 2,
             ],
             [
               'active' => true,
-              'name' => 'verified',
-              'req' => false,
-              'type' => '`$BOOLEAN`',
+              'name' => 'txt_record',
+              'req' => true,
+              'type' => '`$STRING`',
               'index$' => 3,
+            ],
+            [
+              'active' => true,
+              'name' => 'verified',
+              'req' => true,
+              'type' => '`$BOOLEAN`',
+              'index$' => 4,
             ],
           ],
           'name' => 'custom_domain_verify',
@@ -255,6 +244,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/custom-domains/{domain}/verify',
                   'parts' => [
@@ -270,7 +260,7 @@ class CustomTempMailConfig
                   ],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -304,7 +294,7 @@ class CustomTempMailConfig
             ],
             [
               'active' => true,
-              'name' => 'expires_in_day',
+              'name' => 'expires_in_days',
               'req' => false,
               'type' => '`$INTEGER`',
               'index$' => 2,
@@ -318,7 +308,7 @@ class CustomTempMailConfig
             ],
             [
               'active' => true,
-              'name' => 'tag',
+              'name' => 'tags',
               'req' => true,
               'type' => '`$ARRAY`',
               'index$' => 4,
@@ -340,6 +330,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/domains',
                   'parts' => [
@@ -349,7 +340,7 @@ class CustomTempMailConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -392,7 +383,7 @@ class CustomTempMailConfig
             ],
             [
               'active' => true,
-              'name' => 'expires_in_day',
+              'name' => 'expires_in_days',
               'op' => [
                 'list' => [
                   'req' => true,
@@ -418,7 +409,7 @@ class CustomTempMailConfig
             ],
             [
               'active' => true,
-              'name' => 'tag',
+              'name' => 'tags',
               'req' => true,
               'type' => '`$ARRAY`',
               'index$' => 5,
@@ -440,6 +431,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/domains/all',
                   'parts' => [
@@ -450,7 +442,7 @@ class CustomTempMailConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -466,9 +458,9 @@ class CustomTempMailConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'data',
+              'name' => 'count',
               'req' => false,
-              'type' => '`$OBJECT`',
+              'type' => '`$INTEGER`',
               'index$' => 0,
             ],
             [
@@ -486,24 +478,31 @@ class CustomTempMailConfig
             ],
             [
               'active' => true,
-              'name' => 'is_testing',
+              'name' => 'inboxes',
+              'req' => false,
+              'type' => '`$ARRAY`',
+              'index$' => 2,
+            ],
+            [
+              'active' => true,
+              'name' => 'isTesting',
               'req' => false,
               'type' => '`$BOOLEAN`',
-              'index$' => 2,
+              'index$' => 3,
             ],
             [
               'active' => true,
               'name' => 'message',
               'req' => false,
               'type' => '`$STRING`',
-              'index$' => 3,
+              'index$' => 4,
             ],
             [
               'active' => true,
               'name' => 'success',
               'req' => false,
               'type' => '`$BOOLEAN`',
-              'index$' => 4,
+              'index$' => 5,
             ],
           ],
           'name' => 'inbox',
@@ -515,6 +514,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/inboxes',
                   'parts' => [
@@ -523,7 +523,9 @@ class CustomTempMailConfig
                   ],
                   'select' => [],
                   'transform' => [
-                    'req' => '`reqdata`',
+                    'req' => [
+                      'inbox' => '`reqdata`',
+                    ],
                     'res' => '`body`',
                   ],
                   'index$' => 0,
@@ -538,6 +540,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes',
                   'parts' => [
@@ -547,7 +550,7 @@ class CustomTempMailConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -563,17 +566,73 @@ class CustomTempMailConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'data',
+              'name' => 'api_inbox_count',
               'req' => false,
-              'type' => '`$OBJECT`',
+              'type' => '`$INTEGER`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'success',
+              'name' => 'api_inboxes',
               'req' => false,
-              'type' => '`$BOOLEAN`',
+              'type' => '`$ARRAY`',
               'index$' => 1,
+            ],
+            [
+              'active' => true,
+              'name' => 'app_inbox_count',
+              'req' => false,
+              'type' => '`$INTEGER`',
+              'index$' => 2,
+            ],
+            [
+              'active' => true,
+              'name' => 'app_inboxes',
+              'req' => false,
+              'type' => '`$ARRAY`',
+              'index$' => 3,
+            ],
+            [
+              'active' => true,
+              'name' => 'credits',
+              'req' => false,
+              'type' => '`$INTEGER`',
+              'index$' => 4,
+            ],
+            [
+              'active' => true,
+              'name' => 'custom_domain_count',
+              'req' => false,
+              'type' => '`$INTEGER`',
+              'index$' => 5,
+            ],
+            [
+              'active' => true,
+              'name' => 'custom_domains',
+              'req' => false,
+              'type' => '`$ARRAY`',
+              'index$' => 6,
+            ],
+            [
+              'active' => true,
+              'name' => 'features',
+              'req' => false,
+              'type' => '`$OBJECT`',
+              'index$' => 7,
+            ],
+            [
+              'active' => true,
+              'name' => 'plan',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 8,
+            ],
+            [
+              'active' => true,
+              'name' => 'rate_limits',
+              'req' => false,
+              'type' => '`$OBJECT`',
+              'index$' => 9,
             ],
           ],
           'name' => 'men',
@@ -585,6 +644,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/me',
                   'parts' => [
@@ -594,7 +654,7 @@ class CustomTempMailConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -610,17 +670,108 @@ class CustomTempMailConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'data',
+              'name' => 'attachments',
               'req' => false,
-              'type' => '`$OBJECT`',
+              'type' => '`$ARRAY`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'success',
+              'name' => 'count',
+              'req' => false,
+              'type' => '`$INTEGER`',
+              'index$' => 1,
+            ],
+            [
+              'active' => true,
+              'name' => 'date',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 2,
+            ],
+            [
+              'active' => true,
+              'name' => 'from',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 3,
+            ],
+            [
+              'active' => true,
+              'name' => 'has_attachment',
               'req' => false,
               'type' => '`$BOOLEAN`',
-              'index$' => 1,
+              'index$' => 4,
+            ],
+            [
+              'active' => true,
+              'name' => 'has_more',
+              'req' => false,
+              'type' => '`$BOOLEAN`',
+              'index$' => 5,
+            ],
+            [
+              'active' => true,
+              'name' => 'html',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 6,
+            ],
+            [
+              'active' => true,
+              'name' => 'id',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 7,
+            ],
+            [
+              'active' => true,
+              'name' => 'inbox',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 8,
+            ],
+            [
+              'active' => true,
+              'name' => 'messages',
+              'req' => false,
+              'type' => '`$ARRAY`',
+              'index$' => 9,
+            ],
+            [
+              'active' => true,
+              'name' => 'otp',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 10,
+            ],
+            [
+              'active' => true,
+              'name' => 'subject',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 11,
+            ],
+            [
+              'active' => true,
+              'name' => 'text',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 12,
+            ],
+            [
+              'active' => true,
+              'name' => 'to',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 13,
+            ],
+            [
+              'active' => true,
+              'name' => 'verification_link',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 14,
             ],
           ],
           'name' => 'message',
@@ -663,6 +814,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/messages',
                   'parts' => [
@@ -685,7 +837,7 @@ class CustomTempMailConfig
                   ],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -713,6 +865,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/messages/{id}',
                   'parts' => [
@@ -735,7 +888,7 @@ class CustomTempMailConfig
                   ],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 1,
                 ],
@@ -755,17 +908,66 @@ class CustomTempMailConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'data',
+              'name' => 'from',
               'req' => false,
-              'type' => '`$OBJECT`',
+              'type' => '`$STRING`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'success',
+              'name' => 'inbox',
               'req' => false,
-              'type' => '`$BOOLEAN`',
+              'type' => '`$STRING`',
               'index$' => 1,
+            ],
+            [
+              'active' => true,
+              'name' => 'message',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 2,
+            ],
+            [
+              'active' => true,
+              'name' => 'message_id',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 3,
+            ],
+            [
+              'active' => true,
+              'name' => 'otp',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 4,
+            ],
+            [
+              'active' => true,
+              'name' => 'received_at',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 5,
+            ],
+            [
+              'active' => true,
+              'name' => 'score',
+              'req' => false,
+              'type' => '`$NUMBER`',
+              'index$' => 6,
+            ],
+            [
+              'active' => true,
+              'name' => 'subject',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 7,
+            ],
+            [
+              'active' => true,
+              'name' => 'verification_link',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 8,
             ],
           ],
           'name' => 'otp',
@@ -808,6 +1010,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/otp',
                   'parts' => [
@@ -830,7 +1033,7 @@ class CustomTempMailConfig
                   ],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -867,6 +1070,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/otp/public',
                   'parts' => [
@@ -884,7 +1088,7 @@ class CustomTempMailConfig
                   ],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 1,
                 ],
@@ -904,16 +1108,16 @@ class CustomTempMailConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'data',
+              'name' => 'credit_packages',
               'req' => false,
-              'type' => '`$OBJECT`',
+              'type' => '`$ARRAY`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'success',
+              'name' => 'plans',
               'req' => false,
-              'type' => '`$BOOLEAN`',
+              'type' => '`$ARRAY`',
               'index$' => 1,
             ],
           ],
@@ -926,6 +1130,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/plans',
                   'parts' => [
@@ -935,7 +1140,7 @@ class CustomTempMailConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -951,17 +1156,45 @@ class CustomTempMailConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'data',
+              'name' => 'analyzed_at',
               'req' => false,
-              'type' => '`$OBJECT`',
+              'type' => '`$STRING`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'success',
+              'name' => 'duration_hours',
               'req' => false,
-              'type' => '`$BOOLEAN`',
+              'type' => '`$INTEGER`',
               'index$' => 1,
+            ],
+            [
+              'active' => true,
+              'name' => 'event_count',
+              'req' => false,
+              'type' => '`$INTEGER`',
+              'index$' => 2,
+            ],
+            [
+              'active' => true,
+              'name' => 'events',
+              'req' => false,
+              'type' => '`$ARRAY`',
+              'index$' => 3,
+            ],
+            [
+              'active' => true,
+              'name' => 'inbox',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 4,
+            ],
+            [
+              'active' => true,
+              'name' => 'insights',
+              'req' => false,
+              'type' => '`$ARRAY`',
+              'index$' => 5,
             ],
           ],
           'name' => 'public_v1_dashboard_analytics',
@@ -996,6 +1229,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/timeline',
                   'parts' => [
@@ -1017,7 +1251,7 @@ class CustomTempMailConfig
                   ],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -1037,6 +1271,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/insights',
                   'parts' => [
@@ -1057,7 +1292,7 @@ class CustomTempMailConfig
                   ],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 1,
                 ],
@@ -1084,14 +1319,14 @@ class CustomTempMailConfig
             ],
             [
               'active' => true,
-              'name' => 'custom_firstname',
+              'name' => 'custom_firstnames',
               'req' => false,
               'type' => '`$ARRAY`',
               'index$' => 1,
             ],
             [
               'active' => true,
-              'name' => 'custom_surname',
+              'name' => 'custom_surnames',
               'req' => false,
               'type' => '`$ARRAY`',
               'index$' => 2,
@@ -1119,28 +1354,28 @@ class CustomTempMailConfig
             ],
             [
               'active' => true,
-              'name' => 'data',
+              'name' => 'domain_mode',
               'req' => false,
-              'type' => '`$OBJECT`',
+              'type' => '`$STRING`',
               'index$' => 6,
             ],
             [
               'active' => true,
-              'name' => 'domain',
+              'name' => 'domains',
               'req' => false,
               'type' => '`$ARRAY`',
               'index$' => 7,
             ],
             [
               'active' => true,
-              'name' => 'domain_mode',
+              'name' => 'inbox',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 8,
             ],
             [
               'active' => true,
-              'name' => 'inbox',
+              'name' => 'inboxes',
               'req' => false,
               'type' => '`$ARRAY`',
               'index$' => 9,
@@ -1154,7 +1389,7 @@ class CustomTempMailConfig
             ],
             [
               'active' => true,
-              'name' => 'parse_code',
+              'name' => 'parseCode',
               'req' => false,
               'type' => '`$BOOLEAN`',
               'index$' => 11,
@@ -1168,24 +1403,31 @@ class CustomTempMailConfig
             ],
             [
               'active' => true,
+              'name' => 'started_at',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 13,
+            ],
+            [
+              'active' => true,
               'name' => 'success',
               'req' => false,
               'type' => '`$BOOLEAN`',
-              'index$' => 13,
+              'index$' => 14,
             ],
             [
               'active' => true,
               'name' => 'test_id',
               'req' => false,
               'type' => '`$STRING`',
-              'index$' => 14,
+              'index$' => 15,
             ],
             [
               'active' => true,
               'name' => 'username_style',
               'req' => false,
               'type' => '`$STRING`',
-              'index$' => 15,
+              'index$' => 16,
             ],
           ],
           'name' => 'public_v1_inbox',
@@ -1210,6 +1452,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/inboxes/{inbox}/tests',
                   'parts' => [
@@ -1230,13 +1473,14 @@ class CustomTempMailConfig
                   ],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/inboxes/generate',
                   'parts' => [
@@ -1273,6 +1517,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/v1/inboxes/{inbox}',
                   'parts' => [
@@ -1312,24 +1557,52 @@ class CustomTempMailConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'data',
+              'name' => 'date',
               'req' => false,
-              'type' => '`$OBJECT`',
+              'type' => '`$STRING`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'message',
+              'name' => 'from',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 1,
             ],
             [
               'active' => true,
-              'name' => 'success',
+              'name' => 'has_attachment',
               'req' => false,
               'type' => '`$BOOLEAN`',
               'index$' => 2,
+            ],
+            [
+              'active' => true,
+              'name' => 'id',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 3,
+            ],
+            [
+              'active' => true,
+              'name' => 'otp',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 4,
+            ],
+            [
+              'active' => true,
+              'name' => 'subject',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 5,
+            ],
+            [
+              'active' => true,
+              'name' => 'verification_link',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 6,
             ],
           ],
           'name' => 'public_v1_message',
@@ -1372,6 +1645,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/wait',
                   'parts' => [
@@ -1394,7 +1668,7 @@ class CustomTempMailConfig
                   ],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -1429,6 +1703,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/v1/inboxes/{inbox}/messages/{id}',
                   'parts' => [
@@ -1471,14 +1746,14 @@ class CustomTempMailConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'created_at',
+              'name' => 'createdAt',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'failure_count',
+              'name' => 'failureCount',
               'req' => false,
               'type' => '`$INTEGER`',
               'index$' => 1,
@@ -1526,6 +1801,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/webhooks',
                   'parts' => [
@@ -1549,6 +1825,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/webhooks',
                   'parts' => [
@@ -1558,7 +1835,7 @@ class CustomTempMailConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],
@@ -1584,6 +1861,7 @@ class CustomTempMailConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/v1/webhooks/{id}',
                   'parts' => [
@@ -1614,17 +1892,38 @@ class CustomTempMailConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'data',
+              'name' => 'credits',
               'req' => false,
               'type' => '`$OBJECT`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'success',
+              'name' => 'period',
               'req' => false,
-              'type' => '`$BOOLEAN`',
+              'type' => '`$OBJECT`',
               'index$' => 1,
+            ],
+            [
+              'active' => true,
+              'name' => 'plan',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 2,
+            ],
+            [
+              'active' => true,
+              'name' => 'rate_limit',
+              'req' => false,
+              'type' => '`$OBJECT`',
+              'index$' => 3,
+            ],
+            [
+              'active' => true,
+              'name' => 'requests',
+              'req' => false,
+              'type' => '`$OBJECT`',
+              'index$' => 4,
             ],
           ],
           'name' => 'usage',
@@ -1636,6 +1935,7 @@ class CustomTempMailConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/usage',
                   'parts' => [
@@ -1645,7 +1945,7 @@ class CustomTempMailConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.data`',
                   ],
                   'index$' => 0,
                 ],

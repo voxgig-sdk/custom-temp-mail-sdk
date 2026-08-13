@@ -16,11 +16,11 @@
 import pytest
 
 from customtempmail_sdk import CustomTempMailSDK
-from core.error import CustomTempMailError
-from core.result import CustomTempMailResult
-from core.response import CustomTempMailResponse
-from core.spec import CustomTempMailSpec
-from feature.base_feature import CustomTempMailBaseFeature
+from customtempmail_sdk.core.error import CustomTempMailError
+from customtempmail_sdk.core.result import CustomTempMailResult
+from customtempmail_sdk.core.response import CustomTempMailResponse
+from customtempmail_sdk.core.spec import CustomTempMailSpec
+from customtempmail_sdk.feature.base_feature import CustomTempMailBaseFeature
 
 
 def _client():

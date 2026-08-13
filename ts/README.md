@@ -37,7 +37,9 @@ const client = new CustomTempMailSDK({
 
 ### 2. List customdomain records
 
-`list()` resolves to an array of CustomDomain objects — iterate it directly:
+`list()` resolves to an array of CustomDomain ENTITIES — every operation
+resolves to entities, not raw records. Iterate them directly, and call
+`.data()` on one for the record it holds:
 
 ```ts
 const customdomains = await client.CustomDomain().list()
@@ -66,9 +68,8 @@ try {
 ### 4. Create, update, and remove
 
 ```ts
-// Create — returns the created CustomDomain
+// Create — returns the created CustomDomain ENTITY (.data() for the record)
 const created = await client.CustomDomain().create({
-  data: {},
   domain: 'example_domain',
   mx_record: 'example_mx_record',
   txt_record: 'example_txt_record',
@@ -88,8 +89,8 @@ Entity operations reject on failure, so wrap them in `try` / `catch`:
 
 ```ts
 try {
-  const customdomains = await client.CustomDomain().list()
-  console.log(customdomains)
+  const domains = await client.Domain().list()
+  console.log(domains)
 } catch (err) {
   console.error('list failed:', err)
 }
@@ -155,9 +156,10 @@ Create a mock client for unit testing — no server required:
 ```ts
 const client = CustomTempMailSDK.test()
 
-const customdomain = await client.CustomDomain().list()
-// customdomain is a bare entity populated with mock response data
-console.log(customdomain)
+const domain = await client.Domain().list()
+// domain is the entity, populated with mock response data
+// — call domain.data() for the record itself
+console.log(domain)
 ```
 
 You can also use the instance method:
@@ -172,7 +174,7 @@ const testClient = client.tester()
 Entity instances remember their last match and data:
 
 ```ts
-const entity = client.CustomDomain()
+const entity = client.Domain()
 
 // First call runs the operation and stores its result
 await entity.list()
@@ -343,11 +345,8 @@ The `prepare()` method returns:
 | Field | Description |
 | --- | --- |
 | `added_at` |  |
-| `data` |  |
 | `domain` |  |
-| `message` |  |
 | `mx_record` |  |
-| `success` |  |
 | `txt_record` |  |
 | `verified` |  |
 
@@ -359,9 +358,10 @@ API path: `/v1/custom-domains`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `message` |  |
-| `success` |  |
+| `added_at` |  |
+| `domain` |  |
+| `mx_record` |  |
+| `txt_record` |  |
 | `verified` |  |
 
 Operations: create.
@@ -374,9 +374,9 @@ API path: `/v1/custom-domains/{domain}/verify`
 | --- | --- |
 | `domain` |  |
 | `expires_at` |  |
-| `expires_in_day` |  |
+| `expires_in_days` |  |
 | `expiring_soon` |  |
-| `tag` |  |
+| `tags` |  |
 | `tier` |  |
 
 Operations: list.
@@ -390,9 +390,9 @@ API path: `/v1/domains`
 | `domain` |  |
 | `expired` |  |
 | `expires_at` |  |
-| `expires_in_day` |  |
+| `expires_in_days` |  |
 | `expiring_soon` |  |
-| `tag` |  |
+| `tags` |  |
 | `tier` |  |
 
 Operations: list.
@@ -403,9 +403,10 @@ API path: `/v1/domains/all`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
+| `count` |  |
 | `inbox` |  |
-| `is_testing` |  |
+| `inboxes` |  |
+| `isTesting` |  |
 | `message` |  |
 | `success` |  |
 
@@ -417,8 +418,16 @@ API path: `/v1/inboxes`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `api_inbox_count` |  |
+| `api_inboxes` |  |
+| `app_inbox_count` |  |
+| `app_inboxes` |  |
+| `credits` |  |
+| `custom_domain_count` |  |
+| `custom_domains` |  |
+| `features` |  |
+| `plan` |  |
+| `rate_limits` |  |
 
 Operations: load.
 
@@ -428,8 +437,21 @@ API path: `/v1/me`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `attachments` |  |
+| `count` |  |
+| `date` |  |
+| `from` |  |
+| `has_attachment` |  |
+| `has_more` |  |
+| `html` |  |
+| `id` |  |
+| `inbox` |  |
+| `messages` |  |
+| `otp` |  |
+| `subject` |  |
+| `text` |  |
+| `to` |  |
+| `verification_link` |  |
 
 Operations: load.
 
@@ -439,8 +461,15 @@ API path: `/v1/inboxes/{inbox}/messages`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `from` |  |
+| `inbox` |  |
+| `message` |  |
+| `message_id` |  |
+| `otp` |  |
+| `received_at` |  |
+| `score` |  |
+| `subject` |  |
+| `verification_link` |  |
 
 Operations: load.
 
@@ -450,8 +479,8 @@ API path: `/v1/inboxes/{inbox}/otp`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `credit_packages` |  |
+| `plans` |  |
 
 Operations: load.
 
@@ -461,8 +490,12 @@ API path: `/v1/plans`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `analyzed_at` |  |
+| `duration_hours` |  |
+| `event_count` |  |
+| `events` |  |
+| `inbox` |  |
+| `insights` |  |
 
 Operations: load.
 
@@ -473,18 +506,19 @@ API path: `/v1/inboxes/{inbox}/timeline`
 | Field | Description |
 | --- | --- |
 | `count` |  |
-| `custom_firstname` |  |
-| `custom_surname` |  |
+| `custom_firstnames` |  |
+| `custom_surnames` |  |
 | `daily_limit` |  |
 | `daily_remaining` |  |
 | `daily_used` |  |
-| `data` |  |
-| `domain` |  |
 | `domain_mode` |  |
+| `domains` |  |
 | `inbox` |  |
+| `inboxes` |  |
 | `output_format` |  |
-| `parse_code` |  |
+| `parseCode` |  |
 | `since` |  |
+| `started_at` |  |
 | `success` |  |
 | `test_id` |  |
 | `username_style` |  |
@@ -497,9 +531,13 @@ API path: `/v1/inboxes/{inbox}/tests`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `message` |  |
-| `success` |  |
+| `date` |  |
+| `from` |  |
+| `has_attachment` |  |
+| `id` |  |
+| `otp` |  |
+| `subject` |  |
+| `verification_link` |  |
 
 Operations: load, remove.
 
@@ -509,8 +547,8 @@ API path: `/v1/inboxes/{inbox}/wait`
 
 | Field | Description |
 | --- | --- |
-| `created_at` |  |
-| `failure_count` |  |
+| `createdAt` |  |
+| `failureCount` |  |
 | `id` |  |
 | `inbox` |  |
 | `url` |  |
@@ -523,8 +561,11 @@ API path: `/v1/webhooks`
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `success` |  |
+| `credits` |  |
+| `period` |  |
+| `plan` |  |
+| `rate_limit` |  |
+| `requests` |  |
 
 Operations: load.
 
@@ -552,11 +593,8 @@ Create an instance: `const custom_domain = client.CustomDomain()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `added_at` | `string` |  |
-| `data` | `Record<string, any>` |  |
 | `domain` | `string` |  |
-| `message` | `string` |  |
 | `mx_record` | `string` |  |
-| `success` | `boolean` |  |
 | `txt_record` | `string` |  |
 | `verified` | `boolean` |  |
 
@@ -570,7 +608,6 @@ const custom_domains = await client.CustomDomain().list()
 
 ```ts
 const custom_domain = await client.CustomDomain().create({
-  data: {},
   domain: 'example_domain',
   mx_record: 'example_mx_record',
   txt_record: 'example_txt_record',
@@ -593,9 +630,10 @@ Create an instance: `const custom_domain_verify = client.CustomDomainVerify()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Record<string, any>` |  |
-| `message` | `string` |  |
-| `success` | `boolean` |  |
+| `added_at` | `string` |  |
+| `domain` | `string` |  |
+| `mx_record` | `string` |  |
+| `txt_record` | `string` |  |
 | `verified` | `boolean` |  |
 
 #### Example: Create
@@ -603,6 +641,9 @@ Create an instance: `const custom_domain_verify = client.CustomDomainVerify()`
 ```ts
 const custom_domain_verify = await client.CustomDomainVerify().create({
   domain: 'example_domain',
+  mx_record: 'example_mx_record',
+  txt_record: 'example_txt_record',
+  verified: true,
 })
 ```
 
@@ -623,9 +664,9 @@ Create an instance: `const domain = client.Domain()`
 | --- | --- | --- |
 | `domain` | `string` |  |
 | `expires_at` | `string` |  |
-| `expires_in_day` | `number` |  |
+| `expires_in_days` | `number` |  |
 | `expiring_soon` | `boolean` |  |
-| `tag` | `any[]` |  |
+| `tags` | `any[]` |  |
 | `tier` | `string` |  |
 
 #### Example: List
@@ -652,9 +693,9 @@ Create an instance: `const domains_all = client.DomainsAll()`
 | `domain` | `string` |  |
 | `expired` | `boolean` |  |
 | `expires_at` | `string` |  |
-| `expires_in_day` | `number` |  |
+| `expires_in_days` | `number` |  |
 | `expiring_soon` | `boolean` |  |
-| `tag` | `any[]` |  |
+| `tags` | `any[]` |  |
 | `tier` | `string` |  |
 
 #### Example: List
@@ -679,9 +720,10 @@ Create an instance: `const inbox = client.Inbox()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Record<string, any>` |  |
+| `count` | `number` |  |
 | `inbox` | `string` |  |
-| `is_testing` | `boolean` |  |
+| `inboxes` | `any[]` |  |
+| `isTesting` | `boolean` |  |
 | `message` | `string` |  |
 | `success` | `boolean` |  |
 
@@ -713,8 +755,16 @@ Create an instance: `const men = client.Men()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Record<string, any>` |  |
-| `success` | `boolean` |  |
+| `api_inbox_count` | `number` |  |
+| `api_inboxes` | `any[]` |  |
+| `app_inbox_count` | `number` |  |
+| `app_inboxes` | `any[]` |  |
+| `credits` | `number` |  |
+| `custom_domain_count` | `number` |  |
+| `custom_domains` | `any[]` |  |
+| `features` | `Record<string, any>` |  |
+| `plan` | `string` |  |
+| `rate_limits` | `Record<string, any>` |  |
 
 #### Example: Load
 
@@ -737,8 +787,21 @@ Create an instance: `const message = client.Message()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Record<string, any>` |  |
-| `success` | `boolean` |  |
+| `attachments` | `any[]` |  |
+| `count` | `number` |  |
+| `date` | `string` |  |
+| `from` | `string` |  |
+| `has_attachment` | `boolean` |  |
+| `has_more` | `boolean` |  |
+| `html` | `string` |  |
+| `id` | `string` |  |
+| `inbox` | `string` |  |
+| `messages` | `any[]` |  |
+| `otp` | `string` |  |
+| `subject` | `string` |  |
+| `text` | `string` |  |
+| `to` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
@@ -761,8 +824,15 @@ Create an instance: `const otp = client.Otp()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Record<string, any>` |  |
-| `success` | `boolean` |  |
+| `from` | `string` |  |
+| `inbox` | `string` |  |
+| `message` | `string` |  |
+| `message_id` | `string` |  |
+| `otp` | `string` |  |
+| `received_at` | `string` |  |
+| `score` | `number` |  |
+| `subject` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
@@ -785,8 +855,8 @@ Create an instance: `const plan = client.Plan()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Record<string, any>` |  |
-| `success` | `boolean` |  |
+| `credit_packages` | `any[]` |  |
+| `plans` | `any[]` |  |
 
 #### Example: Load
 
@@ -809,8 +879,12 @@ Create an instance: `const public_v1_dashboard_analytics = client.PublicV1Dashbo
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Record<string, any>` |  |
-| `success` | `boolean` |  |
+| `analyzed_at` | `string` |  |
+| `duration_hours` | `number` |  |
+| `event_count` | `number` |  |
+| `events` | `any[]` |  |
+| `inbox` | `string` |  |
+| `insights` | `any[]` |  |
 
 #### Example: Load
 
@@ -835,18 +909,19 @@ Create an instance: `const public_v1_inbox = client.PublicV1Inbox()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `count` | `number` |  |
-| `custom_firstname` | `any[]` |  |
-| `custom_surname` | `any[]` |  |
+| `custom_firstnames` | `any[]` |  |
+| `custom_surnames` | `any[]` |  |
 | `daily_limit` | `number` |  |
 | `daily_remaining` | `number` |  |
 | `daily_used` | `number` |  |
-| `data` | `Record<string, any>` |  |
-| `domain` | `any[]` |  |
 | `domain_mode` | `string` |  |
-| `inbox` | `any[]` |  |
+| `domains` | `any[]` |  |
+| `inbox` | `string` |  |
+| `inboxes` | `any[]` |  |
 | `output_format` | `string` |  |
-| `parse_code` | `boolean` |  |
+| `parseCode` | `boolean` |  |
 | `since` | `number` |  |
+| `started_at` | `string` |  |
 | `success` | `boolean` |  |
 | `test_id` | `string` |  |
 | `username_style` | `string` |  |
@@ -874,9 +949,13 @@ Create an instance: `const public_v1_message = client.PublicV1Message()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Record<string, any>` |  |
-| `message` | `string` |  |
-| `success` | `boolean` |  |
+| `date` | `string` |  |
+| `from` | `string` |  |
+| `has_attachment` | `boolean` |  |
+| `id` | `string` |  |
+| `otp` | `string` |  |
+| `subject` | `string` |  |
+| `verification_link` | `string` |  |
 
 #### Example: Load
 
@@ -901,8 +980,8 @@ Create an instance: `const public_v1_webhook = client.PublicV1Webhook()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `created_at` | `string` |  |
-| `failure_count` | `number` |  |
+| `createdAt` | `string` |  |
+| `failureCount` | `number` |  |
 | `id` | `string` |  |
 | `inbox` | `string` |  |
 | `url` | `string` |  |
@@ -937,8 +1016,11 @@ Create an instance: `const usage = client.Usage()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Record<string, any>` |  |
-| `success` | `boolean` |  |
+| `credits` | `Record<string, any>` |  |
+| `period` | `Record<string, any>` |  |
+| `plan` | `string` |  |
+| `rate_limit` | `Record<string, any>` |  |
+| `requests` | `Record<string, any>` |  |
 
 #### Example: Load
 
@@ -1016,11 +1098,11 @@ stores the returned data and match criteria internally. Subsequent
 calls on the same instance can rely on this state.
 
 ```ts
-const customdomain = client.CustomDomain()
-await customdomain.list()
+const domain = client.Domain()
+await domain.list()
 
-// customdomain.data() now returns the customdomain data from the last `list`
-// customdomain.match() returns the last match criteria
+// domain.data() now returns the domain data from the last `list`
+// domain.match() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

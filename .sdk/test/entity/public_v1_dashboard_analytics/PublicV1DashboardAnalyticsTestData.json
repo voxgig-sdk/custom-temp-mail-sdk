@@ -2,20 +2,32 @@
   "existing": {
     "public_v1_dashboard_analytics": {
       "PUBLIC_V1_DASHBOARD_ANALYTICS00": {
-        "data": {},
-        "success": false,
+        "analyzed_at": "s3c",
+        "duration_hours": "s3d",
+        "event_count": "s3e",
+        "events": [],
+        "inbox": "s40",
+        "insights": [],
         "inbox_id": "INBOX01",
         "id": "PUBLIC_V1_DASHBOARD_ANALYTICS00"
       },
       "PUBLIC_V1_DASHBOARD_ANALYTICS01": {
-        "data": {},
-        "success": false,
+        "analyzed_at": "s78",
+        "duration_hours": "s79",
+        "event_count": "s7a",
+        "events": [],
+        "inbox": "s7c",
+        "insights": [],
         "inbox_id": "INBOX01",
         "id": "PUBLIC_V1_DASHBOARD_ANALYTICS01"
       },
       "PUBLIC_V1_DASHBOARD_ANALYTICS02": {
-        "data": {},
-        "success": false,
+        "analyzed_at": "sb4",
+        "duration_hours": "sb5",
+        "event_count": "sb6",
+        "events": [],
+        "inbox": "sb8",
+        "insights": [],
         "inbox_id": "INBOX01",
         "id": "PUBLIC_V1_DASHBOARD_ANALYTICS02"
       }
@@ -24,8 +36,12 @@
   "new": {
     "public_v1_dashboard_analytics": {
       "public_v1_dashboard_analytics_ref01": {
-        "data": {},
-        "success": false
+        "analyzed_at": "sf0",
+        "duration_hours": "sf1",
+        "event_count": "sf2",
+        "events": [],
+        "inbox": "sf4",
+        "insights": []
       }
     }
   }

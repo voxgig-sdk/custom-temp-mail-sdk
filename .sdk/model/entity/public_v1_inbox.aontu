@@ -11,12 +11,12 @@ main: kit: entity: public_v1_inbox: {
       type: "`$INTEGER`"
     }
     {
-      name: "custom_firstname"
+      name: "custom_firstnames"
       req: false
       type: "`$ARRAY`"
     }
     {
-      name: "custom_surname"
+      name: "custom_surnames"
       req: false
       type: "`$ARRAY`"
     }
@@ -36,22 +36,22 @@ main: kit: entity: public_v1_inbox: {
       type: "`$INTEGER`"
     }
     {
-      name: "data"
-      req: false
-      type: "`$OBJECT`"
-    }
-    {
-      name: "domain"
-      req: false
-      type: "`$ARRAY`"
-    }
-    {
       name: "domain_mode"
       req: false
       type: "`$STRING`"
     }
     {
+      name: "domains"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
       name: "inbox"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "inboxes"
       req: false
       type: "`$ARRAY`"
     }
@@ -61,7 +61,7 @@ main: kit: entity: public_v1_inbox: {
       type: "`$STRING`"
     }
     {
-      name: "parse_code"
+      name: "parseCode"
       req: false
       type: "`$BOOLEAN`"
     }
@@ -69,6 +69,11 @@ main: kit: entity: public_v1_inbox: {
       name: "since"
       req: false
       type: "`$INTEGER`"
+    }
+    {
+      name: "started_at"
+      req: false
+      type: "`$STRING`"
     }
     {
       name: "success"
@@ -125,7 +130,7 @@ main: kit: entity: public_v1_inbox: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
         {

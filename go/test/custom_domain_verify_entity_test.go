@@ -44,7 +44,7 @@ func TestCustomDomainVerifyEntity(t *testing.T) {
 		// The basic flow consumes synthetic IDs from the fixture. In live mode
 		// without an *_ENTID env override, those IDs hit the live API and 4xx.
 		if setup.syntheticOnly {
-			t.Skip("live entity test uses synthetic IDs from fixture — set CUSTOMTEMPMAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID JSON to run live")
+			t.Skip("live entity test uses synthetic IDs from fixture — set CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID JSON to run live")
 			return
 		}
 		client := setup.client
@@ -59,7 +59,7 @@ func TestCustomDomainVerifyEntity(t *testing.T) {
 		if err != nil {
 			t.Fatalf("create failed: %v", err)
 		}
-		customDomainVerifyRef01Data = core.ToMapAny(customDomainVerifyRef01DataResult)
+		customDomainVerifyRef01Data = core.ToMapAny(entityData(customDomainVerifyRef01DataResult))
 		if customDomainVerifyRef01Data == nil {
 			t.Fatal("expected create result to be a map")
 		}
@@ -104,38 +104,38 @@ func custom_domain_verifyBasicSetup(extra map[string]any) *entityTestSetup {
 	// Detect ENTID env override before envOverride consumes it. When live
 	// mode is on without a real override, the basic test runs against synthetic
 	// IDs from the fixture and 4xx's. Surface this so the test can skip.
-	entidEnvRaw := os.Getenv("CUSTOMTEMPMAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID")
+	entidEnvRaw := os.Getenv("CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID")
 	idmapOverridden := entidEnvRaw != "" && strings.HasPrefix(strings.TrimSpace(entidEnvRaw), "{")
 
 	env := envOverride(map[string]any{
-		"CUSTOMTEMPMAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID": idmap,
-		"CUSTOMTEMPMAIL_TEST_LIVE":      "FALSE",
-		"CUSTOMTEMPMAIL_TEST_EXPLAIN":   "FALSE",
-		"CUSTOMTEMPMAIL_APIKEY":         "NONE",
+		"CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID": idmap,
+		"CUSTOM_TEMP_MAIL_TEST_LIVE":      "FALSE",
+		"CUSTOM_TEMP_MAIL_TEST_EXPLAIN":   "FALSE",
+		"CUSTOM_TEMP_MAIL_APIKEY":         "NONE",
 	})
 
-	idmapResolved := core.ToMapAny(env["CUSTOMTEMPMAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID"])
+	idmapResolved := core.ToMapAny(env["CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID"])
 	if idmapResolved == nil {
 		idmapResolved = core.ToMapAny(idmap)
 	}
 
-	if env["CUSTOMTEMPMAIL_TEST_LIVE"] == "TRUE" {
+	if env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE" {
 		mergedOpts := vs.Merge([]any{
 			map[string]any{
-				"apikey": env["CUSTOMTEMPMAIL_APIKEY"],
+				"apikey": env["CUSTOM_TEMP_MAIL_APIKEY"],
 			},
 			extra,
 		})
 		client = sdk.NewCustomTempMailSDK(core.ToMapAny(mergedOpts))
 	}
 
-	live := env["CUSTOMTEMPMAIL_TEST_LIVE"] == "TRUE"
+	live := env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE"
 	return &entityTestSetup{
 		client:        client,
 		data:          entityData,
 		idmap:         idmapResolved,
 		env:           env,
-		explain:       env["CUSTOMTEMPMAIL_TEST_EXPLAIN"] == "TRUE",
+		explain:       env["CUSTOM_TEMP_MAIL_TEST_EXPLAIN"] == "TRUE",
 		live:          live,
 		syntheticOnly: live && !idmapOverridden,
 		now:           time.Now().UnixMilli(),

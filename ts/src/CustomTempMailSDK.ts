@@ -159,8 +159,29 @@ class CustomTempMailSDK {
   }
 
 
+  // Raw endpoint access is operator-controllable, like every entity op.
+  // Blocking it means denying BOTH the 'direct' and 'graphql' tokens, since
+  // either one reaches the same endpoint.
   async direct(fetchargs?: any) {
+    if (!this._options.allow.op.includes('direct')) {
+      return {
+        ok: false,
+        err: new Error('CustomTempMailSDK: direct: operation not allowed by' +
+          ' SDK option allow.op value: "' + this._options.allow.op + '"'),
+      }
+    }
+
+    return this._rawRequest(fetchargs)
+  }
+
+
+  // Ungated request path shared by direct() and graphql(), each of which
+  // checks its own allow.op token first. Private, rather than a flag on
+  // fetchargs: a caller-supplied marker would let anyone opt straight back
+  // out of the gate by passing it.
+  async _rawRequest(fetchargs?: any) {
     const utility = this._utility
+
     const fetcher = utility.fetcher
     const makeContext = utility.makeContext
 
@@ -221,101 +242,183 @@ class CustomTempMailSDK {
 
 
 
+  // Raw GraphQL access: the pressure valve that makes the generated
+  // surface's deliberate omissions (per-call selection sets, typed filter
+  // builders, batching, subscriptions) livable — the whole schema stays
+  // reachable.
+  //
+  // Thin wrapper over the same prepare/fetch path `direct` uses, with the
+  // one thing raw `direct` cannot do for GraphQL: a GraphQL failure rides
+  // HTTP 200 as a top-level `errors` array, so status alone would report a
+  // failed query as ok.
+  //
+  // NOTE: like `direct`, this bypasses the feature pipeline — no retry,
+  // ratelimit or paging features apply.
+  async graphql(query: string, variables?: any, ctrl?: any) {
+    const options = this._options
+
+    if (!options.allow.op.includes('graphql')) {
+      return {
+        ok: false,
+        err: new Error('CustomTempMailSDK: graphql: operation not allowed by' +
+          ' SDK option allow.op value: "' + options.allow.op + '"'),
+      }
+    }
+
+    const res: any = await this._rawRequest({
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: { query, variables: variables || {} },
+      ctrl,
+    })
+
+    if (res instanceof Error) {
+      return res
+    }
+
+    // Errors are read BEFORE any status check: a GraphQL parse or validation
+    // failure comes back as HTTP 400 carrying the standard { errors: [...] }
+    // body, and the raw path represents a non-2xx as { ok: false } with no
+    // err — so returning early on status would discard the server's own
+    // diagnostics, which are the only useful part of that response.
+    const errors = null == res.data ? undefined : res.data.errors
+
+    if (null != errors && Array.isArray(errors) && 0 < errors.length) {
+      const first = errors[0] || {}
+      const err: any = new Error('CustomTempMailSDK: graphql: ' +
+        (first.message || 'graphql error'))
+      err.graphql = errors
+      return { ok: false, status: res.status, headers: res.headers, err, data: res.data }
+    }
+
+    return res
+  }
+
+
+
   // Entity access: `client.CustomDomain().list()` / `client.CustomDomain().load({ id })`.
-  CustomDomain(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  CustomDomain(entopts?: Record<string, any>) {
     const self = this
-    return new CustomDomainEntity(self,data)
+    return new CustomDomainEntity(self, entopts)
   }
 
 
   // Entity access: `client.CustomDomainVerify().list()` / `client.CustomDomainVerify().load({ id })`.
-  CustomDomainVerify(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  CustomDomainVerify(entopts?: Record<string, any>) {
     const self = this
-    return new CustomDomainVerifyEntity(self,data)
+    return new CustomDomainVerifyEntity(self, entopts)
   }
 
 
   // Entity access: `client.Domain().list()` / `client.Domain().load({ id })`.
-  Domain(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  Domain(entopts?: Record<string, any>) {
     const self = this
-    return new DomainEntity(self,data)
+    return new DomainEntity(self, entopts)
   }
 
 
   // Entity access: `client.DomainsAll().list()` / `client.DomainsAll().load({ id })`.
-  DomainsAll(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  DomainsAll(entopts?: Record<string, any>) {
     const self = this
-    return new DomainsAllEntity(self,data)
+    return new DomainsAllEntity(self, entopts)
   }
 
 
   // Entity access: `client.Inbox().list()` / `client.Inbox().load({ id })`.
-  Inbox(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  Inbox(entopts?: Record<string, any>) {
     const self = this
-    return new InboxEntity(self,data)
+    return new InboxEntity(self, entopts)
   }
 
 
   // Entity access: `client.Men().list()` / `client.Men().load({ id })`.
-  Men(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  Men(entopts?: Record<string, any>) {
     const self = this
-    return new MenEntity(self,data)
+    return new MenEntity(self, entopts)
   }
 
 
   // Entity access: `client.Message().list()` / `client.Message().load({ id })`.
-  Message(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  Message(entopts?: Record<string, any>) {
     const self = this
-    return new MessageEntity(self,data)
+    return new MessageEntity(self, entopts)
   }
 
 
   // Entity access: `client.Otp().list()` / `client.Otp().load({ id })`.
-  Otp(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  Otp(entopts?: Record<string, any>) {
     const self = this
-    return new OtpEntity(self,data)
+    return new OtpEntity(self, entopts)
   }
 
 
   // Entity access: `client.Plan().list()` / `client.Plan().load({ id })`.
-  Plan(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  Plan(entopts?: Record<string, any>) {
     const self = this
-    return new PlanEntity(self,data)
+    return new PlanEntity(self, entopts)
   }
 
 
   // Entity access: `client.PublicV1DashboardAnalytics().list()` / `client.PublicV1DashboardAnalytics().load({ id })`.
-  PublicV1DashboardAnalytics(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  PublicV1DashboardAnalytics(entopts?: Record<string, any>) {
     const self = this
-    return new PublicV1DashboardAnalyticsEntity(self,data)
+    return new PublicV1DashboardAnalyticsEntity(self, entopts)
   }
 
 
   // Entity access: `client.PublicV1Inbox().list()` / `client.PublicV1Inbox().load({ id })`.
-  PublicV1Inbox(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  PublicV1Inbox(entopts?: Record<string, any>) {
     const self = this
-    return new PublicV1InboxEntity(self,data)
+    return new PublicV1InboxEntity(self, entopts)
   }
 
 
   // Entity access: `client.PublicV1Message().list()` / `client.PublicV1Message().load({ id })`.
-  PublicV1Message(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  PublicV1Message(entopts?: Record<string, any>) {
     const self = this
-    return new PublicV1MessageEntity(self,data)
+    return new PublicV1MessageEntity(self, entopts)
   }
 
 
   // Entity access: `client.PublicV1Webhook().list()` / `client.PublicV1Webhook().load({ id })`.
-  PublicV1Webhook(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  PublicV1Webhook(entopts?: Record<string, any>) {
     const self = this
-    return new PublicV1WebhookEntity(self,data)
+    return new PublicV1WebhookEntity(self, entopts)
   }
 
 
   // Entity access: `client.Usage().list()` / `client.Usage().load({ id })`.
-  Usage(data?: any) {
+  // The argument is the entity OPTIONS object (passed to the entity
+  // constructor as entopts), not initial entity data.
+  Usage(entopts?: Record<string, any>) {
     const self = this
-    return new UsageEntity(self,data)
+    return new UsageEntity(self, entopts)
   }
 
 

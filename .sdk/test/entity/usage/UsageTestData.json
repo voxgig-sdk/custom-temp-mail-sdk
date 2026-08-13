@@ -2,18 +2,27 @@
   "existing": {
     "usage": {
       "USAGE00": {
-        "data": {},
-        "success": false,
+        "credits": {},
+        "period": {},
+        "plan": "s34",
+        "rate_limit": {},
+        "requests": {},
         "id": "USAGE00"
       },
       "USAGE01": {
-        "data": {},
-        "success": false,
+        "credits": {},
+        "period": {},
+        "plan": "s66",
+        "rate_limit": {},
+        "requests": {},
         "id": "USAGE01"
       },
       "USAGE02": {
-        "data": {},
-        "success": false,
+        "credits": {},
+        "period": {},
+        "plan": "s98",
+        "rate_limit": {},
+        "requests": {},
         "id": "USAGE02"
       }
     }
@@ -21,8 +30,11 @@
   "new": {
     "usage": {
       "usage_ref01": {
-        "data": {},
-        "success": false
+        "credits": {},
+        "period": {},
+        "plan": "sca",
+        "rate_limit": {},
+        "requests": {}
       }
     }
   }

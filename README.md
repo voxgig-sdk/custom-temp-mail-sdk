@@ -38,18 +38,27 @@ network, and no credentials:
 ### TypeScript
 
 ```ts
-const client = CustomTempMailSDK.test()
-const customdomains = await client.CustomDomain().list()
-// customdomains is an array of bare CustomDomain records populated with mock data
-console.log(customdomains)
+// The offline mock starts EMPTY — seed it with the records the test needs.
+// Shape: { entity: { <entity-name>: { <id>: <record> } } }
+const client = CustomTempMailSDK.test({
+  entity: {
+    domain: {
+      test01: { id: 'test01' },
+    },
+  },
+})
+const domains = await client.Domain().list()
+// domains is an array of Domain entities, populated with mock data
+// — call domains[0].data() for the record itself
+console.log(domains)
 ```
 
 ### Python
 
 ```python
 client = CustomTempMailSDK.test()
-customdomains = client.CustomDomain().list()
-print(customdomains)
+domains = client.Domain().list()
+print(domains)
 ```
 
 ### PHP
@@ -57,16 +66,16 @@ print(customdomains)
 ```php
 // Seed fixture data so offline calls resolve without a live server.
 $client = CustomTempMailSDK::test([
-    "entity" => ["customdomain" => ["test01" => []]],
+    "entity" => ["domain" => ["test01" => []]],
 ]);
-$customdomains = $client->CustomDomain()->list();
+$domains = $client->Domain()->list();
 ```
 
 ### Golang
 
 ```go
 client := sdk.Test()
-result, err := client.CustomDomain(nil).List(
+result, err := client.Domain(nil).List(
     nil, nil,
 )
 ```
@@ -76,16 +85,16 @@ result, err := client.CustomDomain(nil).List(
 ```ruby
 # Seed fixture data so offline calls resolve without a live server.
 client = CustomTempMailSDK.test({
-  "entity" => { "customdomain" => { "test01" => {} } },
+  "entity" => { "domain" => { "test01" => {} } },
 })
-customdomains = client.CustomDomain.list()
+domains = client.Domain.list()
 ```
 
 ### Lua
 
 ```lua
 local client = sdk.test()
-local results, err = client:CustomDomain():list()
+local results, err = client:Domain():list()
 ```
 
 ## Packages
@@ -112,7 +121,7 @@ const client = new CustomTempMailSDK({
   apikey: process.env.CUSTOM_TEMP_MAIL_APIKEY,
 })
 
-// List all customdomains (returns CustomDomain[])
+// List all customdomains (returns CustomDomainEntity[] — .data() for the record)
 const customdomains = await client.CustomDomain().list()
 for (const customdomain of customdomains) {
   console.log(customdomain)
@@ -385,6 +394,9 @@ Pass custom features via the `extend` option at construction time.
 
 This SDK is generated from the upstream OpenAPI specification. It is an
 unofficial client and is not affiliated with the API provider.
+
+The OpenAPI spec(s) this SDK was generated from are kept in the
+[`.sdk/def/`](.sdk/def/) folder.
 
 - Upstream API: [https://api2.freecustom.email](https://api2.freecustom.email)
 

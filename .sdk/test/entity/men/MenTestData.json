@@ -2,18 +2,42 @@
   "existing": {
     "men": {
       "MEN00": {
-        "data": {},
-        "success": false,
+        "api_inbox_count": "s64",
+        "api_inboxes": [],
+        "app_inbox_count": "s66",
+        "app_inboxes": [],
+        "credits": "s68",
+        "custom_domain_count": "s69",
+        "custom_domains": [],
+        "features": {},
+        "plan": "s6c",
+        "rate_limits": {},
         "id": "MEN00"
       },
       "MEN01": {
-        "data": {},
-        "success": false,
+        "api_inbox_count": "sc8",
+        "api_inboxes": [],
+        "app_inbox_count": "sca",
+        "app_inboxes": [],
+        "credits": "scc",
+        "custom_domain_count": "scd",
+        "custom_domains": [],
+        "features": {},
+        "plan": "sd0",
+        "rate_limits": {},
         "id": "MEN01"
       },
       "MEN02": {
-        "data": {},
-        "success": false,
+        "api_inbox_count": "s12c",
+        "api_inboxes": [],
+        "app_inbox_count": "s12e",
+        "app_inboxes": [],
+        "credits": "s130",
+        "custom_domain_count": "s131",
+        "custom_domains": [],
+        "features": {},
+        "plan": "s134",
+        "rate_limits": {},
         "id": "MEN02"
       }
     }
@@ -21,8 +45,16 @@
   "new": {
     "men": {
       "men_ref01": {
-        "data": {},
-        "success": false
+        "api_inbox_count": "s190",
+        "api_inboxes": [],
+        "app_inbox_count": "s192",
+        "app_inboxes": [],
+        "credits": "s194",
+        "custom_domain_count": "s195",
+        "custom_domains": [],
+        "features": {},
+        "plan": "s198",
+        "rate_limits": {}
       }
     }
   }

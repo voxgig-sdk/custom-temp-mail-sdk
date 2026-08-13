@@ -6,12 +6,12 @@ main: kit: entity: public_v1_webhook: {
 
   fields: [
     {
-      name: "created_at"
+      name: "createdAt"
       req: false
       type: "`$STRING`"
     }
     {
-      name: "failure_count"
+      name: "failureCount"
       req: false
       type: "`$INTEGER`"
     }
@@ -80,7 +80,7 @@ main: kit: entity: public_v1_webhook: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

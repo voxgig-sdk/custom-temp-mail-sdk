@@ -2,36 +2,27 @@
   "existing": {
     "custom_domain": {
       "CUSTOM_DOMAIN00": {
-        "added_at": "s50",
-        "data": {},
-        "domain": "s52",
-        "message": "s53",
-        "mx_record": "s54",
-        "success": false,
-        "txt_record": "s56",
-        "verified": false,
+        "added_at": "s32",
+        "domain": "s33",
+        "mx_record": "s34",
+        "txt_record": "s35",
+        "verified": true,
         "id": "CUSTOM_DOMAIN00"
       },
       "CUSTOM_DOMAIN01": {
-        "added_at": "sa0",
-        "data": {},
-        "domain": "sa2",
-        "message": "sa3",
-        "mx_record": "sa4",
-        "success": false,
-        "txt_record": "sa6",
-        "verified": false,
+        "added_at": "s64",
+        "domain": "s65",
+        "mx_record": "s66",
+        "txt_record": "s67",
+        "verified": true,
         "id": "CUSTOM_DOMAIN01"
       },
       "CUSTOM_DOMAIN02": {
-        "added_at": "sf0",
-        "data": {},
-        "domain": "sf2",
-        "message": "sf3",
-        "mx_record": "sf4",
-        "success": false,
-        "txt_record": "sf6",
-        "verified": false,
+        "added_at": "s96",
+        "domain": "s97",
+        "mx_record": "s98",
+        "txt_record": "s99",
+        "verified": true,
         "id": "CUSTOM_DOMAIN02"
       }
     }
@@ -39,14 +30,11 @@
   "new": {
     "custom_domain": {
       "custom_domain_ref01": {
-        "added_at": "s140",
-        "data": {},
-        "domain": "s142",
-        "message": "s143",
-        "mx_record": "s144",
-        "success": false,
-        "txt_record": "s146",
-        "verified": false
+        "added_at": "sc8",
+        "domain": "sc9",
+        "mx_record": "sca",
+        "txt_record": "scb",
+        "verified": true
       }
     }
   }

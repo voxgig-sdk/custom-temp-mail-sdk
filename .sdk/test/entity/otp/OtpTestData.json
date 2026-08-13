@@ -2,20 +2,41 @@
   "existing": {
     "otp": {
       "OTP00": {
-        "data": {},
-        "success": false,
+        "from": "s5a",
+        "inbox": "s5b",
+        "message": "s5c",
+        "message_id": "MESSAGE01",
+        "otp": "s5e",
+        "received_at": "s5f",
+        "score": 96,
+        "subject": "s61",
+        "verification_link": "s62",
         "inbox_id": "INBOX01",
         "id": "OTP00"
       },
       "OTP01": {
-        "data": {},
-        "success": false,
+        "from": "sb4",
+        "inbox": "sb5",
+        "message": "sb6",
+        "message_id": "MESSAGE01",
+        "otp": "sb8",
+        "received_at": "sb9",
+        "score": 186,
+        "subject": "sbb",
+        "verification_link": "sbc",
         "inbox_id": "INBOX01",
         "id": "OTP01"
       },
       "OTP02": {
-        "data": {},
-        "success": false,
+        "from": "s10e",
+        "inbox": "s10f",
+        "message": "s110",
+        "message_id": "MESSAGE01",
+        "otp": "s112",
+        "received_at": "s113",
+        "score": 276,
+        "subject": "s115",
+        "verification_link": "s116",
         "inbox_id": "INBOX01",
         "id": "OTP02"
       }
@@ -24,8 +45,15 @@
   "new": {
     "otp": {
       "otp_ref01": {
-        "data": {},
-        "success": false
+        "from": "s168",
+        "inbox": "s169",
+        "message": "s16a",
+        "message_id": "MESSAGE01",
+        "otp": "s16c",
+        "received_at": "s16d",
+        "score": 366,
+        "subject": "s16f",
+        "verification_link": "s170"
       }
     }
   }

@@ -16,11 +16,8 @@ declare(strict_types=1);
 class CustomDomain
 {
     public ?string $added_at = null;
-    public array $data;
     public string $domain;
-    public ?string $message = null;
     public string $mx_record;
-    public ?bool $success = null;
     public string $txt_record;
     public bool $verified;
 }
@@ -29,11 +26,8 @@ class CustomDomain
 class CustomDomainListMatch
 {
     public ?string $added_at = null;
-    public ?array $data = null;
     public ?string $domain = null;
-    public ?string $message = null;
     public ?string $mx_record = null;
-    public ?bool $success = null;
     public ?string $txt_record = null;
     public ?bool $verified = null;
 }
@@ -42,11 +36,8 @@ class CustomDomainListMatch
 class CustomDomainCreateData
 {
     public ?string $added_at = null;
-    public array $data;
     public string $domain;
-    public ?string $message = null;
     public string $mx_record;
-    public ?bool $success = null;
     public string $txt_record;
     public bool $verified;
 }
@@ -60,16 +51,21 @@ class CustomDomainRemoveMatch
 /** CustomDomainVerify entity data model. */
 class CustomDomainVerify
 {
-    public array $data;
-    public ?string $message = null;
-    public ?bool $success = null;
-    public ?bool $verified = null;
+    public ?string $added_at = null;
+    public string $domain;
+    public string $mx_record;
+    public string $txt_record;
+    public bool $verified;
 }
 
 /** Request payload for CustomDomainVerify#create. */
 class CustomDomainVerifyCreateData
 {
     public string $domain;
+    public ?string $added_at = null;
+    public string $mx_record;
+    public string $txt_record;
+    public bool $verified;
 }
 
 /** Domain entity data model. */
@@ -77,9 +73,9 @@ class Domain
 {
     public string $domain;
     public ?string $expires_at = null;
-    public ?int $expires_in_day = null;
+    public ?int $expires_in_days = null;
     public ?bool $expiring_soon = null;
-    public array $tag;
+    public array $tags;
     public string $tier;
 }
 
@@ -88,9 +84,9 @@ class DomainListMatch
 {
     public ?string $domain = null;
     public ?string $expires_at = null;
-    public ?int $expires_in_day = null;
+    public ?int $expires_in_days = null;
     public ?bool $expiring_soon = null;
-    public ?array $tag = null;
+    public ?array $tags = null;
     public ?string $tier = null;
 }
 
@@ -100,9 +96,9 @@ class DomainsAll
     public string $domain;
     public bool $expired;
     public ?string $expires_at = null;
-    public ?int $expires_in_day = null;
+    public ?int $expires_in_days = null;
     public ?bool $expiring_soon = null;
-    public array $tag;
+    public array $tags;
     public string $tier;
 }
 
@@ -112,18 +108,19 @@ class DomainsAllListMatch
     public ?string $domain = null;
     public ?bool $expired = null;
     public ?string $expires_at = null;
-    public ?int $expires_in_day = null;
+    public ?int $expires_in_days = null;
     public ?bool $expiring_soon = null;
-    public ?array $tag = null;
+    public ?array $tags = null;
     public ?string $tier = null;
 }
 
 /** Inbox entity data model. */
 class Inbox
 {
-    public ?array $data = null;
+    public ?int $count = null;
     public ?string $inbox = null;
-    public ?bool $is_testing = null;
+    public ?array $inboxes = null;
+    public ?bool $isTesting = null;
     public ?string $message = null;
     public ?bool $success = null;
 }
@@ -131,9 +128,10 @@ class Inbox
 /** Request payload for Inbox#load. */
 class InboxLoadMatch
 {
-    public ?array $data = null;
+    public ?int $count = null;
     public ?string $inbox = null;
-    public ?bool $is_testing = null;
+    public ?array $inboxes = null;
+    public ?bool $isTesting = null;
     public ?string $message = null;
     public ?bool $success = null;
 }
@@ -141,9 +139,10 @@ class InboxLoadMatch
 /** Request payload for Inbox#create. */
 class InboxCreateData
 {
-    public ?array $data = null;
+    public ?int $count = null;
     public ?string $inbox = null;
-    public ?bool $is_testing = null;
+    public ?array $inboxes = null;
+    public ?bool $isTesting = null;
     public ?string $message = null;
     public ?bool $success = null;
 }
@@ -151,22 +150,51 @@ class InboxCreateData
 /** Men entity data model. */
 class Men
 {
-    public ?array $data = null;
-    public ?bool $success = null;
+    public ?int $api_inbox_count = null;
+    public ?array $api_inboxes = null;
+    public ?int $app_inbox_count = null;
+    public ?array $app_inboxes = null;
+    public ?int $credits = null;
+    public ?int $custom_domain_count = null;
+    public ?array $custom_domains = null;
+    public ?array $features = null;
+    public ?string $plan = null;
+    public ?array $rate_limits = null;
 }
 
 /** Request payload for Men#load. */
 class MenLoadMatch
 {
-    public ?array $data = null;
-    public ?bool $success = null;
+    public ?int $api_inbox_count = null;
+    public ?array $api_inboxes = null;
+    public ?int $app_inbox_count = null;
+    public ?array $app_inboxes = null;
+    public ?int $credits = null;
+    public ?int $custom_domain_count = null;
+    public ?array $custom_domains = null;
+    public ?array $features = null;
+    public ?string $plan = null;
+    public ?array $rate_limits = null;
 }
 
 /** Message entity data model. */
 class Message
 {
-    public ?array $data = null;
-    public ?bool $success = null;
+    public ?array $attachments = null;
+    public ?int $count = null;
+    public ?string $date = null;
+    public ?string $from = null;
+    public ?bool $has_attachment = null;
+    public ?bool $has_more = null;
+    public ?string $html = null;
+    public ?string $id = null;
+    public ?string $inbox = null;
+    public ?array $messages = null;
+    public ?string $otp = null;
+    public ?string $subject = null;
+    public ?string $text = null;
+    public ?string $to = null;
+    public ?string $verification_link = null;
 }
 
 /** Request payload for Message#load. */
@@ -179,8 +207,15 @@ class MessageLoadMatch
 /** Otp entity data model. */
 class Otp
 {
-    public ?array $data = null;
-    public ?bool $success = null;
+    public ?string $from = null;
+    public ?string $inbox = null;
+    public ?string $message = null;
+    public ?string $message_id = null;
+    public ?string $otp = null;
+    public ?string $received_at = null;
+    public ?float $score = null;
+    public ?string $subject = null;
+    public ?string $verification_link = null;
 }
 
 /** Request payload for Otp#load. */
@@ -192,22 +227,26 @@ class OtpLoadMatch
 /** Plan entity data model. */
 class Plan
 {
-    public ?array $data = null;
-    public ?bool $success = null;
+    public ?array $credit_packages = null;
+    public ?array $plans = null;
 }
 
 /** Request payload for Plan#load. */
 class PlanLoadMatch
 {
-    public ?array $data = null;
-    public ?bool $success = null;
+    public ?array $credit_packages = null;
+    public ?array $plans = null;
 }
 
 /** PublicV1DashboardAnalytics entity data model. */
 class PublicV1DashboardAnalytics
 {
-    public ?array $data = null;
-    public ?bool $success = null;
+    public ?string $analyzed_at = null;
+    public ?int $duration_hours = null;
+    public ?int $event_count = null;
+    public ?array $events = null;
+    public ?string $inbox = null;
+    public ?array $insights = null;
 }
 
 /** Request payload for PublicV1DashboardAnalytics#load. */
@@ -220,18 +259,19 @@ class PublicV1DashboardAnalyticsLoadMatch
 class PublicV1Inbox
 {
     public ?int $count = null;
-    public ?array $custom_firstname = null;
-    public ?array $custom_surname = null;
+    public ?array $custom_firstnames = null;
+    public ?array $custom_surnames = null;
     public ?int $daily_limit = null;
     public ?int $daily_remaining = null;
     public ?int $daily_used = null;
-    public ?array $data = null;
-    public ?array $domain = null;
     public ?string $domain_mode = null;
-    public ?array $inbox = null;
+    public ?array $domains = null;
+    public ?string $inbox = null;
+    public ?array $inboxes = null;
     public ?string $output_format = null;
-    public ?bool $parse_code = null;
+    public ?bool $parseCode = null;
     public ?int $since = null;
+    public ?string $started_at = null;
     public ?bool $success = null;
     public ?string $test_id = null;
     public ?string $username_style = null;
@@ -241,6 +281,23 @@ class PublicV1Inbox
 class PublicV1InboxCreateData
 {
     public ?string $inbox_id = null;
+    public ?int $count = null;
+    public ?array $custom_firstnames = null;
+    public ?array $custom_surnames = null;
+    public ?int $daily_limit = null;
+    public ?int $daily_remaining = null;
+    public ?int $daily_used = null;
+    public ?string $domain_mode = null;
+    public ?array $domains = null;
+    public ?string $inbox = null;
+    public ?array $inboxes = null;
+    public ?string $output_format = null;
+    public ?bool $parseCode = null;
+    public ?int $since = null;
+    public ?string $started_at = null;
+    public ?bool $success = null;
+    public ?string $test_id = null;
+    public ?string $username_style = null;
 }
 
 /** Request payload for PublicV1Inbox#remove. */
@@ -252,9 +309,13 @@ class PublicV1InboxRemoveMatch
 /** PublicV1Message entity data model. */
 class PublicV1Message
 {
-    public ?array $data = null;
-    public ?string $message = null;
-    public ?bool $success = null;
+    public ?string $date = null;
+    public ?string $from = null;
+    public ?bool $has_attachment = null;
+    public ?string $id = null;
+    public ?string $otp = null;
+    public ?string $subject = null;
+    public ?string $verification_link = null;
 }
 
 /** Request payload for PublicV1Message#load. */
@@ -273,8 +334,8 @@ class PublicV1MessageRemoveMatch
 /** PublicV1Webhook entity data model. */
 class PublicV1Webhook
 {
-    public ?string $created_at = null;
-    public ?int $failure_count = null;
+    public ?string $createdAt = null;
+    public ?int $failureCount = null;
     public ?string $id = null;
     public string $inbox;
     public string $url;
@@ -283,8 +344,8 @@ class PublicV1Webhook
 /** Request payload for PublicV1Webhook#list. */
 class PublicV1WebhookListMatch
 {
-    public ?string $created_at = null;
-    public ?int $failure_count = null;
+    public ?string $createdAt = null;
+    public ?int $failureCount = null;
     public ?string $id = null;
     public ?string $inbox = null;
     public ?string $url = null;
@@ -293,8 +354,8 @@ class PublicV1WebhookListMatch
 /** Request payload for PublicV1Webhook#create. */
 class PublicV1WebhookCreateData
 {
-    public ?string $created_at = null;
-    public ?int $failure_count = null;
+    public ?string $createdAt = null;
+    public ?int $failureCount = null;
     public ?string $id = null;
     public string $inbox;
     public string $url;
@@ -309,14 +370,20 @@ class PublicV1WebhookRemoveMatch
 /** Usage entity data model. */
 class Usage
 {
-    public ?array $data = null;
-    public ?bool $success = null;
+    public ?array $credits = null;
+    public ?array $period = null;
+    public ?string $plan = null;
+    public ?array $rate_limit = null;
+    public ?array $requests = null;
 }
 
 /** Request payload for Usage#load. */
 class UsageLoadMatch
 {
-    public ?array $data = null;
-    public ?bool $success = null;
+    public ?array $credits = null;
+    public ?array $period = null;
+    public ?string $plan = null;
+    public ?array $rate_limit = null;
+    public ?array $requests = null;
 }
 
