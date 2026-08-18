@@ -710,9 +710,6 @@ PublicV1Inbox = Struct.new(
 
 # Request payload for PublicV1Inbox#create.
 #
-# @!attribute [rw] inbox_id
-#   @return [String, nil]
-#
 # @!attribute [rw] count
 #   @return [Integer, nil]
 #
@@ -764,7 +761,6 @@ PublicV1Inbox = Struct.new(
 # @!attribute [rw] username_style
 #   @return [String, nil]
 PublicV1InboxCreateData = Struct.new(
-  :inbox_id,
   :count,
   :custom_firstnames,
   :custom_surnames,

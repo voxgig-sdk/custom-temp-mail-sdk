@@ -23,6 +23,7 @@ build = {
   modules = {
     ["custom-temp-mail_sdk"] = "custom-temp-mail_sdk.lua",
     ["config"] = "config.lua",
+    ["config_shared"] = "config_shared.lua",
     ["features"] = "features.lua",
   }
 }

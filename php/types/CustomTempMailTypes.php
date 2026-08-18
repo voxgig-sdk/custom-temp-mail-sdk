@@ -280,7 +280,6 @@ class PublicV1Inbox
 /** Request payload for PublicV1Inbox#create. */
 class PublicV1InboxCreateData
 {
-    public ?string $inbox_id = null;
     public ?int $count = null;
     public ?array $custom_firstnames = null;
     public ?array $custom_surnames = null;

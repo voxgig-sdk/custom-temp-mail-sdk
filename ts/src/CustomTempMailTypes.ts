@@ -229,7 +229,6 @@ export interface PublicV1Inbox {
 }
 
 export interface PublicV1InboxCreateData {
-  inbox_id?: string
   count?: number
   custom_firstnames?: any[]
   custom_surnames?: any[]

@@ -200,7 +200,6 @@
 ---@field username_style? string
 
 ---@class PublicV1InboxCreateData
----@field inbox_id? string
 ---@field count? number
 ---@field custom_firstnames? table
 ---@field custom_surnames? table

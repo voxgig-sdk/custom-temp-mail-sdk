@@ -255,7 +255,6 @@ type PublicV1Inbox struct {
 
 // PublicV1InboxCreateData is the typed request payload for PublicV1Inbox.CreateTyped.
 type PublicV1InboxCreateData struct {
-	InboxId *string `json:"inbox_id,omitempty"`
 	Count *int `json:"count,omitempty"`
 	CustomFirstnames *[]any `json:"custom_firstnames,omitempty"`
 	CustomSurnames *[]any `json:"custom_surnames,omitempty"`

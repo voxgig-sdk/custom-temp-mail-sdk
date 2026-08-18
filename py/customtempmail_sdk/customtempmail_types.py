@@ -253,7 +253,6 @@ class PublicV1Inbox(TypedDict, total=False):
 
 
 class PublicV1InboxCreateData(TypedDict, total=False):
-    inbox_id: str
     count: int
     custom_firstnames: list
     custom_surnames: list

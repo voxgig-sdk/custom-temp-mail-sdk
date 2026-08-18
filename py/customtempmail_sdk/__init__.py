@@ -23,8 +23,8 @@ class CustomTempMailSDK:
         utility = CustomTempMailUtility()
         self._utility = utility
 
-        from customtempmail_sdk.config import make_config
-        config = make_config()
+        from customtempmail_sdk.config import shared_config
+        config = shared_config()
 
         self._rootctx = utility.make_context({
             "client": self,
