@@ -1,0 +1,69 @@
+# Entity: domain
+
+main: kit: entity: domain: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "domain"
+      req: true
+      short: "Bare domain name (no leading @)."
+      type: "`$STRING`"
+    }
+    {
+      name: "expires_at"
+      req: false
+      short: "ISO 8601 date when the domain registration expires at the registrar."
+      type: "`$STRING`"
+    }
+    {
+      name: "expires_in_days"
+      req: false
+      short: "Days remaining until expiry."
+      type: "`$INTEGER`"
+    }
+    {
+      name: "expiring_soon"
+      req: false
+      short: "True when the domain expires within 30 days."
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "tags"
+      req: true
+      short: "`new` — recently added, shown for ~30 days."
+      type: "`$ARRAY`"
+    }
+    {
+      name: "tier"
+      req: true
+      short: "`free` — available on all plans."
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "domain"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/v1/domains"
+          parts: [
+            "v1"
+            "domains"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

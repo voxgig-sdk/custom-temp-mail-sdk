@@ -11,6 +11,9 @@ func MakeConfig() map[string]any {
 	return map[string]any{
 		"main": map[string]any{
 			"name": "CustomTempMail",
+			"slug": "custom-temp-mail",
+			"version": "0.0.1",
+			"target": "go",
 		},
 		"feature": map[string]any{
 			"test": map[string]any{
@@ -49,26 +52,31 @@ func MakeConfig() map[string]any {
 				"fields": []any{
 					map[string]any{
 						"name": "added_at",
+						"short": "ISO 8601 timestamp when the domain was added.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "domain",
 						"req": true,
+						"short": "Bare domain name (no leading @).",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "mx_record",
 						"req": true,
+						"short": "The MX record value to add at your registrar.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "txt_record",
 						"req": true,
+						"short": "The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "verified",
 						"req": true,
+						"short": "`true` — MX and TXT records confirmed.",
 						"type": "`$BOOLEAN`",
 					},
 				},
@@ -167,26 +175,31 @@ func MakeConfig() map[string]any {
 				"fields": []any{
 					map[string]any{
 						"name": "added_at",
+						"short": "ISO 8601 timestamp when the domain was added.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "domain",
 						"req": true,
+						"short": "Bare domain name (no leading @).",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "mx_record",
 						"req": true,
+						"short": "The MX record value to add at your registrar.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "txt_record",
 						"req": true,
+						"short": "The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "verified",
 						"req": true,
+						"short": "`true` — MX and TXT records confirmed.",
 						"type": "`$BOOLEAN`",
 					},
 				},
@@ -244,28 +257,34 @@ func MakeConfig() map[string]any {
 					map[string]any{
 						"name": "domain",
 						"req": true,
+						"short": "Bare domain name (no leading @).",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "expires_at",
+						"short": "ISO 8601 date when the domain registration expires at the registrar.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "expires_in_days",
+						"short": "Days remaining until expiry.",
 						"type": "`$INTEGER`",
 					},
 					map[string]any{
 						"name": "expiring_soon",
+						"short": "True when the domain expires within 30 days.",
 						"type": "`$BOOLEAN`",
 					},
 					map[string]any{
 						"name": "tags",
 						"req": true,
+						"short": "`new` — recently added, shown for ~30 days.",
 						"type": "`$ARRAY`",
 					},
 					map[string]any{
 						"name": "tier",
 						"req": true,
+						"short": "`free` — available on all plans.",
 						"type": "`$STRING`",
 					},
 				},
@@ -302,11 +321,13 @@ func MakeConfig() map[string]any {
 					map[string]any{
 						"name": "domain",
 						"req": true,
+						"short": "Bare domain name (no leading @).",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "expired",
 						"req": true,
+						"short": "True when the domain has already passed its expiry date.",
 						"type": "`$BOOLEAN`",
 					},
 					map[string]any{
@@ -317,6 +338,7 @@ func MakeConfig() map[string]any {
 								"type": "`$STRING`",
 							},
 						},
+						"short": "ISO 8601 date when the domain registration expires at the registrar.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
@@ -327,6 +349,7 @@ func MakeConfig() map[string]any {
 								"type": "`$INTEGER`",
 							},
 						},
+						"short": "Days remaining until expiry.",
 						"type": "`$INTEGER`",
 					},
 					map[string]any{
@@ -337,16 +360,19 @@ func MakeConfig() map[string]any {
 								"type": "`$BOOLEAN`",
 							},
 						},
+						"short": "True when the domain expires within 30 days.",
 						"type": "`$BOOLEAN`",
 					},
 					map[string]any{
 						"name": "tags",
 						"req": true,
+						"short": "`new` — recently added, shown for ~30 days.",
 						"type": "`$ARRAY`",
 					},
 					map[string]any{
 						"name": "tier",
 						"req": true,
+						"short": "`free` — available on all plans.",
 						"type": "`$STRING`",
 					},
 				},
@@ -401,6 +427,7 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "isTesting",
+						"short": "Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger.",
 						"type": "`$BOOLEAN`",
 					},
 					map[string]any{
@@ -740,6 +767,7 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "score",
+						"short": "Confidence score (0.0 to 1.0) of the extracted OTP.",
 						"type": "`$NUMBER`",
 					},
 					map[string]any{
@@ -1039,14 +1067,17 @@ func MakeConfig() map[string]any {
 				"fields": []any{
 					map[string]any{
 						"name": "count",
+						"short": "Number of inboxes to generate (1–500 depending on plan).",
 						"type": "`$INTEGER`",
 					},
 					map[string]any{
 						"name": "custom_firstnames",
+						"short": "Custom first-name pool for `firstname.surname` style.",
 						"type": "`$ARRAY`",
 					},
 					map[string]any{
 						"name": "custom_surnames",
+						"short": "Custom surname pool for `firstname.surname` style.",
 						"type": "`$ARRAY`",
 					},
 					map[string]any{
@@ -1063,10 +1094,12 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "domain_mode",
+						"short": "Which domain pool to use.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "domains",
+						"short": "Required when `domain_mode` is `specific`.",
 						"type": "`$ARRAY`",
 					},
 					map[string]any{
@@ -1079,14 +1112,17 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "output_format",
+						"short": "Template string for each line of output.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "parseCode",
+						"short": "When `true` (default), embeds `?parseCode=true` in every OTP URL.",
 						"type": "`$BOOLEAN`",
 					},
 					map[string]any{
 						"name": "since",
+						"short": "Unix timestamp in milliseconds.",
 						"type": "`$INTEGER`",
 					},
 					map[string]any{
@@ -1099,10 +1135,12 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "test_id",
+						"short": "Optional custom test ID.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "username_style",
+						"short": "Username generation style.",
 						"type": "`$STRING`",
 					},
 				},
@@ -1237,6 +1275,7 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "otp",
+						"short": "The extracted OTP code, or `__DETECTED__` on plans below Growth (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value).",
 						"type": "`$STRING`",
 					},
 					map[string]any{
@@ -1391,6 +1430,7 @@ func MakeConfig() map[string]any {
 							},
 						},
 						"req": true,
+						"short": "The registered inbox to subscribe to.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
@@ -1401,6 +1441,7 @@ func MakeConfig() map[string]any {
 							},
 						},
 						"req": true,
+						"short": "The HTTPS URL to receive the POST request.",
 						"type": "`$STRING`",
 					},
 				},

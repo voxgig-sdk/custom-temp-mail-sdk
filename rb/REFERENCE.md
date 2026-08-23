@@ -146,11 +146,11 @@ custom_domain = client.CustomDomain
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `added_at` | `String` | No |  |
-| `domain` | `String` | Yes |  |
-| `mx_record` | `String` | Yes |  |
-| `txt_record` | `String` | Yes |  |
-| `verified` | `Boolean` | Yes |  |
+| `added_at` | `String` | No | ISO 8601 timestamp when the domain was added. |
+| `domain` | `String` | Yes | Bare domain name (no leading @). |
+| `mx_record` | `String` | Yes | The MX record value to add at your registrar. |
+| `txt_record` | `String` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `Boolean` | Yes | `true` — MX and TXT records confirmed. |
 
 ### Operations
 
@@ -223,11 +223,11 @@ custom_domain_verify = client.CustomDomainVerify
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `added_at` | `String` | No |  |
-| `domain` | `String` | Yes |  |
-| `mx_record` | `String` | Yes |  |
-| `txt_record` | `String` | Yes |  |
-| `verified` | `Boolean` | Yes |  |
+| `added_at` | `String` | No | ISO 8601 timestamp when the domain was added. |
+| `domain` | `String` | Yes | Bare domain name (no leading @). |
+| `mx_record` | `String` | Yes | The MX record value to add at your registrar. |
+| `txt_record` | `String` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `Boolean` | Yes | `true` — MX and TXT records confirmed. |
 
 ### Operations
 
@@ -284,12 +284,12 @@ domain = client.Domain
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `domain` | `String` | Yes |  |
-| `expires_at` | `String` | No |  |
-| `expires_in_days` | `Integer` | No |  |
-| `expiring_soon` | `Boolean` | No |  |
-| `tags` | `Array` | Yes |  |
-| `tier` | `String` | Yes |  |
+| `domain` | `String` | Yes | Bare domain name (no leading @). |
+| `expires_at` | `String` | No | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `Integer` | No | Days remaining until expiry. |
+| `expiring_soon` | `Boolean` | No | True when the domain expires within 30 days. |
+| `tags` | `Array` | Yes | `new` — recently added, shown for ~30 days. |
+| `tier` | `String` | Yes | `free` — available on all plans. |
 
 ### Operations
 
@@ -341,13 +341,13 @@ domains_all = client.DomainsAll
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `domain` | `String` | Yes |  |
-| `expired` | `Boolean` | Yes |  |
-| `expires_at` | `String` | No |  |
-| `expires_in_days` | `Integer` | No |  |
-| `expiring_soon` | `Boolean` | No |  |
-| `tags` | `Array` | Yes |  |
-| `tier` | `String` | Yes |  |
+| `domain` | `String` | Yes | Bare domain name (no leading @). |
+| `expired` | `Boolean` | Yes | True when the domain has already passed its expiry date. |
+| `expires_at` | `String` | No | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `Integer` | No | Days remaining until expiry. |
+| `expiring_soon` | `Boolean` | No | True when the domain expires within 30 days. |
+| `tags` | `Array` | Yes | `new` — recently added, shown for ~30 days. |
+| `tier` | `String` | Yes | `free` — available on all plans. |
 
 ### Field Usage by Operation
 
@@ -414,7 +414,7 @@ inbox = client.Inbox
 | `count` | `Integer` | No |  |
 | `inbox` | `String` | No |  |
 | `inboxes` | `Array` | No |  |
-| `isTesting` | `Boolean` | No |  |
+| `isTesting` | `Boolean` | No | Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger. |
 | `message` | `String` | No |  |
 | `success` | `Boolean` | No |  |
 
@@ -621,7 +621,7 @@ otp = client.Otp
 | `message_id` | `String` | No |  |
 | `otp` | `String` | No |  |
 | `received_at` | `String` | No |  |
-| `score` | `Float` | No |  |
+| `score` | `Float` | No | Confidence score (0.0 to 1.0) of the extracted OTP. |
 | `subject` | `String` | No |  |
 | `verification_link` | `String` | No |  |
 
@@ -785,23 +785,23 @@ public_v1_inbox = client.PublicV1Inbox
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `count` | `Integer` | No |  |
-| `custom_firstnames` | `Array` | No |  |
-| `custom_surnames` | `Array` | No |  |
+| `count` | `Integer` | No | Number of inboxes to generate (1–500 depending on plan). |
+| `custom_firstnames` | `Array` | No | Custom first-name pool for `firstname.surname` style. |
+| `custom_surnames` | `Array` | No | Custom surname pool for `firstname.surname` style. |
 | `daily_limit` | `Integer` | No |  |
 | `daily_remaining` | `Integer` | No |  |
 | `daily_used` | `Integer` | No |  |
-| `domain_mode` | `String` | No |  |
-| `domains` | `Array` | No |  |
+| `domain_mode` | `String` | No | Which domain pool to use. |
+| `domains` | `Array` | No | Required when `domain_mode` is `specific`. |
 | `inbox` | `String` | No |  |
 | `inboxes` | `Array` | No |  |
-| `output_format` | `String` | No |  |
-| `parseCode` | `Boolean` | No |  |
-| `since` | `Integer` | No |  |
+| `output_format` | `String` | No | Template string for each line of output. |
+| `parseCode` | `Boolean` | No | When `true` (default), embeds `?parseCode=true` in every OTP URL. |
+| `since` | `Integer` | No | Unix timestamp in milliseconds. |
 | `started_at` | `String` | No |  |
 | `success` | `Boolean` | No |  |
-| `test_id` | `String` | No |  |
-| `username_style` | `String` | No |  |
+| `test_id` | `String` | No | Optional custom test ID. |
+| `username_style` | `String` | No | Username generation style. |
 
 ### Operations
 
@@ -866,7 +866,7 @@ public_v1_message = client.PublicV1Message
 | `from` | `String` | No |  |
 | `has_attachment` | `Boolean` | No |  |
 | `id` | `String` | No |  |
-| `otp` | `String` | No |  |
+| `otp` | `String` | No | The extracted OTP code, or `__DETECTED__` on plans below Growth (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value). |
 | `subject` | `String` | No |  |
 | `verification_link` | `String` | No |  |
 
@@ -931,8 +931,8 @@ public_v1_webhook = client.PublicV1Webhook
 | `createdAt` | `String` | No |  |
 | `failureCount` | `Integer` | No |  |
 | `id` | `String` | No |  |
-| `inbox` | `String` | Yes |  |
-| `url` | `String` | Yes |  |
+| `inbox` | `String` | Yes | The registered inbox to subscribe to. |
+| `url` | `String` | Yes | The HTTPS URL to receive the POST request. |
 
 ### Field Usage by Operation
 

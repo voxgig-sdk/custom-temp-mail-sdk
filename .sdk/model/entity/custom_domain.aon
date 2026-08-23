@@ -1,0 +1,120 @@
+# Entity: custom_domain
+
+main: kit: entity: custom_domain: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "added_at"
+      req: false
+      short: "ISO 8601 timestamp when the domain was added."
+      type: "`$STRING`"
+    }
+    {
+      name: "domain"
+      req: true
+      short: "Bare domain name (no leading @)."
+      type: "`$STRING`"
+    }
+    {
+      name: "mx_record"
+      req: true
+      short: "The MX record value to add at your registrar."
+      type: "`$STRING`"
+    }
+    {
+      name: "txt_record"
+      req: true
+      short: "The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar."
+      type: "`$STRING`"
+    }
+    {
+      name: "verified"
+      req: true
+      short: "`true` — MX and TXT records confirmed."
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  name: "custom_domain"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          method: "POST"
+          orig: "/v1/custom-domains"
+          parts: [
+            "v1"
+            "custom-domains"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/v1/custom-domains"
+          parts: [
+            "v1"
+            "custom-domains"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "mail.acme.com"
+                kind: "param"
+                name: "id"
+                orig: "domain"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/v1/custom-domains/{domain}"
+          parts: [
+            "v1"
+            "custom-domains"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              domain: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

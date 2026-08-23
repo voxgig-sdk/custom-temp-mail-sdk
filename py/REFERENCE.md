@@ -140,11 +140,11 @@ custom_domain = client.CustomDomain()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `added_at` | `str` | No |  |
-| `domain` | `str` | Yes |  |
-| `mx_record` | `str` | Yes |  |
-| `txt_record` | `str` | Yes |  |
-| `verified` | `bool` | Yes |  |
+| `added_at` | `str` | No | ISO 8601 timestamp when the domain was added. |
+| `domain` | `str` | Yes | Bare domain name (no leading @). |
+| `mx_record` | `str` | Yes | The MX record value to add at your registrar. |
+| `txt_record` | `str` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `bool` | Yes | `true` — MX and TXT records confirmed. |
 
 ### Operations
 
@@ -218,11 +218,11 @@ custom_domain_verify = client.CustomDomainVerify()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `added_at` | `str` | No |  |
-| `domain` | `str` | Yes |  |
-| `mx_record` | `str` | Yes |  |
-| `txt_record` | `str` | Yes |  |
-| `verified` | `bool` | Yes |  |
+| `added_at` | `str` | No | ISO 8601 timestamp when the domain was added. |
+| `domain` | `str` | Yes | Bare domain name (no leading @). |
+| `mx_record` | `str` | Yes | The MX record value to add at your registrar. |
+| `txt_record` | `str` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `bool` | Yes | `true` — MX and TXT records confirmed. |
 
 ### Operations
 
@@ -278,12 +278,12 @@ domain = client.Domain()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `domain` | `str` | Yes |  |
-| `expires_at` | `str` | No |  |
-| `expires_in_days` | `int` | No |  |
-| `expiring_soon` | `bool` | No |  |
-| `tags` | `list` | Yes |  |
-| `tier` | `str` | Yes |  |
+| `domain` | `str` | Yes | Bare domain name (no leading @). |
+| `expires_at` | `str` | No | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `int` | No | Days remaining until expiry. |
+| `expiring_soon` | `bool` | No | True when the domain expires within 30 days. |
+| `tags` | `list` | Yes | `new` — recently added, shown for ~30 days. |
+| `tier` | `str` | Yes | `free` — available on all plans. |
 
 ### Operations
 
@@ -336,13 +336,13 @@ domains_all = client.DomainsAll()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `domain` | `str` | Yes |  |
-| `expired` | `bool` | Yes |  |
-| `expires_at` | `str` | No |  |
-| `expires_in_days` | `int` | No |  |
-| `expiring_soon` | `bool` | No |  |
-| `tags` | `list` | Yes |  |
-| `tier` | `str` | Yes |  |
+| `domain` | `str` | Yes | Bare domain name (no leading @). |
+| `expired` | `bool` | Yes | True when the domain has already passed its expiry date. |
+| `expires_at` | `str` | No | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `int` | No | Days remaining until expiry. |
+| `expiring_soon` | `bool` | No | True when the domain expires within 30 days. |
+| `tags` | `list` | Yes | `new` — recently added, shown for ~30 days. |
+| `tier` | `str` | Yes | `free` — available on all plans. |
 
 ### Field Usage by Operation
 
@@ -410,7 +410,7 @@ inbox = client.Inbox()
 | `count` | `int` | No |  |
 | `inbox` | `str` | No |  |
 | `inboxes` | `list` | No |  |
-| `isTesting` | `bool` | No |  |
+| `isTesting` | `bool` | No | Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger. |
 | `message` | `str` | No |  |
 | `success` | `bool` | No |  |
 
@@ -614,7 +614,7 @@ otp = client.Otp()
 | `message_id` | `str` | No |  |
 | `otp` | `str` | No |  |
 | `received_at` | `str` | No |  |
-| `score` | `float` | No |  |
+| `score` | `float` | No | Confidence score (0.0 to 1.0) of the extracted OTP. |
 | `subject` | `str` | No |  |
 | `verification_link` | `str` | No |  |
 
@@ -775,23 +775,23 @@ public_v1_inbox = client.PublicV1Inbox()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `count` | `int` | No |  |
-| `custom_firstnames` | `list` | No |  |
-| `custom_surnames` | `list` | No |  |
+| `count` | `int` | No | Number of inboxes to generate (1–500 depending on plan). |
+| `custom_firstnames` | `list` | No | Custom first-name pool for `firstname.surname` style. |
+| `custom_surnames` | `list` | No | Custom surname pool for `firstname.surname` style. |
 | `daily_limit` | `int` | No |  |
 | `daily_remaining` | `int` | No |  |
 | `daily_used` | `int` | No |  |
-| `domain_mode` | `str` | No |  |
-| `domains` | `list` | No |  |
+| `domain_mode` | `str` | No | Which domain pool to use. |
+| `domains` | `list` | No | Required when `domain_mode` is `specific`. |
 | `inbox` | `str` | No |  |
 | `inboxes` | `list` | No |  |
-| `output_format` | `str` | No |  |
-| `parseCode` | `bool` | No |  |
-| `since` | `int` | No |  |
+| `output_format` | `str` | No | Template string for each line of output. |
+| `parseCode` | `bool` | No | When `true` (default), embeds `?parseCode=true` in every OTP URL. |
+| `since` | `int` | No | Unix timestamp in milliseconds. |
 | `started_at` | `str` | No |  |
 | `success` | `bool` | No |  |
-| `test_id` | `str` | No |  |
-| `username_style` | `str` | No |  |
+| `test_id` | `str` | No | Optional custom test ID. |
+| `username_style` | `str` | No | Username generation style. |
 
 ### Operations
 
@@ -855,7 +855,7 @@ public_v1_message = client.PublicV1Message()
 | `from` | `str` | No |  |
 | `has_attachment` | `bool` | No |  |
 | `id` | `str` | No |  |
-| `otp` | `str` | No |  |
+| `otp` | `str` | No | The extracted OTP code, or `__DETECTED__` on plans below Growth (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value). |
 | `subject` | `str` | No |  |
 | `verification_link` | `str` | No |  |
 
@@ -919,8 +919,8 @@ public_v1_webhook = client.PublicV1Webhook()
 | `createdAt` | `str` | No |  |
 | `failureCount` | `int` | No |  |
 | `id` | `str` | No |  |
-| `inbox` | `str` | Yes |  |
-| `url` | `str` | Yes |  |
+| `inbox` | `str` | Yes | The registered inbox to subscribe to. |
+| `url` | `str` | Yes | The HTTPS URL to receive the POST request. |
 
 ### Field Usage by Operation
 

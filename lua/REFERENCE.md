@@ -143,11 +143,11 @@ local custom_domain = client:CustomDomain(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `added_at` | `string` | No |  |
-| `domain` | `string` | Yes |  |
-| `mx_record` | `string` | Yes |  |
-| `txt_record` | `string` | Yes |  |
-| `verified` | `boolean` | Yes |  |
+| `added_at` | `string` | No | ISO 8601 timestamp when the domain was added. |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `mx_record` | `string` | Yes | The MX record value to add at your registrar. |
+| `txt_record` | `string` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `boolean` | Yes | `true` — MX and TXT records confirmed. |
 
 ### Operations
 
@@ -220,11 +220,11 @@ local custom_domain_verify = client:CustomDomainVerify(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `added_at` | `string` | No |  |
-| `domain` | `string` | Yes |  |
-| `mx_record` | `string` | Yes |  |
-| `txt_record` | `string` | Yes |  |
-| `verified` | `boolean` | Yes |  |
+| `added_at` | `string` | No | ISO 8601 timestamp when the domain was added. |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `mx_record` | `string` | Yes | The MX record value to add at your registrar. |
+| `txt_record` | `string` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `boolean` | Yes | `true` — MX and TXT records confirmed. |
 
 ### Operations
 
@@ -281,12 +281,12 @@ local domain = client:Domain(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `domain` | `string` | Yes |  |
-| `expires_at` | `string` | No |  |
-| `expires_in_days` | `number` | No |  |
-| `expiring_soon` | `boolean` | No |  |
-| `tags` | `table` | Yes |  |
-| `tier` | `string` | Yes |  |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `expires_at` | `string` | No | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `number` | No | Days remaining until expiry. |
+| `expiring_soon` | `boolean` | No | True when the domain expires within 30 days. |
+| `tags` | `table` | Yes | `new` — recently added, shown for ~30 days. |
+| `tier` | `string` | Yes | `free` — available on all plans. |
 
 ### Operations
 
@@ -338,13 +338,13 @@ local domains_all = client:DomainsAll(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `domain` | `string` | Yes |  |
-| `expired` | `boolean` | Yes |  |
-| `expires_at` | `string` | No |  |
-| `expires_in_days` | `number` | No |  |
-| `expiring_soon` | `boolean` | No |  |
-| `tags` | `table` | Yes |  |
-| `tier` | `string` | Yes |  |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `expired` | `boolean` | Yes | True when the domain has already passed its expiry date. |
+| `expires_at` | `string` | No | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `number` | No | Days remaining until expiry. |
+| `expiring_soon` | `boolean` | No | True when the domain expires within 30 days. |
+| `tags` | `table` | Yes | `new` — recently added, shown for ~30 days. |
+| `tier` | `string` | Yes | `free` — available on all plans. |
 
 ### Field Usage by Operation
 
@@ -411,7 +411,7 @@ local inbox = client:Inbox(nil)
 | `count` | `number` | No |  |
 | `inbox` | `string` | No |  |
 | `inboxes` | `table` | No |  |
-| `isTesting` | `boolean` | No |  |
+| `isTesting` | `boolean` | No | Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger. |
 | `message` | `string` | No |  |
 | `success` | `boolean` | No |  |
 
@@ -618,7 +618,7 @@ local otp = client:Otp(nil)
 | `message_id` | `string` | No |  |
 | `otp` | `string` | No |  |
 | `received_at` | `string` | No |  |
-| `score` | `number` | No |  |
+| `score` | `number` | No | Confidence score (0.0 to 1.0) of the extracted OTP. |
 | `subject` | `string` | No |  |
 | `verification_link` | `string` | No |  |
 
@@ -782,23 +782,23 @@ local public_v1_inbox = client:PublicV1Inbox(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `count` | `number` | No |  |
-| `custom_firstnames` | `table` | No |  |
-| `custom_surnames` | `table` | No |  |
+| `count` | `number` | No | Number of inboxes to generate (1–500 depending on plan). |
+| `custom_firstnames` | `table` | No | Custom first-name pool for `firstname.surname` style. |
+| `custom_surnames` | `table` | No | Custom surname pool for `firstname.surname` style. |
 | `daily_limit` | `number` | No |  |
 | `daily_remaining` | `number` | No |  |
 | `daily_used` | `number` | No |  |
-| `domain_mode` | `string` | No |  |
-| `domains` | `table` | No |  |
+| `domain_mode` | `string` | No | Which domain pool to use. |
+| `domains` | `table` | No | Required when `domain_mode` is `specific`. |
 | `inbox` | `string` | No |  |
 | `inboxes` | `table` | No |  |
-| `output_format` | `string` | No |  |
-| `parseCode` | `boolean` | No |  |
-| `since` | `number` | No |  |
+| `output_format` | `string` | No | Template string for each line of output. |
+| `parseCode` | `boolean` | No | When `true` (default), embeds `?parseCode=true` in every OTP URL. |
+| `since` | `number` | No | Unix timestamp in milliseconds. |
 | `started_at` | `string` | No |  |
 | `success` | `boolean` | No |  |
-| `test_id` | `string` | No |  |
-| `username_style` | `string` | No |  |
+| `test_id` | `string` | No | Optional custom test ID. |
+| `username_style` | `string` | No | Username generation style. |
 
 ### Operations
 
@@ -863,7 +863,7 @@ local public_v1_message = client:PublicV1Message(nil)
 | `from` | `string` | No |  |
 | `has_attachment` | `boolean` | No |  |
 | `id` | `string` | No |  |
-| `otp` | `string` | No |  |
+| `otp` | `string` | No | The extracted OTP code, or `__DETECTED__` on plans below Growth (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value). |
 | `subject` | `string` | No |  |
 | `verification_link` | `string` | No |  |
 
@@ -928,8 +928,8 @@ local public_v1_webhook = client:PublicV1Webhook(nil)
 | `createdAt` | `string` | No |  |
 | `failureCount` | `number` | No |  |
 | `id` | `string` | No |  |
-| `inbox` | `string` | Yes |  |
-| `url` | `string` | Yes |  |
+| `inbox` | `string` | Yes | The registered inbox to subscribe to. |
+| `url` | `string` | Yes | The HTTPS URL to receive the POST request. |
 
 ### Field Usage by Operation
 

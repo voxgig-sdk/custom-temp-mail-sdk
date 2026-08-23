@@ -1,0 +1,94 @@
+# Entity: domains_all
+
+main: kit: entity: domains_all: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "domain"
+      req: true
+      short: "Bare domain name (no leading @)."
+      type: "`$STRING`"
+    }
+    {
+      name: "expired"
+      req: true
+      short: "True when the domain has already passed its expiry date."
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "expires_at"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      req: false
+      short: "ISO 8601 date when the domain registration expires at the registrar."
+      type: "`$STRING`"
+    }
+    {
+      name: "expires_in_days"
+      op: {
+        list: {
+          req: true
+          type: "`$INTEGER`"
+        }
+      }
+      req: false
+      short: "Days remaining until expiry."
+      type: "`$INTEGER`"
+    }
+    {
+      name: "expiring_soon"
+      op: {
+        list: {
+          req: true
+          type: "`$BOOLEAN`"
+        }
+      }
+      req: false
+      short: "True when the domain expires within 30 days."
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "tags"
+      req: true
+      short: "`new` — recently added, shown for ~30 days."
+      type: "`$ARRAY`"
+    }
+    {
+      name: "tier"
+      req: true
+      short: "`free` — available on all plans."
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "domains_all"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/v1/domains/all"
+          parts: [
+            "v1"
+            "domains"
+            "all"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

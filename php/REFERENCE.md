@@ -145,11 +145,11 @@ $custom_domain = $client->CustomDomain();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `added_at` | `string` | No |  |
-| `domain` | `string` | Yes |  |
-| `mx_record` | `string` | Yes |  |
-| `txt_record` | `string` | Yes |  |
-| `verified` | `bool` | Yes |  |
+| `added_at` | `string` | No | ISO 8601 timestamp when the domain was added. |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `mx_record` | `string` | Yes | The MX record value to add at your registrar. |
+| `txt_record` | `string` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `bool` | Yes | `true` — MX and TXT records confirmed. |
 
 ### Operations
 
@@ -222,11 +222,11 @@ $custom_domain_verify = $client->CustomDomainVerify();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `added_at` | `string` | No |  |
-| `domain` | `string` | Yes |  |
-| `mx_record` | `string` | Yes |  |
-| `txt_record` | `string` | Yes |  |
-| `verified` | `bool` | Yes |  |
+| `added_at` | `string` | No | ISO 8601 timestamp when the domain was added. |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `mx_record` | `string` | Yes | The MX record value to add at your registrar. |
+| `txt_record` | `string` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `bool` | Yes | `true` — MX and TXT records confirmed. |
 
 ### Operations
 
@@ -283,12 +283,12 @@ $domain = $client->Domain();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `domain` | `string` | Yes |  |
-| `expires_at` | `string` | No |  |
-| `expires_in_days` | `int` | No |  |
-| `expiring_soon` | `bool` | No |  |
-| `tags` | `array` | Yes |  |
-| `tier` | `string` | Yes |  |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `expires_at` | `string` | No | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `int` | No | Days remaining until expiry. |
+| `expiring_soon` | `bool` | No | True when the domain expires within 30 days. |
+| `tags` | `array` | Yes | `new` — recently added, shown for ~30 days. |
+| `tier` | `string` | Yes | `free` — available on all plans. |
 
 ### Operations
 
@@ -340,13 +340,13 @@ $domains_all = $client->DomainsAll();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `domain` | `string` | Yes |  |
-| `expired` | `bool` | Yes |  |
-| `expires_at` | `string` | No |  |
-| `expires_in_days` | `int` | No |  |
-| `expiring_soon` | `bool` | No |  |
-| `tags` | `array` | Yes |  |
-| `tier` | `string` | Yes |  |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `expired` | `bool` | Yes | True when the domain has already passed its expiry date. |
+| `expires_at` | `string` | No | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `int` | No | Days remaining until expiry. |
+| `expiring_soon` | `bool` | No | True when the domain expires within 30 days. |
+| `tags` | `array` | Yes | `new` — recently added, shown for ~30 days. |
+| `tier` | `string` | Yes | `free` — available on all plans. |
 
 ### Field Usage by Operation
 
@@ -413,7 +413,7 @@ $inbox = $client->Inbox();
 | `count` | `int` | No |  |
 | `inbox` | `string` | No |  |
 | `inboxes` | `array` | No |  |
-| `isTesting` | `bool` | No |  |
+| `isTesting` | `bool` | No | Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger. |
 | `message` | `string` | No |  |
 | `success` | `bool` | No |  |
 
@@ -620,7 +620,7 @@ $otp = $client->Otp();
 | `message_id` | `string` | No |  |
 | `otp` | `string` | No |  |
 | `received_at` | `string` | No |  |
-| `score` | `float` | No |  |
+| `score` | `float` | No | Confidence score (0.0 to 1.0) of the extracted OTP. |
 | `subject` | `string` | No |  |
 | `verification_link` | `string` | No |  |
 
@@ -784,23 +784,23 @@ $public_v1_inbox = $client->PublicV1Inbox();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `count` | `int` | No |  |
-| `custom_firstnames` | `array` | No |  |
-| `custom_surnames` | `array` | No |  |
+| `count` | `int` | No | Number of inboxes to generate (1–500 depending on plan). |
+| `custom_firstnames` | `array` | No | Custom first-name pool for `firstname.surname` style. |
+| `custom_surnames` | `array` | No | Custom surname pool for `firstname.surname` style. |
 | `daily_limit` | `int` | No |  |
 | `daily_remaining` | `int` | No |  |
 | `daily_used` | `int` | No |  |
-| `domain_mode` | `string` | No |  |
-| `domains` | `array` | No |  |
+| `domain_mode` | `string` | No | Which domain pool to use. |
+| `domains` | `array` | No | Required when `domain_mode` is `specific`. |
 | `inbox` | `string` | No |  |
 | `inboxes` | `array` | No |  |
-| `output_format` | `string` | No |  |
-| `parseCode` | `bool` | No |  |
-| `since` | `int` | No |  |
+| `output_format` | `string` | No | Template string for each line of output. |
+| `parseCode` | `bool` | No | When `true` (default), embeds `?parseCode=true` in every OTP URL. |
+| `since` | `int` | No | Unix timestamp in milliseconds. |
 | `started_at` | `string` | No |  |
 | `success` | `bool` | No |  |
-| `test_id` | `string` | No |  |
-| `username_style` | `string` | No |  |
+| `test_id` | `string` | No | Optional custom test ID. |
+| `username_style` | `string` | No | Username generation style. |
 
 ### Operations
 
@@ -865,7 +865,7 @@ $public_v1_message = $client->PublicV1Message();
 | `from` | `string` | No |  |
 | `has_attachment` | `bool` | No |  |
 | `id` | `string` | No |  |
-| `otp` | `string` | No |  |
+| `otp` | `string` | No | The extracted OTP code, or `__DETECTED__` on plans below Growth (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value). |
 | `subject` | `string` | No |  |
 | `verification_link` | `string` | No |  |
 
@@ -930,8 +930,8 @@ $public_v1_webhook = $client->PublicV1Webhook();
 | `createdAt` | `string` | No |  |
 | `failureCount` | `int` | No |  |
 | `id` | `string` | No |  |
-| `inbox` | `string` | Yes |  |
-| `url` | `string` | Yes |  |
+| `inbox` | `string` | Yes | The registered inbox to subscribe to. |
+| `url` | `string` | Yes | The HTTPS URL to receive the POST request. |
 
 ### Field Usage by Operation
 

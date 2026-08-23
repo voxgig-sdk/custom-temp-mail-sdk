@@ -1,0 +1,89 @@
+# Entity: inbox
+
+main: kit: entity: inbox: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "count"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "inbox"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "inboxes"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "isTesting"
+      req: false
+      short: "Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger."
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "success"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+  ]
+
+  name: "inbox"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          method: "POST"
+          orig: "/v1/inboxes"
+          parts: [
+            "v1"
+            "inboxes"
+          ]
+          transform: {
+            req: {
+              inbox: "`reqdata`"
+            }
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          method: "GET"
+          orig: "/v1/inboxes"
+          parts: [
+            "v1"
+            "inboxes"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

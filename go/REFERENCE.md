@@ -151,11 +151,11 @@ fmt.Println(customDomain.GetName()) // "custom_domain"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `added_at` | `string` | No |  |
-| `domain` | `string` | Yes |  |
-| `mx_record` | `string` | Yes |  |
-| `txt_record` | `string` | Yes |  |
-| `verified` | `bool` | Yes |  |
+| `added_at` | `string` | No | ISO 8601 timestamp when the domain was added. |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `mx_record` | `string` | Yes | The MX record value to add at your registrar. |
+| `txt_record` | `string` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `bool` | Yes | `true` — MX and TXT records confirmed. |
 
 ### Operations
 
@@ -235,11 +235,11 @@ fmt.Println(customDomainVerify.GetName()) // "custom_domain_verify"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `added_at` | `string` | No |  |
-| `domain` | `string` | Yes |  |
-| `mx_record` | `string` | Yes |  |
-| `txt_record` | `string` | Yes |  |
-| `verified` | `bool` | Yes |  |
+| `added_at` | `string` | No | ISO 8601 timestamp when the domain was added. |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `mx_record` | `string` | Yes | The MX record value to add at your registrar. |
+| `txt_record` | `string` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `bool` | Yes | `true` — MX and TXT records confirmed. |
 
 ### Operations
 
@@ -295,12 +295,12 @@ fmt.Println(domain.GetName()) // "domain"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `domain` | `string` | Yes |  |
-| `expires_at` | `string` | No |  |
-| `expires_in_days` | `int` | No |  |
-| `expiring_soon` | `bool` | No |  |
-| `tags` | `[]any` | Yes |  |
-| `tier` | `string` | Yes |  |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `expires_at` | `string` | No | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `int` | No | Days remaining until expiry. |
+| `expiring_soon` | `bool` | No | True when the domain expires within 30 days. |
+| `tags` | `[]any` | Yes | `new` — recently added, shown for ~30 days. |
+| `tier` | `string` | Yes | `free` — available on all plans. |
 
 ### Operations
 
@@ -351,13 +351,13 @@ fmt.Println(domainsAll.GetName()) // "domains_all"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `domain` | `string` | Yes |  |
-| `expired` | `bool` | Yes |  |
-| `expires_at` | `string` | No |  |
-| `expires_in_days` | `int` | No |  |
-| `expiring_soon` | `bool` | No |  |
-| `tags` | `[]any` | Yes |  |
-| `tier` | `string` | Yes |  |
+| `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `expired` | `bool` | Yes | True when the domain has already passed its expiry date. |
+| `expires_at` | `string` | No | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `int` | No | Days remaining until expiry. |
+| `expiring_soon` | `bool` | No | True when the domain expires within 30 days. |
+| `tags` | `[]any` | Yes | `new` — recently added, shown for ~30 days. |
+| `tier` | `string` | Yes | `free` — available on all plans. |
 
 ### Field Usage by Operation
 
@@ -423,7 +423,7 @@ fmt.Println(inbox.GetName()) // "inbox"
 | `count` | `int` | No |  |
 | `inbox` | `string` | No |  |
 | `inboxes` | `[]any` | No |  |
-| `isTesting` | `bool` | No |  |
+| `isTesting` | `bool` | No | Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger. |
 | `message` | `string` | No |  |
 | `success` | `bool` | No |  |
 
@@ -631,7 +631,7 @@ fmt.Println(otp.GetName()) // "otp"
 | `message_id` | `string` | No |  |
 | `otp` | `string` | No |  |
 | `received_at` | `string` | No |  |
-| `score` | `float64` | No |  |
+| `score` | `float64` | No | Confidence score (0.0 to 1.0) of the extracted OTP. |
 | `subject` | `string` | No |  |
 | `verification_link` | `string` | No |  |
 
@@ -792,23 +792,23 @@ fmt.Println(publicV1Inbox.GetName()) // "public_v1_inbox"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `count` | `int` | No |  |
-| `custom_firstnames` | `[]any` | No |  |
-| `custom_surnames` | `[]any` | No |  |
+| `count` | `int` | No | Number of inboxes to generate (1–500 depending on plan). |
+| `custom_firstnames` | `[]any` | No | Custom first-name pool for `firstname.surname` style. |
+| `custom_surnames` | `[]any` | No | Custom surname pool for `firstname.surname` style. |
 | `daily_limit` | `int` | No |  |
 | `daily_remaining` | `int` | No |  |
 | `daily_used` | `int` | No |  |
-| `domain_mode` | `string` | No |  |
-| `domains` | `[]any` | No |  |
+| `domain_mode` | `string` | No | Which domain pool to use. |
+| `domains` | `[]any` | No | Required when `domain_mode` is `specific`. |
 | `inbox` | `string` | No |  |
 | `inboxes` | `[]any` | No |  |
-| `output_format` | `string` | No |  |
-| `parseCode` | `bool` | No |  |
-| `since` | `int` | No |  |
+| `output_format` | `string` | No | Template string for each line of output. |
+| `parseCode` | `bool` | No | When `true` (default), embeds `?parseCode=true` in every OTP URL. |
+| `since` | `int` | No | Unix timestamp in milliseconds. |
 | `started_at` | `string` | No |  |
 | `success` | `bool` | No |  |
-| `test_id` | `string` | No |  |
-| `username_style` | `string` | No |  |
+| `test_id` | `string` | No | Optional custom test ID. |
+| `username_style` | `string` | No | Username generation style. |
 
 ### Operations
 
@@ -876,7 +876,7 @@ fmt.Println(publicV1Message.GetName()) // "public_v1_message"
 | `from` | `string` | No |  |
 | `has_attachment` | `bool` | No |  |
 | `id` | `string` | No |  |
-| `otp` | `string` | No |  |
+| `otp` | `string` | No | The extracted OTP code, or `__DETECTED__` on plans below Growth (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value). |
 | `subject` | `string` | No |  |
 | `verification_link` | `string` | No |  |
 
@@ -944,8 +944,8 @@ fmt.Println(publicV1Webhook.GetName()) // "public_v1_webhook"
 | `createdAt` | `string` | No |  |
 | `failureCount` | `int` | No |  |
 | `id` | `string` | No |  |
-| `inbox` | `string` | Yes |  |
-| `url` | `string` | Yes |  |
+| `inbox` | `string` | Yes | The registered inbox to subscribe to. |
+| `url` | `string` | Yes | The HTTPS URL to receive the POST request. |
 
 ### Field Usage by Operation
 

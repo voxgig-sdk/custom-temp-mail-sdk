@@ -19,9 +19,20 @@ class Config {
     return fi
   }
 
+  // False for a feature added at runtime via options.extend (station's
+  // adopt path) - the constructor uses this to skip makeFeature for names
+  // no generated class backs.
+  hasFeature(this: any, fn: string) {
+    return null != FEATURE_CLASS[fn]
+  }
+
 
   main = {
     name: 'CustomTempMail',
+        slug: "custom-temp-mail",
+    version: "0.0.1",
+    target: "ts",
+
   }
 
 
@@ -99,26 +110,31 @@ class Config {
       "fields": [
         {
           "name": "added_at",
+          "short": "ISO 8601 timestamp when the domain was added.",
           "type": "`$STRING`"
         },
         {
           "name": "domain",
           "req": true,
+          "short": "Bare domain name (no leading @).",
           "type": "`$STRING`"
         },
         {
           "name": "mx_record",
           "req": true,
+          "short": "The MX record value to add at your registrar.",
           "type": "`$STRING`"
         },
         {
           "name": "txt_record",
           "req": true,
+          "short": "The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar.",
           "type": "`$STRING`"
         },
         {
           "name": "verified",
           "req": true,
+          "short": "`true` — MX and TXT records confirmed.",
           "type": "`$BOOLEAN`"
         }
       ],
@@ -217,26 +233,31 @@ class Config {
       "fields": [
         {
           "name": "added_at",
+          "short": "ISO 8601 timestamp when the domain was added.",
           "type": "`$STRING`"
         },
         {
           "name": "domain",
           "req": true,
+          "short": "Bare domain name (no leading @).",
           "type": "`$STRING`"
         },
         {
           "name": "mx_record",
           "req": true,
+          "short": "The MX record value to add at your registrar.",
           "type": "`$STRING`"
         },
         {
           "name": "txt_record",
           "req": true,
+          "short": "The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar.",
           "type": "`$STRING`"
         },
         {
           "name": "verified",
           "req": true,
+          "short": "`true` — MX and TXT records confirmed.",
           "type": "`$BOOLEAN`"
         }
       ],
@@ -294,28 +315,34 @@ class Config {
         {
           "name": "domain",
           "req": true,
+          "short": "Bare domain name (no leading @).",
           "type": "`$STRING`"
         },
         {
           "name": "expires_at",
+          "short": "ISO 8601 date when the domain registration expires at the registrar.",
           "type": "`$STRING`"
         },
         {
           "name": "expires_in_days",
+          "short": "Days remaining until expiry.",
           "type": "`$INTEGER`"
         },
         {
           "name": "expiring_soon",
+          "short": "True when the domain expires within 30 days.",
           "type": "`$BOOLEAN`"
         },
         {
           "name": "tags",
           "req": true,
+          "short": "`new` — recently added, shown for ~30 days.",
           "type": "`$ARRAY`"
         },
         {
           "name": "tier",
           "req": true,
+          "short": "`free` — available on all plans.",
           "type": "`$STRING`"
         }
       ],
@@ -352,11 +379,13 @@ class Config {
         {
           "name": "domain",
           "req": true,
+          "short": "Bare domain name (no leading @).",
           "type": "`$STRING`"
         },
         {
           "name": "expired",
           "req": true,
+          "short": "True when the domain has already passed its expiry date.",
           "type": "`$BOOLEAN`"
         },
         {
@@ -367,6 +396,7 @@ class Config {
               "type": "`$STRING`"
             }
           },
+          "short": "ISO 8601 date when the domain registration expires at the registrar.",
           "type": "`$STRING`"
         },
         {
@@ -377,6 +407,7 @@ class Config {
               "type": "`$INTEGER`"
             }
           },
+          "short": "Days remaining until expiry.",
           "type": "`$INTEGER`"
         },
         {
@@ -387,16 +418,19 @@ class Config {
               "type": "`$BOOLEAN`"
             }
           },
+          "short": "True when the domain expires within 30 days.",
           "type": "`$BOOLEAN`"
         },
         {
           "name": "tags",
           "req": true,
+          "short": "`new` — recently added, shown for ~30 days.",
           "type": "`$ARRAY`"
         },
         {
           "name": "tier",
           "req": true,
+          "short": "`free` — available on all plans.",
           "type": "`$STRING`"
         }
       ],
@@ -451,6 +485,7 @@ class Config {
         },
         {
           "name": "isTesting",
+          "short": "Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger.",
           "type": "`$BOOLEAN`"
         },
         {
@@ -790,6 +825,7 @@ class Config {
         },
         {
           "name": "score",
+          "short": "Confidence score (0.0 to 1.0) of the extracted OTP.",
           "type": "`$NUMBER`"
         },
         {
@@ -1089,14 +1125,17 @@ class Config {
       "fields": [
         {
           "name": "count",
+          "short": "Number of inboxes to generate (1–500 depending on plan).",
           "type": "`$INTEGER`"
         },
         {
           "name": "custom_firstnames",
+          "short": "Custom first-name pool for `firstname.surname` style.",
           "type": "`$ARRAY`"
         },
         {
           "name": "custom_surnames",
+          "short": "Custom surname pool for `firstname.surname` style.",
           "type": "`$ARRAY`"
         },
         {
@@ -1113,10 +1152,12 @@ class Config {
         },
         {
           "name": "domain_mode",
+          "short": "Which domain pool to use.",
           "type": "`$STRING`"
         },
         {
           "name": "domains",
+          "short": "Required when `domain_mode` is `specific`.",
           "type": "`$ARRAY`"
         },
         {
@@ -1129,14 +1170,17 @@ class Config {
         },
         {
           "name": "output_format",
+          "short": "Template string for each line of output.",
           "type": "`$STRING`"
         },
         {
           "name": "parseCode",
+          "short": "When `true` (default), embeds `?parseCode=true` in every OTP URL.",
           "type": "`$BOOLEAN`"
         },
         {
           "name": "since",
+          "short": "Unix timestamp in milliseconds.",
           "type": "`$INTEGER`"
         },
         {
@@ -1149,10 +1193,12 @@ class Config {
         },
         {
           "name": "test_id",
+          "short": "Optional custom test ID.",
           "type": "`$STRING`"
         },
         {
           "name": "username_style",
+          "short": "Username generation style.",
           "type": "`$STRING`"
         }
       ],
@@ -1287,6 +1333,7 @@ class Config {
         },
         {
           "name": "otp",
+          "short": "The extracted OTP code, or `__DETECTED__` on plans below Growth (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value).",
           "type": "`$STRING`"
         },
         {
@@ -1441,6 +1488,7 @@ class Config {
             }
           },
           "req": true,
+          "short": "The registered inbox to subscribe to.",
           "type": "`$STRING`"
         },
         {
@@ -1451,6 +1499,7 @@ class Config {
             }
           },
           "req": true,
+          "short": "The HTTPS URL to receive the POST request.",
           "type": "`$STRING`"
         }
       ],

@@ -1,0 +1,178 @@
+# Entity: otp
+
+main: kit: entity: otp: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "from"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "inbox"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "message"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "message_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "otp"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "received_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "score"
+      req: false
+      short: "Confidence score (0.0 to 1.0) of the extracted OTP."
+      type: "`$NUMBER`"
+    }
+    {
+      name: "subject"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "verification_link"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "otp"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "inbox_id"
+                orig: "inbox"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                example: false
+                kind: "query"
+                name: "parse_code"
+                orig: "parse_code"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                kind: "query"
+                name: "since"
+                orig: "since"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v1/inboxes/{inbox}/otp"
+          parts: [
+            "v1"
+            "inboxes"
+            "{inbox_id}"
+            "otp"
+          ]
+          rename: {
+            param: {
+              inbox: "inbox_id"
+            }
+          }
+          select: {
+            exist: [
+              "inbox_id"
+              "parse_code"
+              "since"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                example: false
+                kind: "query"
+                name: "parse_code"
+                orig: "parse_code"
+                reqd: false
+                type: "`$BOOLEAN`"
+              }
+              {
+                example: 1716900000000
+                kind: "query"
+                name: "since"
+                orig: "since"
+                reqd: false
+                type: "`$INTEGER`"
+              }
+              {
+                example: "fceotp_24f1add500d18150a02c62e40b395828226a79ab"
+                kind: "query"
+                name: "token"
+                orig: "token"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/v1/otp/public"
+          parts: [
+            "v1"
+            "otp"
+            "public"
+          ]
+          select: {
+            "$action": "public"
+            exist: [
+              "parse_code"
+              "since"
+              "token"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "inbox"
+      ]
+    ]
+  }
+
+
+
+}

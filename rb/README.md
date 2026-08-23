@@ -281,11 +281,11 @@ returns a result `Hash` with these keys:
 
 | Field | Description |
 | --- | --- |
-| `added_at` |  |
-| `domain` |  |
-| `mx_record` |  |
-| `txt_record` |  |
-| `verified` |  |
+| `added_at` | ISO 8601 timestamp when the domain was added. |
+| `domain` | Bare domain name (no leading @). |
+| `mx_record` | The MX record value to add at your registrar. |
+| `txt_record` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `true` — MX and TXT records confirmed. |
 
 Operations: Create, List, Remove.
 
@@ -295,11 +295,11 @@ API path: `/v1/custom-domains`
 
 | Field | Description |
 | --- | --- |
-| `added_at` |  |
-| `domain` |  |
-| `mx_record` |  |
-| `txt_record` |  |
-| `verified` |  |
+| `added_at` | ISO 8601 timestamp when the domain was added. |
+| `domain` | Bare domain name (no leading @). |
+| `mx_record` | The MX record value to add at your registrar. |
+| `txt_record` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `true` — MX and TXT records confirmed. |
 
 Operations: Create.
 
@@ -309,12 +309,12 @@ API path: `/v1/custom-domains/{domain}/verify`
 
 | Field | Description |
 | --- | --- |
-| `domain` |  |
-| `expires_at` |  |
-| `expires_in_days` |  |
-| `expiring_soon` |  |
-| `tags` |  |
-| `tier` |  |
+| `domain` | Bare domain name (no leading @). |
+| `expires_at` | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | Days remaining until expiry. |
+| `expiring_soon` | True when the domain expires within 30 days. |
+| `tags` | `new` — recently added, shown for ~30 days. |
+| `tier` | `free` — available on all plans. |
 
 Operations: List.
 
@@ -324,13 +324,13 @@ API path: `/v1/domains`
 
 | Field | Description |
 | --- | --- |
-| `domain` |  |
-| `expired` |  |
-| `expires_at` |  |
-| `expires_in_days` |  |
-| `expiring_soon` |  |
-| `tags` |  |
-| `tier` |  |
+| `domain` | Bare domain name (no leading @). |
+| `expired` | True when the domain has already passed its expiry date. |
+| `expires_at` | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | Days remaining until expiry. |
+| `expiring_soon` | True when the domain expires within 30 days. |
+| `tags` | `new` — recently added, shown for ~30 days. |
+| `tier` | `free` — available on all plans. |
 
 Operations: List.
 
@@ -343,7 +343,7 @@ API path: `/v1/domains/all`
 | `count` |  |
 | `inbox` |  |
 | `inboxes` |  |
-| `isTesting` |  |
+| `isTesting` | Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger. |
 | `message` |  |
 | `success` |  |
 
@@ -404,7 +404,7 @@ API path: `/v1/inboxes/{inbox}/messages`
 | `message_id` |  |
 | `otp` |  |
 | `received_at` |  |
-| `score` |  |
+| `score` | Confidence score (0.0 to 1.0) of the extracted OTP. |
 | `subject` |  |
 | `verification_link` |  |
 
@@ -442,23 +442,23 @@ API path: `/v1/inboxes/{inbox}/timeline`
 
 | Field | Description |
 | --- | --- |
-| `count` |  |
-| `custom_firstnames` |  |
-| `custom_surnames` |  |
+| `count` | Number of inboxes to generate (1–500 depending on plan). |
+| `custom_firstnames` | Custom first-name pool for `firstname.surname` style. |
+| `custom_surnames` | Custom surname pool for `firstname.surname` style. |
 | `daily_limit` |  |
 | `daily_remaining` |  |
 | `daily_used` |  |
-| `domain_mode` |  |
-| `domains` |  |
+| `domain_mode` | Which domain pool to use. |
+| `domains` | Required when `domain_mode` is `specific`. |
 | `inbox` |  |
 | `inboxes` |  |
-| `output_format` |  |
-| `parseCode` |  |
-| `since` |  |
+| `output_format` | Template string for each line of output. |
+| `parseCode` | When `true` (default), embeds `?parseCode=true` in every OTP URL. |
+| `since` | Unix timestamp in milliseconds. |
 | `started_at` |  |
 | `success` |  |
-| `test_id` |  |
-| `username_style` |  |
+| `test_id` | Optional custom test ID. |
+| `username_style` | Username generation style. |
 
 Operations: Create, Remove.
 
@@ -472,7 +472,7 @@ API path: `/v1/inboxes/{inbox}/tests`
 | `from` |  |
 | `has_attachment` |  |
 | `id` |  |
-| `otp` |  |
+| `otp` | The extracted OTP code, or `__DETECTED__` on plans below Growth (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value). |
 | `subject` |  |
 | `verification_link` |  |
 
@@ -487,8 +487,8 @@ API path: `/v1/inboxes/{inbox}/wait`
 | `createdAt` |  |
 | `failureCount` |  |
 | `id` |  |
-| `inbox` |  |
-| `url` |  |
+| `inbox` | The registered inbox to subscribe to. |
+| `url` | The HTTPS URL to receive the POST request. |
 
 Operations: Create, List, Remove.
 
@@ -529,11 +529,11 @@ Create an instance: `custom_domain = client.CustomDomain`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `added_at` | `String` |  |
-| `domain` | `String` |  |
-| `mx_record` | `String` |  |
-| `txt_record` | `String` |  |
-| `verified` | `Boolean` |  |
+| `added_at` | `String` | ISO 8601 timestamp when the domain was added. |
+| `domain` | `String` | Bare domain name (no leading @). |
+| `mx_record` | `String` | The MX record value to add at your registrar. |
+| `txt_record` | `String` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `Boolean` | `true` — MX and TXT records confirmed. |
 
 #### Example: List
 
@@ -568,11 +568,11 @@ Create an instance: `custom_domain_verify = client.CustomDomainVerify`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `added_at` | `String` |  |
-| `domain` | `String` |  |
-| `mx_record` | `String` |  |
-| `txt_record` | `String` |  |
-| `verified` | `Boolean` |  |
+| `added_at` | `String` | ISO 8601 timestamp when the domain was added. |
+| `domain` | `String` | Bare domain name (no leading @). |
+| `mx_record` | `String` | The MX record value to add at your registrar. |
+| `txt_record` | `String` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
+| `verified` | `Boolean` | `true` — MX and TXT records confirmed. |
 
 #### Example: Create
 
@@ -600,12 +600,12 @@ Create an instance: `domain = client.Domain`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `domain` | `String` |  |
-| `expires_at` | `String` |  |
-| `expires_in_days` | `Integer` |  |
-| `expiring_soon` | `Boolean` |  |
-| `tags` | `Array` |  |
-| `tier` | `String` |  |
+| `domain` | `String` | Bare domain name (no leading @). |
+| `expires_at` | `String` | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `Integer` | Days remaining until expiry. |
+| `expiring_soon` | `Boolean` | True when the domain expires within 30 days. |
+| `tags` | `Array` | `new` — recently added, shown for ~30 days. |
+| `tier` | `String` | `free` — available on all plans. |
 
 #### Example: List
 
@@ -629,13 +629,13 @@ Create an instance: `domains_all = client.DomainsAll`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `domain` | `String` |  |
-| `expired` | `Boolean` |  |
-| `expires_at` | `String` |  |
-| `expires_in_days` | `Integer` |  |
-| `expiring_soon` | `Boolean` |  |
-| `tags` | `Array` |  |
-| `tier` | `String` |  |
+| `domain` | `String` | Bare domain name (no leading @). |
+| `expired` | `Boolean` | True when the domain has already passed its expiry date. |
+| `expires_at` | `String` | ISO 8601 date when the domain registration expires at the registrar. |
+| `expires_in_days` | `Integer` | Days remaining until expiry. |
+| `expiring_soon` | `Boolean` | True when the domain expires within 30 days. |
+| `tags` | `Array` | `new` — recently added, shown for ~30 days. |
+| `tier` | `String` | `free` — available on all plans. |
 
 #### Example: List
 
@@ -663,7 +663,7 @@ Create an instance: `inbox = client.Inbox`
 | `count` | `Integer` |  |
 | `inbox` | `String` |  |
 | `inboxes` | `Array` |  |
-| `isTesting` | `Boolean` |  |
+| `isTesting` | `Boolean` | Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger. |
 | `message` | `String` |  |
 | `success` | `Boolean` |  |
 
@@ -773,7 +773,7 @@ Create an instance: `otp = client.Otp`
 | `message_id` | `String` |  |
 | `otp` | `String` |  |
 | `received_at` | `String` |  |
-| `score` | `Float` |  |
+| `score` | `Float` | Confidence score (0.0 to 1.0) of the extracted OTP. |
 | `subject` | `String` |  |
 | `verification_link` | `String` |  |
 
@@ -854,23 +854,23 @@ Create an instance: `public_v1_inbox = client.PublicV1Inbox`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `count` | `Integer` |  |
-| `custom_firstnames` | `Array` |  |
-| `custom_surnames` | `Array` |  |
+| `count` | `Integer` | Number of inboxes to generate (1–500 depending on plan). |
+| `custom_firstnames` | `Array` | Custom first-name pool for `firstname.surname` style. |
+| `custom_surnames` | `Array` | Custom surname pool for `firstname.surname` style. |
 | `daily_limit` | `Integer` |  |
 | `daily_remaining` | `Integer` |  |
 | `daily_used` | `Integer` |  |
-| `domain_mode` | `String` |  |
-| `domains` | `Array` |  |
+| `domain_mode` | `String` | Which domain pool to use. |
+| `domains` | `Array` | Required when `domain_mode` is `specific`. |
 | `inbox` | `String` |  |
 | `inboxes` | `Array` |  |
-| `output_format` | `String` |  |
-| `parseCode` | `Boolean` |  |
-| `since` | `Integer` |  |
+| `output_format` | `String` | Template string for each line of output. |
+| `parseCode` | `Boolean` | When `true` (default), embeds `?parseCode=true` in every OTP URL. |
+| `since` | `Integer` | Unix timestamp in milliseconds. |
 | `started_at` | `String` |  |
 | `success` | `Boolean` |  |
-| `test_id` | `String` |  |
-| `username_style` | `String` |  |
+| `test_id` | `String` | Optional custom test ID. |
+| `username_style` | `String` | Username generation style. |
 
 #### Example: Create
 
@@ -899,7 +899,7 @@ Create an instance: `public_v1_message = client.PublicV1Message`
 | `from` | `String` |  |
 | `has_attachment` | `Boolean` |  |
 | `id` | `String` |  |
-| `otp` | `String` |  |
+| `otp` | `String` | The extracted OTP code, or `__DETECTED__` on plans below Growth (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value). |
 | `subject` | `String` |  |
 | `verification_link` | `String` |  |
 
@@ -930,8 +930,8 @@ Create an instance: `public_v1_webhook = client.PublicV1Webhook`
 | `createdAt` | `String` |  |
 | `failureCount` | `Integer` |  |
 | `id` | `String` |  |
-| `inbox` | `String` |  |
-| `url` | `String` |  |
+| `inbox` | `String` | The registered inbox to subscribe to. |
+| `url` | `String` | The HTTPS URL to receive the POST request. |
 
 #### Example: List
 

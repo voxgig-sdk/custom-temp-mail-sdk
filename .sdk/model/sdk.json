@@ -36,30 +36,35 @@
               "active": true,
               "name": "added_at",
               "req": false,
+              "short": "ISO 8601 timestamp when the domain was added.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "domain",
               "req": true,
+              "short": "Bare domain name (no leading @).",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "mx_record",
               "req": true,
+              "short": "The MX record value to add at your registrar.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "txt_record",
               "req": true,
+              "short": "The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "verified",
               "req": true,
+              "short": "`true` — MX and TXT records confirmed.",
               "type": "`$BOOLEAN`"
             }
           ],
@@ -168,30 +173,35 @@
               "active": true,
               "name": "added_at",
               "req": false,
+              "short": "ISO 8601 timestamp when the domain was added.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "domain",
               "req": true,
+              "short": "Bare domain name (no leading @).",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "mx_record",
               "req": true,
+              "short": "The MX record value to add at your registrar.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "txt_record",
               "req": true,
+              "short": "The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "verified",
               "req": true,
+              "short": "`true` — MX and TXT records confirmed.",
               "type": "`$BOOLEAN`"
             }
           ],
@@ -256,36 +266,42 @@
               "active": true,
               "name": "domain",
               "req": true,
+              "short": "Bare domain name (no leading @).",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "expires_at",
               "req": false,
+              "short": "ISO 8601 date when the domain registration expires at the registrar.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "expires_in_days",
               "req": false,
+              "short": "Days remaining until expiry.",
               "type": "`$INTEGER`"
             },
             {
               "active": true,
               "name": "expiring_soon",
               "req": false,
+              "short": "True when the domain expires within 30 days.",
               "type": "`$BOOLEAN`"
             },
             {
               "active": true,
               "name": "tags",
               "req": true,
+              "short": "`new` — recently added, shown for ~30 days.",
               "type": "`$ARRAY`"
             },
             {
               "active": true,
               "name": "tier",
               "req": true,
+              "short": "`free` — available on all plans.",
               "type": "`$STRING`"
             }
           ],
@@ -328,12 +344,14 @@
               "active": true,
               "name": "domain",
               "req": true,
+              "short": "Bare domain name (no leading @).",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "expired",
               "req": true,
+              "short": "True when the domain has already passed its expiry date.",
               "type": "`$BOOLEAN`"
             },
             {
@@ -346,6 +364,7 @@
                 }
               },
               "req": false,
+              "short": "ISO 8601 date when the domain registration expires at the registrar.",
               "type": "`$STRING`"
             },
             {
@@ -358,6 +377,7 @@
                 }
               },
               "req": false,
+              "short": "Days remaining until expiry.",
               "type": "`$INTEGER`"
             },
             {
@@ -370,18 +390,21 @@
                 }
               },
               "req": false,
+              "short": "True when the domain expires within 30 days.",
               "type": "`$BOOLEAN`"
             },
             {
               "active": true,
               "name": "tags",
               "req": true,
+              "short": "`new` — recently added, shown for ~30 days.",
               "type": "`$ARRAY`"
             },
             {
               "active": true,
               "name": "tier",
               "req": true,
+              "short": "`free` — available on all plans.",
               "type": "`$STRING`"
             }
           ],
@@ -449,6 +472,7 @@
               "active": true,
               "name": "isTesting",
               "req": false,
+              "short": "Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger.",
               "type": "`$BOOLEAN`"
             },
             {
@@ -884,6 +908,7 @@
               "active": true,
               "name": "score",
               "req": false,
+              "short": "Confidence score (0.0 to 1.0) of the extracted OTP.",
               "type": "`$NUMBER`"
             },
             {
@@ -1236,18 +1261,21 @@
               "active": true,
               "name": "count",
               "req": false,
+              "short": "Number of inboxes to generate (1–500 depending on plan).",
               "type": "`$INTEGER`"
             },
             {
               "active": true,
               "name": "custom_firstnames",
               "req": false,
+              "short": "Custom first-name pool for `firstname.surname` style.",
               "type": "`$ARRAY`"
             },
             {
               "active": true,
               "name": "custom_surnames",
               "req": false,
+              "short": "Custom surname pool for `firstname.surname` style.",
               "type": "`$ARRAY`"
             },
             {
@@ -1272,12 +1300,14 @@
               "active": true,
               "name": "domain_mode",
               "req": false,
+              "short": "Which domain pool to use.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "domains",
               "req": false,
+              "short": "Required when `domain_mode` is `specific`.",
               "type": "`$ARRAY`"
             },
             {
@@ -1296,18 +1326,21 @@
               "active": true,
               "name": "output_format",
               "req": false,
+              "short": "Template string for each line of output.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "parseCode",
               "req": false,
+              "short": "When `true` (default), embeds `?parseCode=true` in every OTP URL.",
               "type": "`$BOOLEAN`"
             },
             {
               "active": true,
               "name": "since",
               "req": false,
+              "short": "Unix timestamp in milliseconds.",
               "type": "`$INTEGER`"
             },
             {
@@ -1326,12 +1359,14 @@
               "active": true,
               "name": "test_id",
               "req": false,
+              "short": "Optional custom test ID.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "username_style",
               "req": false,
+              "short": "Username generation style.",
               "type": "`$STRING`"
             }
           ],
@@ -1485,6 +1520,7 @@
               "active": true,
               "name": "otp",
               "req": false,
+              "short": "The extracted OTP code, or `__DETECTED__` on plans below Growth (upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value).",
               "type": "`$STRING`"
             },
             {
@@ -1668,6 +1704,7 @@
                 }
               },
               "req": true,
+              "short": "The registered inbox to subscribe to.",
               "type": "`$STRING`"
             },
             {
@@ -1680,6 +1717,7 @@
                 }
               },
               "req": true,
+              "short": "The HTTPS URL to receive the POST request.",
               "type": "`$STRING`"
             }
           ],

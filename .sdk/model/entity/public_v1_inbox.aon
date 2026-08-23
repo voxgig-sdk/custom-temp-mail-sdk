@@ -1,0 +1,212 @@
+# Entity: public_v1_inbox
+
+main: kit: entity: public_v1_inbox: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "count"
+      req: false
+      short: "Number of inboxes to generate (1–500 depending on plan)."
+      type: "`$INTEGER`"
+    }
+    {
+      name: "custom_firstnames"
+      req: false
+      short: "Custom first-name pool for `firstname.surname` style."
+      type: "`$ARRAY`"
+    }
+    {
+      name: "custom_surnames"
+      req: false
+      short: "Custom surname pool for `firstname.surname` style."
+      type: "`$ARRAY`"
+    }
+    {
+      name: "daily_limit"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "daily_remaining"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "daily_used"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "domain_mode"
+      req: false
+      short: "Which domain pool to use."
+      type: "`$STRING`"
+    }
+    {
+      name: "domains"
+      req: false
+      short: "Required when `domain_mode` is `specific`."
+      type: "`$ARRAY`"
+    }
+    {
+      name: "inbox"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "inboxes"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "output_format"
+      req: false
+      short: "Template string for each line of output."
+      type: "`$STRING`"
+    }
+    {
+      name: "parseCode"
+      req: false
+      short: "When `true` (default), embeds `?parseCode=true` in every OTP URL."
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "since"
+      req: false
+      short: "Unix timestamp in milliseconds."
+      type: "`$INTEGER`"
+    }
+    {
+      name: "started_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "success"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "test_id"
+      req: false
+      short: "Optional custom test ID."
+      type: "`$STRING`"
+    }
+    {
+      name: "username_style"
+      req: false
+      short: "Username generation style."
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "public_v1_inbox"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "test@ditube.info"
+                kind: "param"
+                name: "inbox_id"
+                orig: "inbox"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "POST"
+          orig: "/v1/inboxes/{inbox}/tests"
+          parts: [
+            "v1"
+            "inboxes"
+            "{inbox_id}"
+            "tests"
+          ]
+          rename: {
+            param: {
+              inbox: "inbox_id"
+            }
+          }
+          select: {
+            exist: [
+              "inbox_id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+        {
+          method: "POST"
+          orig: "/v1/inboxes/generate"
+          parts: [
+            "v1"
+            "inboxes"
+            "generate"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "inbox"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/v1/inboxes/{inbox}"
+          parts: [
+            "v1"
+            "inboxes"
+            "{id}"
+          ]
+          rename: {
+            param: {
+              inbox: "id"
+            }
+          }
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  relations: {
+    ancestors: [
+      [
+        "inbox"
+      ]
+    ]
+  }
+
+
+
+}
