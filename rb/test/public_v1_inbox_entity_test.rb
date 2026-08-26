@@ -39,7 +39,13 @@ class PublicV1InboxEntityTest < Minitest::Test
     public_v1_inbox_ref01_data_result = public_v1_inbox_ref01_ent.create(public_v1_inbox_ref01_data, nil)
     public_v1_inbox_ref01_data = Helpers.to_map(public_v1_inbox_ref01_data_result.respond_to?(:data_get) ? public_v1_inbox_ref01_data_result.data_get : public_v1_inbox_ref01_data_result)
     assert !public_v1_inbox_ref01_data.nil?
+    assert !public_v1_inbox_ref01_data["id"].nil?
 
+    # REMOVE
+    public_v1_inbox_ref01_match_rm0 = {
+      "id" => public_v1_inbox_ref01_data["id"],
+    }
+    public_v1_inbox_ref01_ent.remove(public_v1_inbox_ref01_match_rm0, nil)
 
   end
 end

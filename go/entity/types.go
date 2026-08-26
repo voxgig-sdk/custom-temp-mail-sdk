@@ -16,6 +16,7 @@ import (
 type CustomDomain struct {
 	AddedAt *string `json:"added_at,omitempty"`
 	Domain string `json:"domain"`
+	Id *string `json:"id,omitempty"`
 	MxRecord string `json:"mx_record"`
 	TxtRecord string `json:"txt_record"`
 	Verified bool `json:"verified"`
@@ -25,6 +26,7 @@ type CustomDomain struct {
 type CustomDomainListMatch struct {
 	AddedAt *string `json:"added_at,omitempty"`
 	Domain *string `json:"domain,omitempty"`
+	Id *string `json:"id,omitempty"`
 	MxRecord *string `json:"mx_record,omitempty"`
 	TxtRecord *string `json:"txt_record,omitempty"`
 	Verified *bool `json:"verified,omitempty"`
@@ -34,6 +36,7 @@ type CustomDomainListMatch struct {
 type CustomDomainCreateData struct {
 	AddedAt *string `json:"added_at,omitempty"`
 	Domain string `json:"domain"`
+	Id *string `json:"id,omitempty"`
 	MxRecord string `json:"mx_record"`
 	TxtRecord string `json:"txt_record"`
 	Verified bool `json:"verified"`
@@ -242,6 +245,7 @@ type PublicV1Inbox struct {
 	DailyUsed *int `json:"daily_used,omitempty"`
 	DomainMode *string `json:"domain_mode,omitempty"`
 	Domains *[]any `json:"domains,omitempty"`
+	Id *string `json:"id,omitempty"`
 	Inbox *string `json:"inbox,omitempty"`
 	Inboxes *[]any `json:"inboxes,omitempty"`
 	OutputFormat *string `json:"output_format,omitempty"`
@@ -263,6 +267,7 @@ type PublicV1InboxCreateData struct {
 	DailyUsed *int `json:"daily_used,omitempty"`
 	DomainMode *string `json:"domain_mode,omitempty"`
 	Domains *[]any `json:"domains,omitempty"`
+	Id *string `json:"id,omitempty"`
 	Inbox *string `json:"inbox,omitempty"`
 	Inboxes *[]any `json:"inboxes,omitempty"`
 	OutputFormat *string `json:"output_format,omitempty"`

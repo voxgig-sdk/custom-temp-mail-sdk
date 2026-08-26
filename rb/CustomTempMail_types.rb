@@ -16,6 +16,9 @@
 # @!attribute [rw] domain
 #   @return [String]
 #
+# @!attribute [rw] id
+#   @return [String, nil]
+#
 # @!attribute [rw] mx_record
 #   @return [String]
 #
@@ -27,6 +30,7 @@
 CustomDomain = Struct.new(
   :added_at,
   :domain,
+  :id,
   :mx_record,
   :txt_record,
   :verified,
@@ -41,6 +45,9 @@ CustomDomain = Struct.new(
 # @!attribute [rw] domain
 #   @return [String, nil]
 #
+# @!attribute [rw] id
+#   @return [String, nil]
+#
 # @!attribute [rw] mx_record
 #   @return [String, nil]
 #
@@ -52,6 +59,7 @@ CustomDomain = Struct.new(
 CustomDomainListMatch = Struct.new(
   :added_at,
   :domain,
+  :id,
   :mx_record,
   :txt_record,
   :verified,
@@ -66,6 +74,9 @@ CustomDomainListMatch = Struct.new(
 # @!attribute [rw] domain
 #   @return [String]
 #
+# @!attribute [rw] id
+#   @return [String, nil]
+#
 # @!attribute [rw] mx_record
 #   @return [String]
 #
@@ -77,6 +88,7 @@ CustomDomainListMatch = Struct.new(
 CustomDomainCreateData = Struct.new(
   :added_at,
   :domain,
+  :id,
   :mx_record,
   :txt_record,
   :verified,
@@ -661,6 +673,9 @@ PublicV1DashboardAnalyticsLoadMatch = Struct.new(
 # @!attribute [rw] domains
 #   @return [Array, nil]
 #
+# @!attribute [rw] id
+#   @return [String, nil]
+#
 # @!attribute [rw] inbox
 #   @return [String, nil]
 #
@@ -696,6 +711,7 @@ PublicV1Inbox = Struct.new(
   :daily_used,
   :domain_mode,
   :domains,
+  :id,
   :inbox,
   :inboxes,
   :output_format,
@@ -734,6 +750,9 @@ PublicV1Inbox = Struct.new(
 # @!attribute [rw] domains
 #   @return [Array, nil]
 #
+# @!attribute [rw] id
+#   @return [String, nil]
+#
 # @!attribute [rw] inbox
 #   @return [String, nil]
 #
@@ -769,6 +788,7 @@ PublicV1InboxCreateData = Struct.new(
   :daily_used,
   :domain_mode,
   :domains,
+  :id,
   :inbox,
   :inboxes,
   :output_format,

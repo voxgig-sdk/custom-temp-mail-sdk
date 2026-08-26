@@ -46,7 +46,13 @@ class TestPublicV1InboxEntity:
 
         public_v1_inbox_ref01_data = helpers.to_map(runner.entity_data(public_v1_inbox_ref01_ent.create(public_v1_inbox_ref01_data, None)))
         assert public_v1_inbox_ref01_data is not None
+        assert public_v1_inbox_ref01_data["id"] is not None
 
+        # REMOVE
+        public_v1_inbox_ref01_match_rm0 = {
+            "id": public_v1_inbox_ref01_data["id"],
+        }
+        public_v1_inbox_ref01_ent.remove(public_v1_inbox_ref01_match_rm0, None)
 
 
 

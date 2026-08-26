@@ -51,6 +51,11 @@ main: kit: entity: public_v1_inbox: {
       type: "`$ARRAY`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "inbox"
       req: false
       type: "`$STRING`"
@@ -101,6 +106,11 @@ main: kit: entity: public_v1_inbox: {
       type: "`$STRING`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "public_v1_inbox"
   op: {

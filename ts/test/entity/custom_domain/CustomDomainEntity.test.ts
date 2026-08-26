@@ -63,7 +63,7 @@ describe('CustomDomainEntity', async () => {
     let custom_domain_ref01_data = setup.data.new.custom_domain['custom_domain_ref01']
 
     custom_domain_ref01_data = (await custom_domain_ref01_ent.create(custom_domain_ref01_data)).data()
-    assert(null != custom_domain_ref01_data)
+    assert(null != custom_domain_ref01_data.id)
 
 
     // LIST
@@ -71,12 +71,20 @@ describe('CustomDomainEntity', async () => {
 
     const custom_domain_ref01_list = (await custom_domain_ref01_ent.list(custom_domain_ref01_match)).map((e: any) => e.data())
 
+    assert(!isempty(select(custom_domain_ref01_list, { id: custom_domain_ref01_data.id })))
 
+
+    // REMOVE
+    const custom_domain_ref01_match_rm0: any = { id: custom_domain_ref01_data.id }
+    await custom_domain_ref01_ent.remove(custom_domain_ref01_match_rm0)
+  
 
     // LIST
     const custom_domain_ref01_match_rt0: any = {}
 
     const custom_domain_ref01_list_rt0 = (await custom_domain_ref01_ent.list(custom_domain_ref01_match_rt0)).map((e: any) => e.data())
+
+    assert(isempty(select(custom_domain_ref01_list_rt0, { id: custom_domain_ref01_data.id })))
 
 
   })

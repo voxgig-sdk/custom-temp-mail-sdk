@@ -18,6 +18,11 @@ main: kit: entity: custom_domain: {
       type: "`$STRING`"
     }
     {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
       name: "mx_record"
       req: true
       short: "The MX record value to add at your registrar."
@@ -36,6 +41,11 @@ main: kit: entity: custom_domain: {
       type: "`$BOOLEAN`"
     }
   ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
 
   name: "custom_domain"
   op: {

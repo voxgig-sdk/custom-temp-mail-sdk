@@ -25,11 +25,13 @@ class CustomDomainRequired(TypedDict):
 
 class CustomDomain(CustomDomainRequired, total=False):
     added_at: str
+    id: str
 
 
 class CustomDomainListMatch(TypedDict, total=False):
     added_at: str
     domain: str
+    id: str
     mx_record: str
     txt_record: str
     verified: bool
@@ -44,6 +46,7 @@ class CustomDomainCreateDataRequired(TypedDict):
 
 class CustomDomainCreateData(CustomDomainCreateDataRequired, total=False):
     added_at: str
+    id: str
 
 
 class CustomDomainRemoveMatch(TypedDict):
@@ -241,6 +244,7 @@ class PublicV1Inbox(TypedDict, total=False):
     daily_used: int
     domain_mode: str
     domains: list
+    id: str
     inbox: str
     inboxes: list
     output_format: str
@@ -261,6 +265,7 @@ class PublicV1InboxCreateData(TypedDict, total=False):
     daily_used: int
     domain_mode: str
     domains: list
+    id: str
     inbox: str
     inboxes: list
     output_format: str

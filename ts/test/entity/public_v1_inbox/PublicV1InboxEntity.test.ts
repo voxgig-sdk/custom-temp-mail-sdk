@@ -63,9 +63,13 @@ describe('PublicV1InboxEntity', async () => {
     let public_v1_inbox_ref01_data = setup.data.new.public_v1_inbox['public_v1_inbox_ref01']
 
     public_v1_inbox_ref01_data = (await public_v1_inbox_ref01_ent.create(public_v1_inbox_ref01_data)).data()
-    assert(null != public_v1_inbox_ref01_data)
+    assert(null != public_v1_inbox_ref01_data.id)
 
 
+    // REMOVE
+    const public_v1_inbox_ref01_match_rm0: any = { id: public_v1_inbox_ref01_data.id }
+    await public_v1_inbox_ref01_ent.remove(public_v1_inbox_ref01_match_rm0)
+  
 
   })
 })

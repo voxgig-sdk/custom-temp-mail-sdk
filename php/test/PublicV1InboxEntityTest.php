@@ -46,7 +46,13 @@ class PublicV1InboxEntityTest extends TestCase
         $public_v1_inbox_ref01_data_result = $public_v1_inbox_ref01_ent->create($public_v1_inbox_ref01_data, null);
         $public_v1_inbox_ref01_data = Helpers::to_map(is_object($public_v1_inbox_ref01_data_result) && method_exists($public_v1_inbox_ref01_data_result, 'data_get') ? $public_v1_inbox_ref01_data_result->data_get() : $public_v1_inbox_ref01_data_result);
         $this->assertNotNull($public_v1_inbox_ref01_data);
+        $this->assertNotNull($public_v1_inbox_ref01_data["id"]);
 
+        // REMOVE
+        $public_v1_inbox_ref01_match_rm0 = [
+            "id" => $public_v1_inbox_ref01_data["id"],
+        ];
+        $public_v1_inbox_ref01_ent->remove($public_v1_inbox_ref01_match_rm0, null);
 
     }
 }

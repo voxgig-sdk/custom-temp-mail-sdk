@@ -153,6 +153,7 @@ fmt.Println(customDomain.GetName()) // "custom_domain"
 | --- | --- | --- | --- |
 | `added_at` | `string` | No | ISO 8601 timestamp when the domain was added. |
 | `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `id` | `string` | No |  |
 | `mx_record` | `string` | Yes | The MX record value to add at your registrar. |
 | `txt_record` | `string` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `verified` | `bool` | Yes | `true` — MX and TXT records confirmed. |
@@ -800,6 +801,7 @@ fmt.Println(publicV1Inbox.GetName()) // "public_v1_inbox"
 | `daily_used` | `int` | No |  |
 | `domain_mode` | `string` | No | Which domain pool to use. |
 | `domains` | `[]any` | No | Required when `domain_mode` is `specific`. |
+| `id` | `string` | No |  |
 | `inbox` | `string` | No |  |
 | `inboxes` | `[]any` | No |  |
 | `output_format` | `string` | No | Template string for each line of output. |

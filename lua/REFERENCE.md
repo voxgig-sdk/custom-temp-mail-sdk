@@ -145,6 +145,7 @@ local custom_domain = client:CustomDomain(nil)
 | --- | --- | --- | --- |
 | `added_at` | `string` | No | ISO 8601 timestamp when the domain was added. |
 | `domain` | `string` | Yes | Bare domain name (no leading @). |
+| `id` | `string` | No |  |
 | `mx_record` | `string` | Yes | The MX record value to add at your registrar. |
 | `txt_record` | `string` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `verified` | `boolean` | Yes | `true` — MX and TXT records confirmed. |
@@ -790,6 +791,7 @@ local public_v1_inbox = client:PublicV1Inbox(nil)
 | `daily_used` | `number` | No |  |
 | `domain_mode` | `string` | No | Which domain pool to use. |
 | `domains` | `table` | No | Required when `domain_mode` is `specific`. |
+| `id` | `string` | No |  |
 | `inbox` | `string` | No |  |
 | `inboxes` | `table` | No |  |
 | `output_format` | `string` | No | Template string for each line of output. |

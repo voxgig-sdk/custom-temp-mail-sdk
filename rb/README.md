@@ -39,7 +39,7 @@ begin
   # list returns an Array of CustomDomain records — iterate directly.
   customdomains = client.CustomDomain.list
   customdomains.each do |item|
-    puts "#{item["added_at"]}"
+    puts "#{item["id"]} #{item["added_at"]}"
   end
 rescue => err
   warn "list failed: #{err}"
@@ -283,6 +283,7 @@ returns a result `Hash` with these keys:
 | --- | --- |
 | `added_at` | ISO 8601 timestamp when the domain was added. |
 | `domain` | Bare domain name (no leading @). |
+| `id` |  |
 | `mx_record` | The MX record value to add at your registrar. |
 | `txt_record` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `verified` | `true` — MX and TXT records confirmed. |
@@ -450,6 +451,7 @@ API path: `/v1/inboxes/{inbox}/timeline`
 | `daily_used` |  |
 | `domain_mode` | Which domain pool to use. |
 | `domains` | Required when `domain_mode` is `specific`. |
+| `id` |  |
 | `inbox` |  |
 | `inboxes` |  |
 | `output_format` | Template string for each line of output. |
@@ -531,6 +533,7 @@ Create an instance: `custom_domain = client.CustomDomain`
 | --- | --- | --- |
 | `added_at` | `String` | ISO 8601 timestamp when the domain was added. |
 | `domain` | `String` | Bare domain name (no leading @). |
+| `id` | `String` |  |
 | `mx_record` | `String` | The MX record value to add at your registrar. |
 | `txt_record` | `String` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `verified` | `Boolean` | `true` — MX and TXT records confirmed. |
@@ -862,6 +865,7 @@ Create an instance: `public_v1_inbox = client.PublicV1Inbox`
 | `daily_used` | `Integer` |  |
 | `domain_mode` | `String` | Which domain pool to use. |
 | `domains` | `Array` | Required when `domain_mode` is `specific`. |
+| `id` | `String` |  |
 | `inbox` | `String` |  |
 | `inboxes` | `Array` |  |
 | `output_format` | `String` | Template string for each line of output. |

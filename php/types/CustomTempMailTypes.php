@@ -17,6 +17,7 @@ class CustomDomain
 {
     public ?string $added_at = null;
     public string $domain;
+    public ?string $id = null;
     public string $mx_record;
     public string $txt_record;
     public bool $verified;
@@ -27,6 +28,7 @@ class CustomDomainListMatch
 {
     public ?string $added_at = null;
     public ?string $domain = null;
+    public ?string $id = null;
     public ?string $mx_record = null;
     public ?string $txt_record = null;
     public ?bool $verified = null;
@@ -37,6 +39,7 @@ class CustomDomainCreateData
 {
     public ?string $added_at = null;
     public string $domain;
+    public ?string $id = null;
     public string $mx_record;
     public string $txt_record;
     public bool $verified;
@@ -266,6 +269,7 @@ class PublicV1Inbox
     public ?int $daily_used = null;
     public ?string $domain_mode = null;
     public ?array $domains = null;
+    public ?string $id = null;
     public ?string $inbox = null;
     public ?array $inboxes = null;
     public ?string $output_format = null;
@@ -288,6 +292,7 @@ class PublicV1InboxCreateData
     public ?int $daily_used = null;
     public ?string $domain_mode = null;
     public ?array $domains = null;
+    public ?string $id = null;
     public ?string $inbox = null;
     public ?array $inboxes = null;
     public ?string $output_format = null;

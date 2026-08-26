@@ -142,6 +142,7 @@ custom_domain = client.CustomDomain()
 | --- | --- | --- | --- |
 | `added_at` | `str` | No | ISO 8601 timestamp when the domain was added. |
 | `domain` | `str` | Yes | Bare domain name (no leading @). |
+| `id` | `str` | No |  |
 | `mx_record` | `str` | Yes | The MX record value to add at your registrar. |
 | `txt_record` | `str` | Yes | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `verified` | `bool` | Yes | `true` — MX and TXT records confirmed. |
@@ -783,6 +784,7 @@ public_v1_inbox = client.PublicV1Inbox()
 | `daily_used` | `int` | No |  |
 | `domain_mode` | `str` | No | Which domain pool to use. |
 | `domains` | `list` | No | Required when `domain_mode` is `specific`. |
+| `id` | `str` | No |  |
 | `inbox` | `str` | No |  |
 | `inboxes` | `list` | No |  |
 | `output_format` | `str` | No | Template string for each line of output. |

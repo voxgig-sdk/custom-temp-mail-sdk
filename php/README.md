@@ -40,7 +40,7 @@ try {
     // list() returns an array of CustomDomain records — iterate directly.
     $customdomains = $client->CustomDomain()->list();
     foreach ($customdomains as $item) {
-        echo $item["added_at"] . "\n";
+        echo $item["id"] . " " . $item["added_at"] . "\n";
     }
 } catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
@@ -293,6 +293,7 @@ On error, `ok` is `false` and `$err` contains the error value.
 | --- | --- |
 | `added_at` | ISO 8601 timestamp when the domain was added. |
 | `domain` | Bare domain name (no leading @). |
+| `id` |  |
 | `mx_record` | The MX record value to add at your registrar. |
 | `txt_record` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `verified` | `true` — MX and TXT records confirmed. |
@@ -460,6 +461,7 @@ API path: `/v1/inboxes/{inbox}/timeline`
 | `daily_used` |  |
 | `domain_mode` | Which domain pool to use. |
 | `domains` | Required when `domain_mode` is `specific`. |
+| `id` |  |
 | `inbox` |  |
 | `inboxes` |  |
 | `output_format` | Template string for each line of output. |
@@ -541,6 +543,7 @@ Create an instance: `$custom_domain = $client->CustomDomain();`
 | --- | --- | --- |
 | `added_at` | `string` | ISO 8601 timestamp when the domain was added. |
 | `domain` | `string` | Bare domain name (no leading @). |
+| `id` | `string` |  |
 | `mx_record` | `string` | The MX record value to add at your registrar. |
 | `txt_record` | `string` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `verified` | `bool` | `true` — MX and TXT records confirmed. |
@@ -872,6 +875,7 @@ Create an instance: `$public_v1_inbox = $client->PublicV1Inbox();`
 | `daily_used` | `int` |  |
 | `domain_mode` | `string` | Which domain pool to use. |
 | `domains` | `array` | Required when `domain_mode` is `specific`. |
+| `id` | `string` |  |
 | `inbox` | `string` |  |
 | `inboxes` | `array` |  |
 | `output_format` | `string` | Template string for each line of output. |

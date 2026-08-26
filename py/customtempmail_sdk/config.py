@@ -37,6 +37,7 @@ def make_config():
         "options": {
           "active": False,
         },
+        "transport": "base",
       },
         },
         "options": {
@@ -76,6 +77,10 @@ def make_config():
             "name": "domain",
             "req": True,
             "short": "Bare domain name (no leading @).",
+            "type": "`$STRING`",
+          },
+          {
+            "name": "id",
             "type": "`$STRING`",
           },
           {
@@ -1118,6 +1123,10 @@ def make_config():
             "name": "domains",
             "short": "Required when `domain_mode` is `specific`.",
             "type": "`$ARRAY`",
+          },
+          {
+            "name": "id",
+            "type": "`$STRING`",
           },
           {
             "name": "inbox",

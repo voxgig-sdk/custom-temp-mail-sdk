@@ -8,6 +8,7 @@
 export interface CustomDomain {
   added_at?: string
   domain: string
+  id?: string
   mx_record: string
   txt_record: string
   verified: boolean
@@ -16,6 +17,7 @@ export interface CustomDomain {
 export interface CustomDomainListMatch {
   added_at?: string
   domain?: string
+  id?: string
   mx_record?: string
   txt_record?: string
   verified?: boolean
@@ -24,6 +26,7 @@ export interface CustomDomainListMatch {
 export interface CustomDomainCreateData {
   added_at?: string
   domain: string
+  id?: string
   mx_record: string
   txt_record: string
   verified: boolean
@@ -217,6 +220,7 @@ export interface PublicV1Inbox {
   daily_used?: number
   domain_mode?: string
   domains?: any[]
+  id?: string
   inbox?: string
   inboxes?: any[]
   output_format?: string
@@ -237,6 +241,7 @@ export interface PublicV1InboxCreateData {
   daily_used?: number
   domain_mode?: string
   domains?: any[]
+  id?: string
   inbox?: string
   inboxes?: any[]
   output_format?: string

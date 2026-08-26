@@ -43,7 +43,14 @@ describe("PublicV1InboxEntity", function()
     assert.is_nil(err)
     public_v1_inbox_ref01_data = helpers.to_map(type(public_v1_inbox_ref01_data_result) == 'table' and public_v1_inbox_ref01_data_result.data_get and public_v1_inbox_ref01_data_result:data_get() or public_v1_inbox_ref01_data_result)
     assert.is_not_nil(public_v1_inbox_ref01_data)
+    assert.is_not_nil(public_v1_inbox_ref01_data["id"])
 
+    -- REMOVE
+    local public_v1_inbox_ref01_match_rm0 = {
+      id = public_v1_inbox_ref01_data["id"],
+    }
+    local _, err = public_v1_inbox_ref01_ent:remove(public_v1_inbox_ref01_match_rm0, nil)
+    assert.is_nil(err)
 
   end)
 end)

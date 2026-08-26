@@ -62,7 +62,18 @@ func TestPublicV1InboxEntity(t *testing.T) {
 		if publicV1InboxRef01Data == nil {
 			t.Fatal("expected create result to be a map")
 		}
+		if publicV1InboxRef01Data["id"] == nil {
+			t.Fatal("expected created entity to have an id")
+		}
 
+		// REMOVE
+		publicV1InboxRef01MatchRm0 := map[string]any{
+			"id": publicV1InboxRef01Data["id"],
+		}
+		_, err = publicV1InboxRef01Ent.Remove(publicV1InboxRef01MatchRm0, nil)
+		if err != nil {
+			t.Fatalf("remove failed: %v", err)
+		}
 
 	})
 }

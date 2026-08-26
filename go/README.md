@@ -298,6 +298,7 @@ Only `Direct()` returns a response envelope — a `map[string]any` with
 | --- | --- |
 | `"added_at"` | ISO 8601 timestamp when the domain was added. |
 | `"domain"` | Bare domain name (no leading @). |
+| `"id"` |  |
 | `"mx_record"` | The MX record value to add at your registrar. |
 | `"txt_record"` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `"verified"` | `true` — MX and TXT records confirmed. |
@@ -465,6 +466,7 @@ API path: `/v1/inboxes/{inbox}/timeline`
 | `"daily_used"` |  |
 | `"domain_mode"` | Which domain pool to use. |
 | `"domains"` | Required when `domain_mode` is `specific`. |
+| `"id"` |  |
 | `"inbox"` |  |
 | `"inboxes"` |  |
 | `"output_format"` | Template string for each line of output. |
@@ -546,6 +548,7 @@ Create an instance: `customDomain := client.CustomDomain(nil)`
 | --- | --- | --- |
 | `added_at` | `string` | ISO 8601 timestamp when the domain was added. |
 | `domain` | `string` | Bare domain name (no leading @). |
+| `id` | `string` |  |
 | `mx_record` | `string` | The MX record value to add at your registrar. |
 | `txt_record` | `string` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `verified` | `bool` | `true` — MX and TXT records confirmed. |
@@ -916,6 +919,7 @@ Create an instance: `publicV1Inbox := client.PublicV1Inbox(nil)`
 | `daily_used` | `int` |  |
 | `domain_mode` | `string` | Which domain pool to use. |
 | `domains` | `[]any` | Required when `domain_mode` is `specific`. |
+| `id` | `string` |  |
 | `inbox` | `string` |  |
 | `inboxes` | `[]any` |  |
 | `output_format` | `string` | Template string for each line of output. |

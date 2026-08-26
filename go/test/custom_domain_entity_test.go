@@ -110,6 +110,9 @@ func TestCustomDomainEntity(t *testing.T) {
 		if customDomainRef01Data == nil {
 			t.Fatal("expected create result to be a map")
 		}
+		if customDomainRef01Data["id"] == nil {
+			t.Fatal("expected created entity to have an id")
+		}
 
 		// LIST
 		customDomainRef01Match := map[string]any{}
@@ -118,11 +121,24 @@ func TestCustomDomainEntity(t *testing.T) {
 		if err != nil {
 			t.Fatalf("list failed: %v", err)
 		}
-		_, customDomainRef01ListOk := customDomainRef01ListResult.([]any)
+		customDomainRef01List, customDomainRef01ListOk := customDomainRef01ListResult.([]any)
 		if !customDomainRef01ListOk {
 			t.Fatalf("expected list result to be an array, got %T", customDomainRef01ListResult)
 		}
 
+		foundItem := vs.Select(entityListToData(customDomainRef01List), map[string]any{"id": customDomainRef01Data["id"]})
+		if vs.IsEmpty(foundItem) {
+			t.Fatal("expected to find created entity in list")
+		}
+
+		// REMOVE
+		customDomainRef01MatchRm0 := map[string]any{
+			"id": customDomainRef01Data["id"],
+		}
+		_, err = customDomainRef01Ent.Remove(customDomainRef01MatchRm0, nil)
+		if err != nil {
+			t.Fatalf("remove failed: %v", err)
+		}
 
 		// LIST
 		customDomainRef01MatchRt0 := map[string]any{}
@@ -131,9 +147,14 @@ func TestCustomDomainEntity(t *testing.T) {
 		if err != nil {
 			t.Fatalf("list failed: %v", err)
 		}
-		_, customDomainRef01ListRt0Ok := customDomainRef01ListRt0Result.([]any)
+		customDomainRef01ListRt0, customDomainRef01ListRt0Ok := customDomainRef01ListRt0Result.([]any)
 		if !customDomainRef01ListRt0Ok {
 			t.Fatalf("expected list result to be an array, got %T", customDomainRef01ListRt0Result)
+		}
+
+		notFoundItem := vs.Select(entityListToData(customDomainRef01ListRt0), map[string]any{"id": customDomainRef01Data["id"]})
+		if !vs.IsEmpty(notFoundItem) {
+			t.Fatal("expected removed entity to not be in list")
 		}
 
 	})

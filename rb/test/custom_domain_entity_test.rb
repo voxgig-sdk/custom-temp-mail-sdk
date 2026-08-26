@@ -75,6 +75,7 @@ class CustomDomainEntityTest < Minitest::Test
     custom_domain_ref01_data_result = custom_domain_ref01_ent.create(custom_domain_ref01_data, nil)
     custom_domain_ref01_data = Helpers.to_map(custom_domain_ref01_data_result.respond_to?(:data_get) ? custom_domain_ref01_data_result.data_get : custom_domain_ref01_data_result)
     assert !custom_domain_ref01_data.nil?
+    assert !custom_domain_ref01_data["id"].nil?
 
     # LIST
     custom_domain_ref01_match = {}
@@ -82,12 +83,27 @@ class CustomDomainEntityTest < Minitest::Test
     custom_domain_ref01_list_result = custom_domain_ref01_ent.list(custom_domain_ref01_match, nil)
     assert custom_domain_ref01_list_result.is_a?(Array)
 
+    found_item = Vs.select(
+      Runner.entity_list_to_data(custom_domain_ref01_list_result),
+      { "id" => custom_domain_ref01_data["id"] })
+    assert !Vs.isempty(found_item)
+
+    # REMOVE
+    custom_domain_ref01_match_rm0 = {
+      "id" => custom_domain_ref01_data["id"],
+    }
+    custom_domain_ref01_ent.remove(custom_domain_ref01_match_rm0, nil)
 
     # LIST
     custom_domain_ref01_match_rt0 = {}
 
     custom_domain_ref01_list_rt0_result = custom_domain_ref01_ent.list(custom_domain_ref01_match_rt0, nil)
     assert custom_domain_ref01_list_rt0_result.is_a?(Array)
+
+    not_found_item = Vs.select(
+      Runner.entity_list_to_data(custom_domain_ref01_list_rt0_result),
+      { "id" => custom_domain_ref01_data["id"] })
+    assert Vs.isempty(not_found_item)
 
   end
 end

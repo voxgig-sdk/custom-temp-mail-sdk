@@ -20,6 +20,7 @@ func MakeConfig() map[string]any {
 				"options": map[string]any{
 					"active": false,
 				},
+				"transport": "base",
 			},
 		},
 		"options": map[string]any{
@@ -59,6 +60,10 @@ func MakeConfig() map[string]any {
 						"name": "domain",
 						"req": true,
 						"short": "Bare domain name (no leading @).",
+						"type": "`$STRING`",
+					},
+					map[string]any{
+						"name": "id",
 						"type": "`$STRING`",
 					},
 					map[string]any{
@@ -1101,6 +1106,10 @@ func MakeConfig() map[string]any {
 						"name": "domains",
 						"short": "Required when `domain_mode` is `specific`.",
 						"type": "`$ARRAY`",
+					},
+					map[string]any{
+						"name": "id",
+						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "inbox",

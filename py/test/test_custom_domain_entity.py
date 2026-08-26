@@ -80,6 +80,7 @@ class TestCustomDomainEntity:
 
         custom_domain_ref01_data = helpers.to_map(runner.entity_data(custom_domain_ref01_ent.create(custom_domain_ref01_data, None)))
         assert custom_domain_ref01_data is not None
+        assert custom_domain_ref01_data["id"] is not None
 
         # LIST
         custom_domain_ref01_match = {}
@@ -87,12 +88,27 @@ class TestCustomDomainEntity:
         custom_domain_ref01_list_result = custom_domain_ref01_ent.list(custom_domain_ref01_match, None)
         assert isinstance(custom_domain_ref01_list_result, list)
 
+        found_item = vs.select(
+            runner.entity_list_to_data(custom_domain_ref01_list_result),
+            {"id": custom_domain_ref01_data["id"]})
+        assert not vs.isempty(found_item)
+
+        # REMOVE
+        custom_domain_ref01_match_rm0 = {
+            "id": custom_domain_ref01_data["id"],
+        }
+        custom_domain_ref01_ent.remove(custom_domain_ref01_match_rm0, None)
 
         # LIST
         custom_domain_ref01_match_rt0 = {}
 
         custom_domain_ref01_list_rt0_result = custom_domain_ref01_ent.list(custom_domain_ref01_match_rt0, None)
         assert isinstance(custom_domain_ref01_list_rt0_result, list)
+
+        not_found_item = vs.select(
+            runner.entity_list_to_data(custom_domain_ref01_list_rt0_result),
+            {"id": custom_domain_ref01_data["id"]})
+        assert vs.isempty(not_found_item)
 
 
 

@@ -84,6 +84,7 @@ describe("CustomDomainEntity", function()
     assert.is_nil(err)
     custom_domain_ref01_data = helpers.to_map(type(custom_domain_ref01_data_result) == 'table' and custom_domain_ref01_data_result.data_get and custom_domain_ref01_data_result:data_get() or custom_domain_ref01_data_result)
     assert.is_not_nil(custom_domain_ref01_data)
+    assert.is_not_nil(custom_domain_ref01_data["id"])
 
     -- LIST
     local custom_domain_ref01_match = {}
@@ -92,6 +93,17 @@ describe("CustomDomainEntity", function()
     assert.is_nil(err)
     assert.is_table(custom_domain_ref01_list_result)
 
+    local found_item = vs.select(
+      runner.entity_list_to_data(custom_domain_ref01_list_result),
+      { id = custom_domain_ref01_data["id"] })
+    assert.is_false(vs.isempty(found_item))
+
+    -- REMOVE
+    local custom_domain_ref01_match_rm0 = {
+      id = custom_domain_ref01_data["id"],
+    }
+    local _, err = custom_domain_ref01_ent:remove(custom_domain_ref01_match_rm0, nil)
+    assert.is_nil(err)
 
     -- LIST
     local custom_domain_ref01_match_rt0 = {}
@@ -99,6 +111,11 @@ describe("CustomDomainEntity", function()
     local custom_domain_ref01_list_rt0_result, err = custom_domain_ref01_ent:list(custom_domain_ref01_match_rt0, nil)
     assert.is_nil(err)
     assert.is_table(custom_domain_ref01_list_rt0_result)
+
+    local not_found_item = vs.select(
+      runner.entity_list_to_data(custom_domain_ref01_list_rt0_result),
+      { id = custom_domain_ref01_data["id"] })
+    assert.is_true(vs.isempty(not_found_item))
 
   end)
 end)

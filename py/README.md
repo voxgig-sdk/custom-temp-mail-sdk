@@ -289,6 +289,7 @@ On error, `ok` is `False` and `err` contains the error value.
 | --- | --- |
 | `added_at` | ISO 8601 timestamp when the domain was added. |
 | `domain` | Bare domain name (no leading @). |
+| `id` |  |
 | `mx_record` | The MX record value to add at your registrar. |
 | `txt_record` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `verified` | `true` — MX and TXT records confirmed. |
@@ -456,6 +457,7 @@ API path: `/v1/inboxes/{inbox}/timeline`
 | `daily_used` |  |
 | `domain_mode` | Which domain pool to use. |
 | `domains` | Required when `domain_mode` is `specific`. |
+| `id` |  |
 | `inbox` |  |
 | `inboxes` |  |
 | `output_format` | Template string for each line of output. |
@@ -537,6 +539,7 @@ Create an instance: `custom_domain = client.CustomDomain()`
 | --- | --- | --- |
 | `added_at` | `str` | ISO 8601 timestamp when the domain was added. |
 | `domain` | `str` | Bare domain name (no leading @). |
+| `id` | `str` |  |
 | `mx_record` | `str` | The MX record value to add at your registrar. |
 | `txt_record` | `str` | The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. |
 | `verified` | `bool` | `true` — MX and TXT records confirmed. |
@@ -859,6 +862,7 @@ Create an instance: `public_v1_inbox = client.PublicV1Inbox()`
 | `daily_used` | `int` |  |
 | `domain_mode` | `str` | Which domain pool to use. |
 | `domains` | `list` | Required when `domain_mode` is `specific`. |
+| `id` | `str` |  |
 | `inbox` | `str` |  |
 | `inboxes` | `list` |  |
 | `output_format` | `str` | Template string for each line of output. |

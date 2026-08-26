@@ -45,7 +45,8 @@ class PublicV1InboxEntity extends CustomTempMailEntityBase<PublicV1Inbox> {
     const {
       makeContext,
       done,
-      error,
+      // The registry name is `makeError`; `error` is the local alias.
+      makeError: error,
       featureHook,
       makePoint,
       makeRequest,
@@ -173,7 +174,8 @@ class PublicV1InboxEntity extends CustomTempMailEntityBase<PublicV1Inbox> {
     const {
       makeContext,
       done,
-      error,
+      // The registry name is `makeError`; `error` is the local alias.
+      makeError: error,
       featureHook,
       makePoint,
       makeRequest,

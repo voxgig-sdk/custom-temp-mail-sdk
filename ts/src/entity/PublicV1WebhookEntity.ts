@@ -46,7 +46,8 @@ class PublicV1WebhookEntity extends CustomTempMailEntityBase<PublicV1Webhook> {
     const {
       makeContext,
       done,
-      error,
+      // The registry name is `makeError`; `error` is the local alias.
+      makeError: error,
       featureHook,
       makePoint,
       makeRequest,
@@ -154,7 +155,8 @@ class PublicV1WebhookEntity extends CustomTempMailEntityBase<PublicV1Webhook> {
     const {
       makeContext,
       done,
-      error,
+      // The registry name is `makeError`; `error` is the local alias.
+      makeError: error,
       featureHook,
       makePoint,
       makeRequest,
@@ -282,7 +284,8 @@ class PublicV1WebhookEntity extends CustomTempMailEntityBase<PublicV1Webhook> {
     const {
       makeContext,
       done,
-      error,
+      // The registry name is `makeError`; `error` is the local alias.
+      makeError: error,
       featureHook,
       makePoint,
       makeRequest,

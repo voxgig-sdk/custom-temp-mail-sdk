@@ -9,6 +9,7 @@
 ---@class CustomDomain
 ---@field added_at? string
 ---@field domain string
+---@field id? string
 ---@field mx_record string
 ---@field txt_record string
 ---@field verified boolean
@@ -16,6 +17,7 @@
 ---@class CustomDomainListMatch
 ---@field added_at? string
 ---@field domain? string
+---@field id? string
 ---@field mx_record? string
 ---@field txt_record? string
 ---@field verified? boolean
@@ -23,6 +25,7 @@
 ---@class CustomDomainCreateData
 ---@field added_at? string
 ---@field domain string
+---@field id? string
 ---@field mx_record string
 ---@field txt_record string
 ---@field verified boolean
@@ -189,6 +192,7 @@
 ---@field daily_used? number
 ---@field domain_mode? string
 ---@field domains? table
+---@field id? string
 ---@field inbox? string
 ---@field inboxes? table
 ---@field output_format? string
@@ -208,6 +212,7 @@
 ---@field daily_used? number
 ---@field domain_mode? string
 ---@field domains? table
+---@field id? string
 ---@field inbox? string
 ---@field inboxes? table
 ---@field output_format? string

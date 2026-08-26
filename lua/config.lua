@@ -16,6 +16,7 @@ local function make_config()
         ["options"] = {
           ["active"] = false,
         },
+        ["transport"] = "base",
       },
     },
     options = {
@@ -55,6 +56,10 @@ local function make_config()
             ["name"] = "domain",
             ["req"] = true,
             ["short"] = "Bare domain name (no leading @).",
+            ["type"] = "`$STRING`",
+          },
+          {
+            ["name"] = "id",
             ["type"] = "`$STRING`",
           },
           {
@@ -1097,6 +1102,10 @@ local function make_config()
             ["name"] = "domains",
             ["short"] = "Required when `domain_mode` is `specific`.",
             ["type"] = "`$ARRAY`",
+          },
+          {
+            ["name"] = "id",
+            ["type"] = "`$STRING`",
           },
           {
             ["name"] = "inbox",

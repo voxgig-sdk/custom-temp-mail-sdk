@@ -28,6 +28,7 @@ module CustomTempMailConfig
           "options" => {
             "active" => false,
           },
+          "transport" => "base",
         },
       },
       "options" => {
@@ -67,6 +68,10 @@ module CustomTempMailConfig
               "name" => "domain",
               "req" => true,
               "short" => "Bare domain name (no leading @).",
+              "type" => "`$STRING`",
+            },
+            {
+              "name" => "id",
               "type" => "`$STRING`",
             },
             {
@@ -1109,6 +1114,10 @@ module CustomTempMailConfig
               "name" => "domains",
               "short" => "Required when `domain_mode` is `specific`.",
               "type" => "`$ARRAY`",
+            },
+            {
+              "name" => "id",
+              "type" => "`$STRING`",
             },
             {
               "name" => "inbox",
