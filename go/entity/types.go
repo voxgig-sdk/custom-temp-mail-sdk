@@ -187,6 +187,8 @@ type Message struct {
 // MessageLoadMatch is the typed request payload for Message.LoadTyped.
 type MessageLoadMatch struct {
 	InboxId string `json:"inbox_id"`
+	Before *string `json:"before,omitempty"`
+	Limit *int `json:"limit,omitempty"`
 	Id *string `json:"id,omitempty"`
 }
 
@@ -206,6 +208,8 @@ type Otp struct {
 // OtpLoadMatch is the typed request payload for Otp.LoadTyped.
 type OtpLoadMatch struct {
 	InboxId string `json:"inbox_id"`
+	ParseCode *bool `json:"parse_code,omitempty"`
+	Since *int `json:"since,omitempty"`
 }
 
 // Plan is the typed data model for the plan entity.
@@ -233,6 +237,7 @@ type PublicV1DashboardAnalytics struct {
 // PublicV1DashboardAnalyticsLoadMatch is the typed request payload for PublicV1DashboardAnalytics.LoadTyped.
 type PublicV1DashboardAnalyticsLoadMatch struct {
 	InboxId string `json:"inbox_id"`
+	TestId *string `json:"test_id,omitempty"`
 }
 
 // PublicV1Inbox is the typed data model for the public_v1_inbox entity.
@@ -298,6 +303,8 @@ type PublicV1Message struct {
 // PublicV1MessageLoadMatch is the typed request payload for PublicV1Message.LoadTyped.
 type PublicV1MessageLoadMatch struct {
 	InboxId string `json:"inbox_id"`
+	Since *string `json:"since,omitempty"`
+	Timeout *int `json:"timeout,omitempty"`
 }
 
 // PublicV1MessageRemoveMatch is the typed request payload for PublicV1Message.RemoveTyped.

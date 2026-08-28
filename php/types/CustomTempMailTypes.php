@@ -204,6 +204,8 @@ class Message
 class MessageLoadMatch
 {
     public string $inbox_id;
+    public ?string $before = null;
+    public ?int $limit = null;
     public ?string $id = null;
 }
 
@@ -225,6 +227,8 @@ class Otp
 class OtpLoadMatch
 {
     public string $inbox_id;
+    public ?bool $parse_code = null;
+    public ?int $since = null;
 }
 
 /** Plan entity data model. */
@@ -256,6 +260,7 @@ class PublicV1DashboardAnalytics
 class PublicV1DashboardAnalyticsLoadMatch
 {
     public string $inbox_id;
+    public ?string $test_id = null;
 }
 
 /** PublicV1Inbox entity data model. */
@@ -326,6 +331,8 @@ class PublicV1Message
 class PublicV1MessageLoadMatch
 {
     public string $inbox_id;
+    public ?string $since = null;
+    public ?int $timeout = null;
 }
 
 /** Request payload for PublicV1Message#remove. */

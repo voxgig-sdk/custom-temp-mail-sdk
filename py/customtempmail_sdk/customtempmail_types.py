@@ -194,6 +194,8 @@ class MessageLoadMatchRequired(TypedDict):
 
 
 class MessageLoadMatch(MessageLoadMatchRequired, total=False):
+    before: str
+    limit: int
     id: str
 
 
@@ -208,8 +210,13 @@ class Otp(TypedDict, total=False):
     verification_link: str
 
 
-class OtpLoadMatch(TypedDict):
+class OtpLoadMatchRequired(TypedDict):
     inbox_id: str
+
+
+class OtpLoadMatch(OtpLoadMatchRequired, total=False):
+    parse_code: bool
+    since: int
 
 
 class Plan(TypedDict, total=False):
@@ -231,8 +238,12 @@ class PublicV1DashboardAnalytics(TypedDict, total=False):
     insights: list
 
 
-class PublicV1DashboardAnalyticsLoadMatch(TypedDict):
+class PublicV1DashboardAnalyticsLoadMatchRequired(TypedDict):
     inbox_id: str
+
+
+class PublicV1DashboardAnalyticsLoadMatch(PublicV1DashboardAnalyticsLoadMatchRequired, total=False):
+    test_id: str
 
 
 class PublicV1Inbox(TypedDict, total=False):
@@ -290,8 +301,13 @@ class PublicV1Message(TypedDict, total=False):
     verification_link: str
 
 
-class PublicV1MessageLoadMatch(TypedDict):
+class PublicV1MessageLoadMatchRequired(TypedDict):
     inbox_id: str
+
+
+class PublicV1MessageLoadMatch(PublicV1MessageLoadMatchRequired, total=False):
+    since: str
+    timeout: int
 
 
 class PublicV1MessageRemoveMatch(TypedDict):

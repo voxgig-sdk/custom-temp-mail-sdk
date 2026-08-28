@@ -525,10 +525,18 @@ Message = Struct.new(
 # @!attribute [rw] inbox_id
 #   @return [String]
 #
+# @!attribute [rw] before
+#   @return [String, nil]
+#
+# @!attribute [rw] limit
+#   @return [Integer, nil]
+#
 # @!attribute [rw] id
 #   @return [String, nil]
 MessageLoadMatch = Struct.new(
   :inbox_id,
+  :before,
+  :limit,
   :id,
   keyword_init: true
 )
@@ -578,8 +586,16 @@ Otp = Struct.new(
 #
 # @!attribute [rw] inbox_id
 #   @return [String]
+#
+# @!attribute [rw] parse_code
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] since
+#   @return [Integer, nil]
 OtpLoadMatch = Struct.new(
   :inbox_id,
+  :parse_code,
+  :since,
   keyword_init: true
 )
 
@@ -642,8 +658,12 @@ PublicV1DashboardAnalytics = Struct.new(
 #
 # @!attribute [rw] inbox_id
 #   @return [String]
+#
+# @!attribute [rw] test_id
+#   @return [String, nil]
 PublicV1DashboardAnalyticsLoadMatch = Struct.new(
   :inbox_id,
+  :test_id,
   keyword_init: true
 )
 
@@ -847,8 +867,16 @@ PublicV1Message = Struct.new(
 #
 # @!attribute [rw] inbox_id
 #   @return [String]
+#
+# @!attribute [rw] since
+#   @return [String, nil]
+#
+# @!attribute [rw] timeout
+#   @return [Integer, nil]
 PublicV1MessageLoadMatch = Struct.new(
   :inbox_id,
+  :since,
+  :timeout,
   keyword_init: true
 )
 

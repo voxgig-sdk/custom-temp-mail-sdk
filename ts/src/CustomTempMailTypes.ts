@@ -163,6 +163,8 @@ export interface Message {
 
 export interface MessageLoadMatch {
   inbox_id: string
+  before?: string
+  limit?: number
   id?: string
 }
 
@@ -180,6 +182,8 @@ export interface Otp {
 
 export interface OtpLoadMatch {
   inbox_id: string
+  parse_code?: boolean
+  since?: number
 
   // Selects a custom action instead of the plain load:
   //   'public'
@@ -209,6 +213,7 @@ export interface PublicV1DashboardAnalytics {
 
 export interface PublicV1DashboardAnalyticsLoadMatch {
   inbox_id: string
+  test_id?: string
 }
 
 export interface PublicV1Inbox {
@@ -269,6 +274,8 @@ export interface PublicV1Message {
 
 export interface PublicV1MessageLoadMatch {
   inbox_id: string
+  since?: string
+  timeout?: number
 }
 
 export interface PublicV1MessageRemoveMatch {

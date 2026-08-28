@@ -148,6 +148,8 @@
 
 ---@class MessageLoadMatch
 ---@field inbox_id string
+---@field before? string
+---@field limit? number
 ---@field id? string
 
 ---@class Otp
@@ -163,6 +165,8 @@
 
 ---@class OtpLoadMatch
 ---@field inbox_id string
+---@field parse_code? boolean
+---@field since? number
 
 ---@class Plan
 ---@field credit_packages? table
@@ -182,6 +186,7 @@
 
 ---@class PublicV1DashboardAnalyticsLoadMatch
 ---@field inbox_id string
+---@field test_id? string
 
 ---@class PublicV1Inbox
 ---@field count? number
@@ -237,6 +242,8 @@
 
 ---@class PublicV1MessageLoadMatch
 ---@field inbox_id string
+---@field since? string
+---@field timeout? number
 
 ---@class PublicV1MessageRemoveMatch
 ---@field id string
