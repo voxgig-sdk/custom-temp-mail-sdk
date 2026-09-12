@@ -77,7 +77,7 @@ def custom_domain_verify_basic_setup(extra)
     "CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID" => idmap,
     "CUSTOM_TEMP_MAIL_TEST_LIVE" => "FALSE",
     "CUSTOM_TEMP_MAIL_TEST_EXPLAIN" => "FALSE",
-    "CUSTOM_TEMP_MAIL_APIKEY" => "NONE",
+    "CUSTOM_TEMP_MAIL_APIKEY" => "",
   })
 
   idmap_resolved = Helpers.to_map(
@@ -88,6 +88,9 @@ def custom_domain_verify_basic_setup(extra)
 
   if env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE"
     merged_opts = Vs.merge([
+      # FIRST, so the generated fields below win: sdk-test-control.json's
+      # test.client.options adds to the live client, it does not redirect it.
+      Runner.live_client_options,
       {
         "apikey" => env["CUSTOM_TEMP_MAIL_APIKEY"],
       },

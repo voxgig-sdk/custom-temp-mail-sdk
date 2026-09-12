@@ -6,6 +6,7 @@ main: kit: entity: custom_domain_verify: {
 
   fields: [
     {
+      format: "date-time"
       name: "added_at"
       req: false
       short: "ISO 8601 timestamp when the domain was added."
@@ -57,11 +58,19 @@ main: kit: entity: custom_domain_verify: {
           }
           method: "POST"
           orig: "/v1/custom-domains/{domain}/verify"
-          parts: [
-            "v1"
-            "custom-domains"
-            "{domain}"
-            "verify"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "custom-domains"
+            }
+            {
+              var: "domain"
+            }
+            {
+              lit: "verify"
+            }
           ]
           select: {
             exist: [

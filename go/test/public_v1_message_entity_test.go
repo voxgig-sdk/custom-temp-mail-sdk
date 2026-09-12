@@ -50,7 +50,7 @@ func TestPublicV1MessageEntity(t *testing.T) {
 		client := setup.client
 
 		// Bootstrap entity data from existing test data (no create step in flow).
-		publicV1MessageRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath("existing.public_v1_message", setup.data)))
+		publicV1MessageRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath(setup.data, "existing.public_v1_message")))
 		var publicV1MessageRef01Data map[string]any
 		if len(publicV1MessageRef01DataRaw) > 0 {
 			publicV1MessageRef01Data = core.ToMapAny(publicV1MessageRef01DataRaw[0][1])
@@ -103,7 +103,7 @@ func public_v1_messageBasicSetup(extra map[string]any) *entityTestSetup {
 	client := sdk.TestSDK(options, extra)
 
 	// Generate idmap via transform, matching TS pattern.
-	idmap := vs.Transform(
+	idmap, _ := vs.Transform(
 		[]any{"public_v1_message01", "public_v1_message02", "public_v1_message03", "inbox01", "inbox02", "inbox03"},
 		map[string]any{
 			"`$PACK`": []any{"", map[string]any{
@@ -123,7 +123,7 @@ func public_v1_messageBasicSetup(extra map[string]any) *entityTestSetup {
 		"CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID": idmap,
 		"CUSTOM_TEMP_MAIL_TEST_LIVE":      "FALSE",
 		"CUSTOM_TEMP_MAIL_TEST_EXPLAIN":   "FALSE",
-		"CUSTOM_TEMP_MAIL_APIKEY":         "NONE",
+		"CUSTOM_TEMP_MAIL_APIKEY":         "",
 	})
 
 	idmapResolved := core.ToMapAny(env["CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID"])
@@ -132,11 +132,23 @@ func public_v1_messageBasicSetup(extra map[string]any) *entityTestSetup {
 	}
 
 	if env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE" {
+		// An empty map, not a nil one: Merge returns nil when its last entry
+		// is nil, and BasicSetup is normally called with no extras - so a
+		// bare nil silently discarded the apikey and server values below.
+		extraOpts := extra
+		if extraOpts == nil {
+			extraOpts = map[string]any{}
+		}
+
 		mergedOpts := vs.Merge([]any{
+			// liveClientOptions() FIRST, so the generated fields below win:
+			// sdk-test-control.json's test.client.options adds to the live
+			// client, it does not redirect it.
+			liveClientOptions(),
 			map[string]any{
 				"apikey": env["CUSTOM_TEMP_MAIL_APIKEY"],
 			},
-			extra,
+			extraOpts,
 		})
 		client = sdk.NewCustomTempMailSDK(core.ToMapAny(mergedOpts))
 	}

@@ -25,9 +25,13 @@ main: kit: entity: plan: {
         {
           method: "GET"
           orig: "/v1/plans"
-          parts: [
-            "v1"
-            "plans"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "plans"
+            }
           ]
           transform: {
             req: "`reqdata`"

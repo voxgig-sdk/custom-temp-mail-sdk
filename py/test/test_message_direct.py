@@ -68,15 +68,18 @@ def _message_direct_setup(mockres):
     env = runner.env_override({
         "CUSTOM_TEMP_MAIL_TEST_MESSAGE_ENTID": {},
         "CUSTOM_TEMP_MAIL_TEST_LIVE": "FALSE",
-        "CUSTOM_TEMP_MAIL_APIKEY": "NONE",
+        "CUSTOM_TEMP_MAIL_APIKEY": "",
     })
 
     live = env.get("CUSTOM_TEMP_MAIL_TEST_LIVE") == "TRUE"
 
     if live:
-        merged_opts = {
+        # sdk-test-control.json's test.client.options seeds the live
+        # client; the generated fields below overwrite anything they name.
+        merged_opts = dict(runner.live_client_options())
+        merged_opts.update({
             "apikey": env.get("CUSTOM_TEMP_MAIL_APIKEY"),
-        }
+        })
         client = CustomTempMailSDK(merged_opts)
         return {
             "client": client,

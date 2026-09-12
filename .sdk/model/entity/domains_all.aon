@@ -18,6 +18,7 @@ main: kit: entity: domains_all: {
       type: "`$BOOLEAN`"
     }
     {
+      format: "date"
       name: "expires_at"
       op: {
         list: {
@@ -75,10 +76,16 @@ main: kit: entity: domains_all: {
         {
           method: "GET"
           orig: "/v1/domains/all"
-          parts: [
-            "v1"
-            "domains"
-            "all"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "domains"
+            }
+            {
+              lit: "all"
+            }
           ]
           transform: {
             req: "`reqdata`"

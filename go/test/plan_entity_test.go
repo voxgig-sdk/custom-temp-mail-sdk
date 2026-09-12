@@ -50,7 +50,7 @@ func TestPlanEntity(t *testing.T) {
 		client := setup.client
 
 		// Bootstrap entity data from existing test data (no create step in flow).
-		planRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath("existing.plan", setup.data)))
+		planRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath(setup.data, "existing.plan")))
 		var planRef01Data map[string]any
 		if len(planRef01DataRaw) > 0 {
 			planRef01Data = core.ToMapAny(planRef01DataRaw[0][1])
@@ -97,7 +97,7 @@ func planBasicSetup(extra map[string]any) *entityTestSetup {
 	client := sdk.TestSDK(options, extra)
 
 	// Generate idmap via transform, matching TS pattern.
-	idmap := vs.Transform(
+	idmap, _ := vs.Transform(
 		[]any{"plan01", "plan02", "plan03"},
 		map[string]any{
 			"`$PACK`": []any{"", map[string]any{
@@ -117,7 +117,7 @@ func planBasicSetup(extra map[string]any) *entityTestSetup {
 		"CUSTOM_TEMP_MAIL_TEST_PLAN_ENTID": idmap,
 		"CUSTOM_TEMP_MAIL_TEST_LIVE":      "FALSE",
 		"CUSTOM_TEMP_MAIL_TEST_EXPLAIN":   "FALSE",
-		"CUSTOM_TEMP_MAIL_APIKEY":         "NONE",
+		"CUSTOM_TEMP_MAIL_APIKEY":         "",
 	})
 
 	idmapResolved := core.ToMapAny(env["CUSTOM_TEMP_MAIL_TEST_PLAN_ENTID"])
@@ -126,11 +126,23 @@ func planBasicSetup(extra map[string]any) *entityTestSetup {
 	}
 
 	if env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE" {
+		// An empty map, not a nil one: Merge returns nil when its last entry
+		// is nil, and BasicSetup is normally called with no extras - so a
+		// bare nil silently discarded the apikey and server values below.
+		extraOpts := extra
+		if extraOpts == nil {
+			extraOpts = map[string]any{}
+		}
+
 		mergedOpts := vs.Merge([]any{
+			// liveClientOptions() FIRST, so the generated fields below win:
+			// sdk-test-control.json's test.client.options adds to the live
+			// client, it does not redirect it.
+			liveClientOptions(),
 			map[string]any{
 				"apikey": env["CUSTOM_TEMP_MAIL_APIKEY"],
 			},
-			extra,
+			extraOpts,
 		})
 		client = sdk.NewCustomTempMailSDK(core.ToMapAny(mergedOpts))
 	}

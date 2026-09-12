@@ -1,6 +1,14 @@
 # CustomTempMail SDK configuration
 
 
+# The sekreto plugin DEFINITIONS the model selected per feature, imported
+# above by name from the modules the catalogue's active `plugin.def`
+# entries declare. Handed to each feature (secrets builds its Sekreto
+# with them): a provider kind not listed here is unknown to that SDK.
+FEATURE_PLUGINS = {
+}
+
+
 _shared_config = None
 
 
@@ -69,6 +77,7 @@ def make_config():
       "custom_domain": {
         "fields": [
           {
+            "format": "date-time",
             "name": "added_at",
             "short": "ISO 8601 timestamp when the domain was added.",
             "type": "`$STRING`",
@@ -102,6 +111,10 @@ def make_config():
             "type": "`$BOOLEAN`",
           },
         ],
+        "id": {
+          "field": "id",
+          "name": "id",
+        },
         "name": "custom_domain",
         "op": {
           "create": {
@@ -113,15 +126,23 @@ def make_config():
                 "kind": "http",
                 "method": "POST",
                 "orig": "/v1/custom-domains",
-                "parts": [
-                  "v1",
-                  "custom-domains",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "custom-domains",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "custom-domains",
+                ],
               },
             ],
           },
@@ -134,15 +155,23 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/custom-domains",
-                "parts": [
-                  "v1",
-                  "custom-domains",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "custom-domains",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "custom-domains",
+                ],
               },
             ],
           },
@@ -166,16 +195,22 @@ def make_config():
                 "kind": "http",
                 "method": "DELETE",
                 "orig": "/v1/custom-domains/{domain}",
-                "parts": [
-                  "v1",
-                  "custom-domains",
-                  "{id}",
-                ],
                 "rename": {
                   "param": {
                     "domain": "id",
                   },
                 },
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "custom-domains",
+                  },
+                  {
+                    "var": "id",
+                  },
+                ],
                 "select": {
                   "exist": [
                     "id",
@@ -185,6 +220,11 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body`",
                 },
+                "parts": [
+                  "v1",
+                  "custom-domains",
+                  "{id}",
+                ],
               },
             ],
           },
@@ -196,6 +236,7 @@ def make_config():
       "custom_domain_verify": {
         "fields": [
           {
+            "format": "date-time",
             "name": "added_at",
             "short": "ISO 8601 timestamp when the domain was added.",
             "type": "`$STRING`",
@@ -247,11 +288,19 @@ def make_config():
                 "kind": "http",
                 "method": "POST",
                 "orig": "/v1/custom-domains/{domain}/verify",
-                "parts": [
-                  "v1",
-                  "custom-domains",
-                  "{domain}",
-                  "verify",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "custom-domains",
+                  },
+                  {
+                    "var": "domain",
+                  },
+                  {
+                    "lit": "verify",
+                  },
                 ],
                 "select": {
                   "exist": [
@@ -262,6 +311,12 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "custom-domains",
+                  "{domain}",
+                  "verify",
+                ],
               },
             ],
           },
@@ -283,6 +338,7 @@ def make_config():
             "type": "`$STRING`",
           },
           {
+            "format": "date",
             "name": "expires_at",
             "short": "ISO 8601 date when the domain registration expires at the registrar.",
             "type": "`$STRING`",
@@ -321,15 +377,23 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/domains",
-                "parts": [
-                  "v1",
-                  "domains",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "domains",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "domains",
+                ],
               },
             ],
           },
@@ -353,6 +417,7 @@ def make_config():
             "type": "`$BOOLEAN`",
           },
           {
+            "format": "date",
             "name": "expires_at",
             "op": {
               "list": {
@@ -409,16 +474,27 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/domains/all",
-                "parts": [
-                  "v1",
-                  "domains",
-                  "all",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "domains",
+                  },
+                  {
+                    "lit": "all",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "domains",
+                  "all",
+                ],
               },
             ],
           },
@@ -434,6 +510,7 @@ def make_config():
             "type": "`$INTEGER`",
           },
           {
+            "format": "email",
             "name": "inbox",
             "op": {
               "create": {
@@ -472,9 +549,13 @@ def make_config():
                 "kind": "http",
                 "method": "POST",
                 "orig": "/v1/inboxes",
-                "parts": [
-                  "v1",
-                  "inboxes",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
                 ],
                 "select": {},
                 "transform": {
@@ -483,6 +564,10 @@ def make_config():
                   },
                   "res": "`body`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                ],
               },
             ],
           },
@@ -495,15 +580,23 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/inboxes",
-                "parts": [
-                  "v1",
-                  "inboxes",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                ],
               },
             ],
           },
@@ -566,15 +659,23 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/me",
-                "parts": [
-                  "v1",
-                  "me",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "me",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "me",
+                ],
               },
             ],
           },
@@ -594,6 +695,7 @@ def make_config():
             "type": "`$INTEGER`",
           },
           {
+            "format": "date-time",
             "name": "date",
             "type": "`$STRING`",
           },
@@ -646,6 +748,10 @@ def make_config():
             "type": "`$STRING`",
           },
         ],
+        "id": {
+          "field": "id",
+          "name": "id",
+        },
         "name": "message",
         "op": {
           "load": {
@@ -682,17 +788,25 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/inboxes/{inbox}/messages",
-                "parts": [
-                  "v1",
-                  "inboxes",
-                  "{inbox_id}",
-                  "messages",
-                ],
                 "rename": {
                   "param": {
                     "inbox": "inbox_id",
                   },
                 },
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
+                  {
+                    "var": "inbox_id",
+                  },
+                  {
+                    "lit": "messages",
+                  },
+                ],
                 "select": {
                   "exist": [
                     "before",
@@ -704,6 +818,12 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                  "{inbox_id}",
+                  "messages",
+                ],
               },
               {
                 "args": {
@@ -727,18 +847,28 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/inboxes/{inbox}/messages/{id}",
-                "parts": [
-                  "v1",
-                  "inboxes",
-                  "{inbox_id}",
-                  "messages",
-                  "{id}",
-                ],
                 "rename": {
                   "param": {
                     "inbox": "inbox_id",
                   },
                 },
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
+                  {
+                    "var": "inbox_id",
+                  },
+                  {
+                    "lit": "messages",
+                  },
+                  {
+                    "var": "id",
+                  },
+                ],
                 "select": {
                   "exist": [
                     "id",
@@ -749,6 +879,13 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                  "{inbox_id}",
+                  "messages",
+                  "{id}",
+                ],
               },
             ],
           },
@@ -784,10 +921,12 @@ def make_config():
             "type": "`$STRING`",
           },
           {
+            "format": "date-time",
             "name": "received_at",
             "type": "`$STRING`",
           },
           {
+            "format": "float",
             "name": "score",
             "short": "Confidence score (0.0 to 1.0) of the extracted OTP.",
             "type": "`$NUMBER`",
@@ -837,17 +976,25 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/inboxes/{inbox}/otp",
-                "parts": [
-                  "v1",
-                  "inboxes",
-                  "{inbox_id}",
-                  "otp",
-                ],
                 "rename": {
                   "param": {
                     "inbox": "inbox_id",
                   },
                 },
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
+                  {
+                    "var": "inbox_id",
+                  },
+                  {
+                    "lit": "otp",
+                  },
+                ],
                 "select": {
                   "exist": [
                     "inbox_id",
@@ -859,6 +1006,12 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                  "{inbox_id}",
+                  "otp",
+                ],
               },
               {
                 "args": {
@@ -890,10 +1043,16 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/otp/public",
-                "parts": [
-                  "v1",
-                  "otp",
-                  "public",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "otp",
+                  },
+                  {
+                    "lit": "public",
+                  },
                 ],
                 "select": {
                   "$action": "public",
@@ -907,6 +1066,11 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "otp",
+                  "public",
+                ],
               },
             ],
           },
@@ -941,15 +1105,23 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/plans",
-                "parts": [
-                  "v1",
-                  "plans",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "plans",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "plans",
+                ],
               },
             ],
           },
@@ -961,6 +1133,7 @@ def make_config():
       "public_v1_dashboard_analytics": {
         "fields": [
           {
+            "format": "date-time",
             "name": "analyzed_at",
             "type": "`$STRING`",
           },
@@ -1015,17 +1188,25 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/inboxes/{inbox}/timeline",
-                "parts": [
-                  "v1",
-                  "inboxes",
-                  "{inbox_id}",
-                  "timeline",
-                ],
                 "rename": {
                   "param": {
                     "inbox": "inbox_id",
                   },
                 },
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
+                  {
+                    "var": "inbox_id",
+                  },
+                  {
+                    "lit": "timeline",
+                  },
+                ],
                 "select": {
                   "exist": [
                     "inbox_id",
@@ -1036,6 +1217,12 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                  "{inbox_id}",
+                  "timeline",
+                ],
               },
               {
                 "args": {
@@ -1053,17 +1240,25 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/inboxes/{inbox}/insights",
-                "parts": [
-                  "v1",
-                  "inboxes",
-                  "{inbox_id}",
-                  "insights",
-                ],
                 "rename": {
                   "param": {
                     "inbox": "inbox_id",
                   },
                 },
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
+                  {
+                    "var": "inbox_id",
+                  },
+                  {
+                    "lit": "insights",
+                  },
+                ],
                 "select": {
                   "exist": [
                     "inbox_id",
@@ -1073,6 +1268,12 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                  "{inbox_id}",
+                  "insights",
+                ],
               },
             ],
           },
@@ -1152,6 +1353,7 @@ def make_config():
             "type": "`$INTEGER`",
           },
           {
+            "format": "date-time",
             "name": "started_at",
             "type": "`$STRING`",
           },
@@ -1170,6 +1372,10 @@ def make_config():
             "type": "`$STRING`",
           },
         ],
+        "id": {
+          "field": "id",
+          "name": "id",
+        },
         "name": "public_v1_inbox",
         "op": {
           "create": {
@@ -1192,17 +1398,25 @@ def make_config():
                 "kind": "http",
                 "method": "POST",
                 "orig": "/v1/inboxes/{inbox}/tests",
-                "parts": [
-                  "v1",
-                  "inboxes",
-                  "{inbox_id}",
-                  "tests",
-                ],
                 "rename": {
                   "param": {
                     "inbox": "inbox_id",
                   },
                 },
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
+                  {
+                    "var": "inbox_id",
+                  },
+                  {
+                    "lit": "tests",
+                  },
+                ],
                 "select": {
                   "exist": [
                     "inbox_id",
@@ -1212,22 +1426,39 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                  "{inbox_id}",
+                  "tests",
+                ],
               },
               {
                 "args": {},
                 "kind": "http",
                 "method": "POST",
                 "orig": "/v1/inboxes/generate",
-                "parts": [
-                  "v1",
-                  "inboxes",
-                  "generate",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
+                  {
+                    "lit": "generate",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                  "generate",
+                ],
               },
             ],
           },
@@ -1250,16 +1481,22 @@ def make_config():
                 "kind": "http",
                 "method": "DELETE",
                 "orig": "/v1/inboxes/{inbox}",
-                "parts": [
-                  "v1",
-                  "inboxes",
-                  "{id}",
-                ],
                 "rename": {
                   "param": {
                     "inbox": "id",
                   },
                 },
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
+                  {
+                    "var": "id",
+                  },
+                ],
                 "select": {
                   "exist": [
                     "id",
@@ -1269,6 +1506,11 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                  "{id}",
+                ],
               },
             ],
           },
@@ -1284,6 +1526,7 @@ def make_config():
       "public_v1_message": {
         "fields": [
           {
+            "format": "date-time",
             "name": "date",
             "type": "`$STRING`",
           },
@@ -1313,6 +1556,10 @@ def make_config():
             "type": "`$STRING`",
           },
         ],
+        "id": {
+          "field": "id",
+          "name": "id",
+        },
         "name": "public_v1_message",
         "op": {
           "load": {
@@ -1349,17 +1596,25 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/inboxes/{inbox}/wait",
-                "parts": [
-                  "v1",
-                  "inboxes",
-                  "{inbox_id}",
-                  "wait",
-                ],
                 "rename": {
                   "param": {
                     "inbox": "inbox_id",
                   },
                 },
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
+                  {
+                    "var": "inbox_id",
+                  },
+                  {
+                    "lit": "wait",
+                  },
+                ],
                 "select": {
                   "exist": [
                     "inbox_id",
@@ -1371,6 +1626,12 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                  "{inbox_id}",
+                  "wait",
+                ],
               },
             ],
           },
@@ -1400,18 +1661,28 @@ def make_config():
                 "kind": "http",
                 "method": "DELETE",
                 "orig": "/v1/inboxes/{inbox}/messages/{id}",
-                "parts": [
-                  "v1",
-                  "inboxes",
-                  "{inbox_id}",
-                  "messages",
-                  "{id}",
-                ],
                 "rename": {
                   "param": {
                     "inbox": "inbox_id",
                   },
                 },
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "inboxes",
+                  },
+                  {
+                    "var": "inbox_id",
+                  },
+                  {
+                    "lit": "messages",
+                  },
+                  {
+                    "var": "id",
+                  },
+                ],
                 "select": {
                   "exist": [
                     "id",
@@ -1422,6 +1693,13 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body`",
                 },
+                "parts": [
+                  "v1",
+                  "inboxes",
+                  "{inbox_id}",
+                  "messages",
+                  "{id}",
+                ],
               },
             ],
           },
@@ -1437,6 +1715,7 @@ def make_config():
       "public_v1_webhook": {
         "fields": [
           {
+            "format": "date-time",
             "name": "createdAt",
             "type": "`$STRING`",
           },
@@ -1449,6 +1728,7 @@ def make_config():
             "type": "`$STRING`",
           },
           {
+            "format": "email",
             "name": "inbox",
             "op": {
               "list": {
@@ -1460,6 +1740,7 @@ def make_config():
             "type": "`$STRING`",
           },
           {
+            "format": "uri",
             "name": "url",
             "op": {
               "list": {
@@ -1471,6 +1752,10 @@ def make_config():
             "type": "`$STRING`",
           },
         ],
+        "id": {
+          "field": "id",
+          "name": "id",
+        },
         "name": "public_v1_webhook",
         "op": {
           "create": {
@@ -1482,15 +1767,23 @@ def make_config():
                 "kind": "http",
                 "method": "POST",
                 "orig": "/v1/webhooks",
-                "parts": [
-                  "v1",
-                  "webhooks",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "webhooks",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body`",
                 },
+                "parts": [
+                  "v1",
+                  "webhooks",
+                ],
               },
             ],
           },
@@ -1503,15 +1796,23 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/webhooks",
-                "parts": [
-                  "v1",
-                  "webhooks",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "webhooks",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "webhooks",
+                ],
               },
             ],
           },
@@ -1534,10 +1835,16 @@ def make_config():
                 "kind": "http",
                 "method": "DELETE",
                 "orig": "/v1/webhooks/{id}",
-                "parts": [
-                  "v1",
-                  "webhooks",
-                  "{id}",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "webhooks",
+                  },
+                  {
+                    "var": "id",
+                  },
                 ],
                 "select": {
                   "exist": [
@@ -1548,6 +1855,11 @@ def make_config():
                   "req": "`reqdata`",
                   "res": "`body`",
                 },
+                "parts": [
+                  "v1",
+                  "webhooks",
+                  "{id}",
+                ],
               },
             ],
           },
@@ -1590,15 +1902,23 @@ def make_config():
                 "kind": "http",
                 "method": "GET",
                 "orig": "/v1/usage",
-                "parts": [
-                  "v1",
-                  "usage",
+                "segments": [
+                  {
+                    "lit": "v1",
+                  },
+                  {
+                    "lit": "usage",
+                  },
                 ],
                 "select": {},
                 "transform": {
                   "req": "`reqdata`",
                   "res": "`body.data`",
                 },
+                "parts": [
+                  "v1",
+                  "usage",
+                ],
               },
             ],
           },

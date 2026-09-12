@@ -6,6 +6,7 @@ main: kit: entity: public_v1_dashboard_analytics: {
 
   fields: [
     {
+      format: "date-time"
       name: "analyzed_at"
       req: false
       type: "`$STRING`"
@@ -66,17 +67,25 @@ main: kit: entity: public_v1_dashboard_analytics: {
           }
           method: "GET"
           orig: "/v1/inboxes/{inbox}/timeline"
-          parts: [
-            "v1"
-            "inboxes"
-            "{inbox_id}"
-            "timeline"
-          ]
           rename: {
             param: {
               inbox: "inbox_id"
             }
           }
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "timeline"
+            }
+          ]
           select: {
             exist: [
               "inbox_id"
@@ -103,17 +112,25 @@ main: kit: entity: public_v1_dashboard_analytics: {
           }
           method: "GET"
           orig: "/v1/inboxes/{inbox}/insights"
-          parts: [
-            "v1"
-            "inboxes"
-            "{inbox_id}"
-            "insights"
-          ]
           rename: {
             param: {
               inbox: "inbox_id"
             }
           }
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "insights"
+            }
+          ]
           select: {
             exist: [
               "inbox_id"

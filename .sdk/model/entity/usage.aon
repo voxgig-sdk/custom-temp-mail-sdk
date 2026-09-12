@@ -40,9 +40,13 @@ main: kit: entity: usage: {
         {
           method: "GET"
           orig: "/v1/usage"
-          parts: [
-            "v1"
-            "usage"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "usage"
+            }
           ]
           transform: {
             req: "`reqdata`"

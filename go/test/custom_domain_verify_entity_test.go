@@ -52,7 +52,7 @@ func TestCustomDomainVerifyEntity(t *testing.T) {
 		// CREATE
 		customDomainVerifyRef01Ent := client.CustomDomainVerify(nil)
 		customDomainVerifyRef01Data := core.ToMapAny(vs.GetProp(
-			vs.GetPath([]any{"new", "custom_domain_verify"}, setup.data), "custom_domain_verify_ref01"))
+			vs.GetPath(setup.data, []any{"new", "custom_domain_verify"}), "custom_domain_verify_ref01"))
 		customDomainVerifyRef01Data["domain"] = setup.idmap["domain01"]
 
 		customDomainVerifyRef01DataResult, err := customDomainVerifyRef01Ent.Create(customDomainVerifyRef01Data, nil)
@@ -91,7 +91,7 @@ func custom_domain_verifyBasicSetup(extra map[string]any) *entityTestSetup {
 	client := sdk.TestSDK(options, extra)
 
 	// Generate idmap via transform, matching TS pattern.
-	idmap := vs.Transform(
+	idmap, _ := vs.Transform(
 		[]any{"custom_domain_verify01", "custom_domain_verify02", "custom_domain_verify03", "custom_domain01", "custom_domain02", "custom_domain03", "domain01"},
 		map[string]any{
 			"`$PACK`": []any{"", map[string]any{
@@ -111,7 +111,7 @@ func custom_domain_verifyBasicSetup(extra map[string]any) *entityTestSetup {
 		"CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID": idmap,
 		"CUSTOM_TEMP_MAIL_TEST_LIVE":      "FALSE",
 		"CUSTOM_TEMP_MAIL_TEST_EXPLAIN":   "FALSE",
-		"CUSTOM_TEMP_MAIL_APIKEY":         "NONE",
+		"CUSTOM_TEMP_MAIL_APIKEY":         "",
 	})
 
 	idmapResolved := core.ToMapAny(env["CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID"])
@@ -120,11 +120,23 @@ func custom_domain_verifyBasicSetup(extra map[string]any) *entityTestSetup {
 	}
 
 	if env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE" {
+		// An empty map, not a nil one: Merge returns nil when its last entry
+		// is nil, and BasicSetup is normally called with no extras - so a
+		// bare nil silently discarded the apikey and server values below.
+		extraOpts := extra
+		if extraOpts == nil {
+			extraOpts = map[string]any{}
+		}
+
 		mergedOpts := vs.Merge([]any{
+			// liveClientOptions() FIRST, so the generated fields below win:
+			// sdk-test-control.json's test.client.options adds to the live
+			// client, it does not redirect it.
+			liveClientOptions(),
 			map[string]any{
 				"apikey": env["CUSTOM_TEMP_MAIL_APIKEY"],
 			},
-			extra,
+			extraOpts,
 		})
 		client = sdk.NewCustomTempMailSDK(core.ToMapAny(mergedOpts))
 	}

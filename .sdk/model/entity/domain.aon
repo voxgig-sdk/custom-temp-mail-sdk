@@ -12,6 +12,7 @@ main: kit: entity: domain: {
       type: "`$STRING`"
     }
     {
+      format: "date"
       name: "expires_at"
       req: false
       short: "ISO 8601 date when the domain registration expires at the registrar."
@@ -51,9 +52,13 @@ main: kit: entity: domain: {
         {
           method: "GET"
           orig: "/v1/domains"
-          parts: [
-            "v1"
-            "domains"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "domains"
+            }
           ]
           transform: {
             req: "`reqdata`"

@@ -74,6 +74,7 @@ class CustomTempMailConfig
         'custom_domain' => [
           'fields' => [
             [
+              'format' => 'date-time',
               'name' => 'added_at',
               'short' => 'ISO 8601 timestamp when the domain was added.',
               'type' => '`$STRING`',
@@ -107,6 +108,10 @@ class CustomTempMailConfig
               'type' => '`$BOOLEAN`',
             ],
           ],
+          'id' => [
+            'field' => 'id',
+            'name' => 'id',
+          ],
           'name' => 'custom_domain',
           'op' => [
             'create' => [
@@ -118,14 +123,22 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/custom-domains',
-                  'parts' => [
-                    'v1',
-                    'custom-domains',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'custom-domains',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'custom-domains',
                   ],
                 ],
               ],
@@ -139,14 +152,22 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/custom-domains',
-                  'parts' => [
-                    'v1',
-                    'custom-domains',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'custom-domains',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'custom-domains',
                   ],
                 ],
               ],
@@ -171,14 +192,20 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/v1/custom-domains/{domain}',
-                  'parts' => [
-                    'v1',
-                    'custom-domains',
-                    '{id}',
-                  ],
                   'rename' => [
                     'param' => [
                       'domain' => 'id',
+                    ],
+                  ],
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'custom-domains',
+                    ],
+                    [
+                      'var' => 'id',
                     ],
                   ],
                   'select' => [
@@ -189,6 +216,11 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'custom-domains',
+                    '{id}',
                   ],
                 ],
               ],
@@ -201,6 +233,7 @@ class CustomTempMailConfig
         'custom_domain_verify' => [
           'fields' => [
             [
+              'format' => 'date-time',
               'name' => 'added_at',
               'short' => 'ISO 8601 timestamp when the domain was added.',
               'type' => '`$STRING`',
@@ -252,11 +285,19 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/custom-domains/{domain}/verify',
-                  'parts' => [
-                    'v1',
-                    'custom-domains',
-                    '{domain}',
-                    'verify',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'custom-domains',
+                    ],
+                    [
+                      'var' => 'domain',
+                    ],
+                    [
+                      'lit' => 'verify',
+                    ],
                   ],
                   'select' => [
                     'exist' => [
@@ -266,6 +307,12 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'custom-domains',
+                    '{domain}',
+                    'verify',
                   ],
                 ],
               ],
@@ -288,6 +335,7 @@ class CustomTempMailConfig
               'type' => '`$STRING`',
             ],
             [
+              'format' => 'date',
               'name' => 'expires_at',
               'short' => 'ISO 8601 date when the domain registration expires at the registrar.',
               'type' => '`$STRING`',
@@ -326,14 +374,22 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/domains',
-                  'parts' => [
-                    'v1',
-                    'domains',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'domains',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'domains',
                   ],
                 ],
               ],
@@ -358,6 +414,7 @@ class CustomTempMailConfig
               'type' => '`$BOOLEAN`',
             ],
             [
+              'format' => 'date',
               'name' => 'expires_at',
               'op' => [
                 'list' => [
@@ -414,15 +471,26 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/domains/all',
-                  'parts' => [
-                    'v1',
-                    'domains',
-                    'all',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'domains',
+                    ],
+                    [
+                      'lit' => 'all',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'domains',
+                    'all',
                   ],
                 ],
               ],
@@ -439,6 +507,7 @@ class CustomTempMailConfig
               'type' => '`$INTEGER`',
             ],
             [
+              'format' => 'email',
               'name' => 'inbox',
               'op' => [
                 'create' => [
@@ -477,9 +546,13 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/inboxes',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
@@ -487,6 +560,10 @@ class CustomTempMailConfig
                       'inbox' => '`reqdata`',
                     ],
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
                   ],
                 ],
               ],
@@ -500,14 +577,22 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
                   ],
                 ],
               ],
@@ -571,14 +656,22 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/me',
-                  'parts' => [
-                    'v1',
-                    'me',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'me',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'me',
                   ],
                 ],
               ],
@@ -599,6 +692,7 @@ class CustomTempMailConfig
               'type' => '`$INTEGER`',
             ],
             [
+              'format' => 'date-time',
               'name' => 'date',
               'type' => '`$STRING`',
             ],
@@ -651,6 +745,10 @@ class CustomTempMailConfig
               'type' => '`$STRING`',
             ],
           ],
+          'id' => [
+            'field' => 'id',
+            'name' => 'id',
+          ],
           'name' => 'message',
           'op' => [
             'load' => [
@@ -687,15 +785,23 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/messages',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
-                    '{inbox_id}',
-                    'messages',
-                  ],
                   'rename' => [
                     'param' => [
                       'inbox' => 'inbox_id',
+                    ],
+                  ],
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
+                    [
+                      'var' => 'inbox_id',
+                    ],
+                    [
+                      'lit' => 'messages',
                     ],
                   ],
                   'select' => [
@@ -708,6 +814,12 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
+                    '{inbox_id}',
+                    'messages',
                   ],
                 ],
                 [
@@ -732,16 +844,26 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/messages/{id}',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
-                    '{inbox_id}',
-                    'messages',
-                    '{id}',
-                  ],
                   'rename' => [
                     'param' => [
                       'inbox' => 'inbox_id',
+                    ],
+                  ],
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
+                    [
+                      'var' => 'inbox_id',
+                    ],
+                    [
+                      'lit' => 'messages',
+                    ],
+                    [
+                      'var' => 'id',
                     ],
                   ],
                   'select' => [
@@ -753,6 +875,13 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
+                    '{inbox_id}',
+                    'messages',
+                    '{id}',
                   ],
                 ],
               ],
@@ -789,10 +918,12 @@ class CustomTempMailConfig
               'type' => '`$STRING`',
             ],
             [
+              'format' => 'date-time',
               'name' => 'received_at',
               'type' => '`$STRING`',
             ],
             [
+              'format' => 'float',
               'name' => 'score',
               'short' => 'Confidence score (0.0 to 1.0) of the extracted OTP.',
               'type' => '`$NUMBER`',
@@ -842,15 +973,23 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/otp',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
-                    '{inbox_id}',
-                    'otp',
-                  ],
                   'rename' => [
                     'param' => [
                       'inbox' => 'inbox_id',
+                    ],
+                  ],
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
+                    [
+                      'var' => 'inbox_id',
+                    ],
+                    [
+                      'lit' => 'otp',
                     ],
                   ],
                   'select' => [
@@ -863,6 +1002,12 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
+                    '{inbox_id}',
+                    'otp',
                   ],
                 ],
                 [
@@ -895,10 +1040,16 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/otp/public',
-                  'parts' => [
-                    'v1',
-                    'otp',
-                    'public',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'otp',
+                    ],
+                    [
+                      'lit' => 'public',
+                    ],
                   ],
                   'select' => [
                     '$action' => 'public',
@@ -911,6 +1062,11 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'otp',
+                    'public',
                   ],
                 ],
               ],
@@ -946,14 +1102,22 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/plans',
-                  'parts' => [
-                    'v1',
-                    'plans',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'plans',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'plans',
                   ],
                 ],
               ],
@@ -966,6 +1130,7 @@ class CustomTempMailConfig
         'public_v1_dashboard_analytics' => [
           'fields' => [
             [
+              'format' => 'date-time',
               'name' => 'analyzed_at',
               'type' => '`$STRING`',
             ],
@@ -1020,15 +1185,23 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/timeline',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
-                    '{inbox_id}',
-                    'timeline',
-                  ],
                   'rename' => [
                     'param' => [
                       'inbox' => 'inbox_id',
+                    ],
+                  ],
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
+                    [
+                      'var' => 'inbox_id',
+                    ],
+                    [
+                      'lit' => 'timeline',
                     ],
                   ],
                   'select' => [
@@ -1040,6 +1213,12 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
+                    '{inbox_id}',
+                    'timeline',
                   ],
                 ],
                 [
@@ -1058,15 +1237,23 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/insights',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
-                    '{inbox_id}',
-                    'insights',
-                  ],
                   'rename' => [
                     'param' => [
                       'inbox' => 'inbox_id',
+                    ],
+                  ],
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
+                    [
+                      'var' => 'inbox_id',
+                    ],
+                    [
+                      'lit' => 'insights',
                     ],
                   ],
                   'select' => [
@@ -1077,6 +1264,12 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
+                    '{inbox_id}',
+                    'insights',
                   ],
                 ],
               ],
@@ -1157,6 +1350,7 @@ class CustomTempMailConfig
               'type' => '`$INTEGER`',
             ],
             [
+              'format' => 'date-time',
               'name' => 'started_at',
               'type' => '`$STRING`',
             ],
@@ -1174,6 +1368,10 @@ class CustomTempMailConfig
               'short' => 'Username generation style.',
               'type' => '`$STRING`',
             ],
+          ],
+          'id' => [
+            'field' => 'id',
+            'name' => 'id',
           ],
           'name' => 'public_v1_inbox',
           'op' => [
@@ -1197,15 +1395,23 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/inboxes/{inbox}/tests',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
-                    '{inbox_id}',
-                    'tests',
-                  ],
                   'rename' => [
                     'param' => [
                       'inbox' => 'inbox_id',
+                    ],
+                  ],
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
+                    [
+                      'var' => 'inbox_id',
+                    ],
+                    [
+                      'lit' => 'tests',
                     ],
                   ],
                   'select' => [
@@ -1217,21 +1423,38 @@ class CustomTempMailConfig
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
                   ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
+                    '{inbox_id}',
+                    'tests',
+                  ],
                 ],
                 [
                   'args' => [],
                   'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/inboxes/generate',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
-                    'generate',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
+                    [
+                      'lit' => 'generate',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
+                    'generate',
                   ],
                 ],
               ],
@@ -1255,14 +1478,20 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/v1/inboxes/{inbox}',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
-                    '{id}',
-                  ],
                   'rename' => [
                     'param' => [
                       'inbox' => 'id',
+                    ],
+                  ],
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
+                    [
+                      'var' => 'id',
                     ],
                   ],
                   'select' => [
@@ -1273,6 +1502,11 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
+                    '{id}',
                   ],
                 ],
               ],
@@ -1289,6 +1523,7 @@ class CustomTempMailConfig
         'public_v1_message' => [
           'fields' => [
             [
+              'format' => 'date-time',
               'name' => 'date',
               'type' => '`$STRING`',
             ],
@@ -1317,6 +1552,10 @@ class CustomTempMailConfig
               'name' => 'verification_link',
               'type' => '`$STRING`',
             ],
+          ],
+          'id' => [
+            'field' => 'id',
+            'name' => 'id',
           ],
           'name' => 'public_v1_message',
           'op' => [
@@ -1354,15 +1593,23 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/inboxes/{inbox}/wait',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
-                    '{inbox_id}',
-                    'wait',
-                  ],
                   'rename' => [
                     'param' => [
                       'inbox' => 'inbox_id',
+                    ],
+                  ],
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
+                    [
+                      'var' => 'inbox_id',
+                    ],
+                    [
+                      'lit' => 'wait',
                     ],
                   ],
                   'select' => [
@@ -1375,6 +1622,12 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
+                    '{inbox_id}',
+                    'wait',
                   ],
                 ],
               ],
@@ -1405,16 +1658,26 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/v1/inboxes/{inbox}/messages/{id}',
-                  'parts' => [
-                    'v1',
-                    'inboxes',
-                    '{inbox_id}',
-                    'messages',
-                    '{id}',
-                  ],
                   'rename' => [
                     'param' => [
                       'inbox' => 'inbox_id',
+                    ],
+                  ],
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'inboxes',
+                    ],
+                    [
+                      'var' => 'inbox_id',
+                    ],
+                    [
+                      'lit' => 'messages',
+                    ],
+                    [
+                      'var' => 'id',
                     ],
                   ],
                   'select' => [
@@ -1426,6 +1689,13 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'inboxes',
+                    '{inbox_id}',
+                    'messages',
+                    '{id}',
                   ],
                 ],
               ],
@@ -1442,6 +1712,7 @@ class CustomTempMailConfig
         'public_v1_webhook' => [
           'fields' => [
             [
+              'format' => 'date-time',
               'name' => 'createdAt',
               'type' => '`$STRING`',
             ],
@@ -1454,6 +1725,7 @@ class CustomTempMailConfig
               'type' => '`$STRING`',
             ],
             [
+              'format' => 'email',
               'name' => 'inbox',
               'op' => [
                 'list' => [
@@ -1465,6 +1737,7 @@ class CustomTempMailConfig
               'type' => '`$STRING`',
             ],
             [
+              'format' => 'uri',
               'name' => 'url',
               'op' => [
                 'list' => [
@@ -1475,6 +1748,10 @@ class CustomTempMailConfig
               'short' => 'The HTTPS URL to receive the POST request.',
               'type' => '`$STRING`',
             ],
+          ],
+          'id' => [
+            'field' => 'id',
+            'name' => 'id',
           ],
           'name' => 'public_v1_webhook',
           'op' => [
@@ -1487,14 +1764,22 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/v1/webhooks',
-                  'parts' => [
-                    'v1',
-                    'webhooks',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'webhooks',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'webhooks',
                   ],
                 ],
               ],
@@ -1508,14 +1793,22 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/webhooks',
-                  'parts' => [
-                    'v1',
-                    'webhooks',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'webhooks',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'webhooks',
                   ],
                 ],
               ],
@@ -1539,10 +1832,16 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/v1/webhooks/{id}',
-                  'parts' => [
-                    'v1',
-                    'webhooks',
-                    '{id}',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'webhooks',
+                    ],
+                    [
+                      'var' => 'id',
+                    ],
                   ],
                   'select' => [
                     'exist' => [
@@ -1552,6 +1851,11 @@ class CustomTempMailConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'webhooks',
+                    '{id}',
                   ],
                 ],
               ],
@@ -1595,14 +1899,22 @@ class CustomTempMailConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/v1/usage',
-                  'parts' => [
-                    'v1',
-                    'usage',
+                  'segments' => [
+                    [
+                      'lit' => 'v1',
+                    ],
+                    [
+                      'lit' => 'usage',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'v1',
+                    'usage',
                   ],
                 ],
               ],

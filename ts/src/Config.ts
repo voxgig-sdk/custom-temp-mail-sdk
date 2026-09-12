@@ -10,6 +10,17 @@ const FEATURE_CLASS: Record<string, typeof BaseFeature> = {
 }
 
 
+// Per-feature plugin DEFINITIONS (voxgig/plugin `Definition` values), from
+// the model's active plugin groups. A feature that takes a `plugins` option
+// (secrets over sekreto) reads its own entry; a feature with no plugins has
+// none. Named imports above make each definition statically reachable, so
+// an SDK carries exactly the plugin modules its model selects — the same
+// leanness the old side-effect registry imports bought, without a registry.
+const FEATURE_PLUGINS: Record<string, any[]> = {
+  
+}
+
+
 class Config {
 
   makeFeature(this: any, fn: string) {
@@ -110,6 +121,7 @@ class Config {
     "custom_domain": {
       "fields": [
         {
+          "format": "date-time",
           "name": "added_at",
           "short": "ISO 8601 timestamp when the domain was added.",
           "type": "`$STRING`"
@@ -143,6 +155,10 @@ class Config {
           "type": "`$BOOLEAN`"
         }
       ],
+      "id": {
+        "field": "id",
+        "name": "id"
+      },
       "name": "custom_domain",
       "op": {
         "create": {
@@ -154,15 +170,23 @@ class Config {
               "kind": "http",
               "method": "POST",
               "orig": "/v1/custom-domains",
-              "parts": [
-                "v1",
-                "custom-domains"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "custom-domains"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "custom-domains"
+              ]
             }
           ]
         },
@@ -175,15 +199,23 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/custom-domains",
-              "parts": [
-                "v1",
-                "custom-domains"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "custom-domains"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "custom-domains"
+              ]
             }
           ]
         },
@@ -207,16 +239,22 @@ class Config {
               "kind": "http",
               "method": "DELETE",
               "orig": "/v1/custom-domains/{domain}",
-              "parts": [
-                "v1",
-                "custom-domains",
-                "{id}"
-              ],
               "rename": {
                 "param": {
                   "domain": "id"
                 }
               },
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "custom-domains"
+                },
+                {
+                  "var": "id"
+                }
+              ],
               "select": {
                 "exist": [
                   "id"
@@ -225,7 +263,12 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
-              }
+              },
+              "parts": [
+                "v1",
+                "custom-domains",
+                "{id}"
+              ]
             }
           ]
         }
@@ -237,6 +280,7 @@ class Config {
     "custom_domain_verify": {
       "fields": [
         {
+          "format": "date-time",
           "name": "added_at",
           "short": "ISO 8601 timestamp when the domain was added.",
           "type": "`$STRING`"
@@ -288,11 +332,19 @@ class Config {
               "kind": "http",
               "method": "POST",
               "orig": "/v1/custom-domains/{domain}/verify",
-              "parts": [
-                "v1",
-                "custom-domains",
-                "{domain}",
-                "verify"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "custom-domains"
+                },
+                {
+                  "var": "domain"
+                },
+                {
+                  "lit": "verify"
+                }
               ],
               "select": {
                 "exist": [
@@ -302,7 +354,13 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "custom-domains",
+                "{domain}",
+                "verify"
+              ]
             }
           ]
         }
@@ -324,6 +382,7 @@ class Config {
           "type": "`$STRING`"
         },
         {
+          "format": "date",
           "name": "expires_at",
           "short": "ISO 8601 date when the domain registration expires at the registrar.",
           "type": "`$STRING`"
@@ -362,15 +421,23 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/domains",
-              "parts": [
-                "v1",
-                "domains"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "domains"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "domains"
+              ]
             }
           ]
         }
@@ -394,6 +461,7 @@ class Config {
           "type": "`$BOOLEAN`"
         },
         {
+          "format": "date",
           "name": "expires_at",
           "op": {
             "list": {
@@ -450,16 +518,27 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/domains/all",
-              "parts": [
-                "v1",
-                "domains",
-                "all"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "domains"
+                },
+                {
+                  "lit": "all"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "domains",
+                "all"
+              ]
             }
           ]
         }
@@ -475,6 +554,7 @@ class Config {
           "type": "`$INTEGER`"
         },
         {
+          "format": "email",
           "name": "inbox",
           "op": {
             "create": {
@@ -513,9 +593,13 @@ class Config {
               "kind": "http",
               "method": "POST",
               "orig": "/v1/inboxes",
-              "parts": [
-                "v1",
-                "inboxes"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                }
               ],
               "select": {},
               "transform": {
@@ -523,7 +607,11 @@ class Config {
                   "inbox": "`reqdata`"
                 },
                 "res": "`body`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes"
+              ]
             }
           ]
         },
@@ -536,15 +624,23 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/inboxes",
-              "parts": [
-                "v1",
-                "inboxes"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes"
+              ]
             }
           ]
         }
@@ -607,15 +703,23 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/me",
-              "parts": [
-                "v1",
-                "me"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "me"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "me"
+              ]
             }
           ]
         }
@@ -635,6 +739,7 @@ class Config {
           "type": "`$INTEGER`"
         },
         {
+          "format": "date-time",
           "name": "date",
           "type": "`$STRING`"
         },
@@ -687,6 +792,10 @@ class Config {
           "type": "`$STRING`"
         }
       ],
+      "id": {
+        "field": "id",
+        "name": "id"
+      },
       "name": "message",
       "op": {
         "load": {
@@ -723,17 +832,25 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/inboxes/{inbox}/messages",
-              "parts": [
-                "v1",
-                "inboxes",
-                "{inbox_id}",
-                "messages"
-              ],
               "rename": {
                 "param": {
                   "inbox": "inbox_id"
                 }
               },
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                },
+                {
+                  "var": "inbox_id"
+                },
+                {
+                  "lit": "messages"
+                }
+              ],
               "select": {
                 "exist": [
                   "before",
@@ -744,7 +861,13 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes",
+                "{inbox_id}",
+                "messages"
+              ]
             },
             {
               "args": {
@@ -768,18 +891,28 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/inboxes/{inbox}/messages/{id}",
-              "parts": [
-                "v1",
-                "inboxes",
-                "{inbox_id}",
-                "messages",
-                "{id}"
-              ],
               "rename": {
                 "param": {
                   "inbox": "inbox_id"
                 }
               },
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                },
+                {
+                  "var": "inbox_id"
+                },
+                {
+                  "lit": "messages"
+                },
+                {
+                  "var": "id"
+                }
+              ],
               "select": {
                 "exist": [
                   "id",
@@ -789,7 +922,14 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes",
+                "{inbox_id}",
+                "messages",
+                "{id}"
+              ]
             }
           ]
         }
@@ -825,10 +965,12 @@ class Config {
           "type": "`$STRING`"
         },
         {
+          "format": "date-time",
           "name": "received_at",
           "type": "`$STRING`"
         },
         {
+          "format": "float",
           "name": "score",
           "short": "Confidence score (0.0 to 1.0) of the extracted OTP.",
           "type": "`$NUMBER`"
@@ -878,17 +1020,25 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/inboxes/{inbox}/otp",
-              "parts": [
-                "v1",
-                "inboxes",
-                "{inbox_id}",
-                "otp"
-              ],
               "rename": {
                 "param": {
                   "inbox": "inbox_id"
                 }
               },
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                },
+                {
+                  "var": "inbox_id"
+                },
+                {
+                  "lit": "otp"
+                }
+              ],
               "select": {
                 "exist": [
                   "inbox_id",
@@ -899,7 +1049,13 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes",
+                "{inbox_id}",
+                "otp"
+              ]
             },
             {
               "args": {
@@ -931,10 +1087,16 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/otp/public",
-              "parts": [
-                "v1",
-                "otp",
-                "public"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "otp"
+                },
+                {
+                  "lit": "public"
+                }
               ],
               "select": {
                 "$action": "public",
@@ -947,7 +1109,12 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "otp",
+                "public"
+              ]
             }
           ]
         }
@@ -982,15 +1149,23 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/plans",
-              "parts": [
-                "v1",
-                "plans"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "plans"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "plans"
+              ]
             }
           ]
         }
@@ -1002,6 +1177,7 @@ class Config {
     "public_v1_dashboard_analytics": {
       "fields": [
         {
+          "format": "date-time",
           "name": "analyzed_at",
           "type": "`$STRING`"
         },
@@ -1056,17 +1232,25 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/inboxes/{inbox}/timeline",
-              "parts": [
-                "v1",
-                "inboxes",
-                "{inbox_id}",
-                "timeline"
-              ],
               "rename": {
                 "param": {
                   "inbox": "inbox_id"
                 }
               },
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                },
+                {
+                  "var": "inbox_id"
+                },
+                {
+                  "lit": "timeline"
+                }
+              ],
               "select": {
                 "exist": [
                   "inbox_id",
@@ -1076,7 +1260,13 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes",
+                "{inbox_id}",
+                "timeline"
+              ]
             },
             {
               "args": {
@@ -1094,17 +1284,25 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/inboxes/{inbox}/insights",
-              "parts": [
-                "v1",
-                "inboxes",
-                "{inbox_id}",
-                "insights"
-              ],
               "rename": {
                 "param": {
                   "inbox": "inbox_id"
                 }
               },
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                },
+                {
+                  "var": "inbox_id"
+                },
+                {
+                  "lit": "insights"
+                }
+              ],
               "select": {
                 "exist": [
                   "inbox_id"
@@ -1113,7 +1311,13 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes",
+                "{inbox_id}",
+                "insights"
+              ]
             }
           ]
         }
@@ -1193,6 +1397,7 @@ class Config {
           "type": "`$INTEGER`"
         },
         {
+          "format": "date-time",
           "name": "started_at",
           "type": "`$STRING`"
         },
@@ -1211,6 +1416,10 @@ class Config {
           "type": "`$STRING`"
         }
       ],
+      "id": {
+        "field": "id",
+        "name": "id"
+      },
       "name": "public_v1_inbox",
       "op": {
         "create": {
@@ -1233,17 +1442,25 @@ class Config {
               "kind": "http",
               "method": "POST",
               "orig": "/v1/inboxes/{inbox}/tests",
-              "parts": [
-                "v1",
-                "inboxes",
-                "{inbox_id}",
-                "tests"
-              ],
               "rename": {
                 "param": {
                   "inbox": "inbox_id"
                 }
               },
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                },
+                {
+                  "var": "inbox_id"
+                },
+                {
+                  "lit": "tests"
+                }
+              ],
               "select": {
                 "exist": [
                   "inbox_id"
@@ -1252,23 +1469,40 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes",
+                "{inbox_id}",
+                "tests"
+              ]
             },
             {
               "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/v1/inboxes/generate",
-              "parts": [
-                "v1",
-                "inboxes",
-                "generate"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                },
+                {
+                  "lit": "generate"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes",
+                "generate"
+              ]
             }
           ]
         },
@@ -1291,16 +1525,22 @@ class Config {
               "kind": "http",
               "method": "DELETE",
               "orig": "/v1/inboxes/{inbox}",
-              "parts": [
-                "v1",
-                "inboxes",
-                "{id}"
-              ],
               "rename": {
                 "param": {
                   "inbox": "id"
                 }
               },
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                },
+                {
+                  "var": "id"
+                }
+              ],
               "select": {
                 "exist": [
                   "id"
@@ -1309,7 +1549,12 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes",
+                "{id}"
+              ]
             }
           ]
         }
@@ -1325,6 +1570,7 @@ class Config {
     "public_v1_message": {
       "fields": [
         {
+          "format": "date-time",
           "name": "date",
           "type": "`$STRING`"
         },
@@ -1354,6 +1600,10 @@ class Config {
           "type": "`$STRING`"
         }
       ],
+      "id": {
+        "field": "id",
+        "name": "id"
+      },
       "name": "public_v1_message",
       "op": {
         "load": {
@@ -1390,17 +1640,25 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/inboxes/{inbox}/wait",
-              "parts": [
-                "v1",
-                "inboxes",
-                "{inbox_id}",
-                "wait"
-              ],
               "rename": {
                 "param": {
                   "inbox": "inbox_id"
                 }
               },
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                },
+                {
+                  "var": "inbox_id"
+                },
+                {
+                  "lit": "wait"
+                }
+              ],
               "select": {
                 "exist": [
                   "inbox_id",
@@ -1411,7 +1669,13 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes",
+                "{inbox_id}",
+                "wait"
+              ]
             }
           ]
         },
@@ -1441,18 +1705,28 @@ class Config {
               "kind": "http",
               "method": "DELETE",
               "orig": "/v1/inboxes/{inbox}/messages/{id}",
-              "parts": [
-                "v1",
-                "inboxes",
-                "{inbox_id}",
-                "messages",
-                "{id}"
-              ],
               "rename": {
                 "param": {
                   "inbox": "inbox_id"
                 }
               },
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "inboxes"
+                },
+                {
+                  "var": "inbox_id"
+                },
+                {
+                  "lit": "messages"
+                },
+                {
+                  "var": "id"
+                }
+              ],
               "select": {
                 "exist": [
                   "id",
@@ -1462,7 +1736,14 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
-              }
+              },
+              "parts": [
+                "v1",
+                "inboxes",
+                "{inbox_id}",
+                "messages",
+                "{id}"
+              ]
             }
           ]
         }
@@ -1478,6 +1759,7 @@ class Config {
     "public_v1_webhook": {
       "fields": [
         {
+          "format": "date-time",
           "name": "createdAt",
           "type": "`$STRING`"
         },
@@ -1490,6 +1772,7 @@ class Config {
           "type": "`$STRING`"
         },
         {
+          "format": "email",
           "name": "inbox",
           "op": {
             "list": {
@@ -1501,6 +1784,7 @@ class Config {
           "type": "`$STRING`"
         },
         {
+          "format": "uri",
           "name": "url",
           "op": {
             "list": {
@@ -1512,6 +1796,10 @@ class Config {
           "type": "`$STRING`"
         }
       ],
+      "id": {
+        "field": "id",
+        "name": "id"
+      },
       "name": "public_v1_webhook",
       "op": {
         "create": {
@@ -1523,15 +1811,23 @@ class Config {
               "kind": "http",
               "method": "POST",
               "orig": "/v1/webhooks",
-              "parts": [
-                "v1",
-                "webhooks"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "webhooks"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
-              }
+              },
+              "parts": [
+                "v1",
+                "webhooks"
+              ]
             }
           ]
         },
@@ -1544,15 +1840,23 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/webhooks",
-              "parts": [
-                "v1",
-                "webhooks"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "webhooks"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "webhooks"
+              ]
             }
           ]
         },
@@ -1575,10 +1879,16 @@ class Config {
               "kind": "http",
               "method": "DELETE",
               "orig": "/v1/webhooks/{id}",
-              "parts": [
-                "v1",
-                "webhooks",
-                "{id}"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "webhooks"
+                },
+                {
+                  "var": "id"
+                }
               ],
               "select": {
                 "exist": [
@@ -1588,7 +1898,12 @@ class Config {
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
-              }
+              },
+              "parts": [
+                "v1",
+                "webhooks",
+                "{id}"
+              ]
             }
           ]
         }
@@ -1631,15 +1946,23 @@ class Config {
               "kind": "http",
               "method": "GET",
               "orig": "/v1/usage",
-              "parts": [
-                "v1",
-                "usage"
+              "segments": [
+                {
+                  "lit": "v1"
+                },
+                {
+                  "lit": "usage"
+                }
               ],
               "select": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.data`"
-              }
+              },
+              "parts": [
+                "v1",
+                "usage"
+              ]
             }
           ]
         }
@@ -1655,6 +1978,7 @@ class Config {
 const config = new Config()
 
 export {
-  config
+  config,
+  FEATURE_PLUGINS,
 }
 

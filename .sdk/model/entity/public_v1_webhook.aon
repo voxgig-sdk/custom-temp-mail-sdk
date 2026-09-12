@@ -6,6 +6,7 @@ main: kit: entity: public_v1_webhook: {
 
   fields: [
     {
+      format: "date-time"
       name: "createdAt"
       req: false
       type: "`$STRING`"
@@ -21,6 +22,7 @@ main: kit: entity: public_v1_webhook: {
       type: "`$STRING`"
     }
     {
+      format: "email"
       name: "inbox"
       op: {
         list: {
@@ -33,6 +35,7 @@ main: kit: entity: public_v1_webhook: {
       type: "`$STRING`"
     }
     {
+      format: "uri"
       name: "url"
       op: {
         list: {
@@ -59,9 +62,13 @@ main: kit: entity: public_v1_webhook: {
         {
           method: "POST"
           orig: "/v1/webhooks"
-          parts: [
-            "v1"
-            "webhooks"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "webhooks"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -76,9 +83,13 @@ main: kit: entity: public_v1_webhook: {
         {
           method: "GET"
           orig: "/v1/webhooks"
-          parts: [
-            "v1"
-            "webhooks"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "webhooks"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -104,10 +115,16 @@ main: kit: entity: public_v1_webhook: {
           }
           method: "DELETE"
           orig: "/v1/webhooks/{id}"
-          parts: [
-            "v1"
-            "webhooks"
-            "{id}"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "webhooks"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [

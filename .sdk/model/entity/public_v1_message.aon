@@ -6,6 +6,7 @@ main: kit: entity: public_v1_message: {
 
   fields: [
     {
+      format: "date-time"
       name: "date"
       req: false
       type: "`$STRING`"
@@ -84,17 +85,25 @@ main: kit: entity: public_v1_message: {
           }
           method: "GET"
           orig: "/v1/inboxes/{inbox}/wait"
-          parts: [
-            "v1"
-            "inboxes"
-            "{inbox_id}"
-            "wait"
-          ]
           rename: {
             param: {
               inbox: "inbox_id"
             }
           }
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "wait"
+            }
+          ]
           select: {
             exist: [
               "inbox_id"
@@ -133,18 +142,28 @@ main: kit: entity: public_v1_message: {
           }
           method: "DELETE"
           orig: "/v1/inboxes/{inbox}/messages/{id}"
-          parts: [
-            "v1"
-            "inboxes"
-            "{inbox_id}"
-            "messages"
-            "{id}"
-          ]
           rename: {
             param: {
               inbox: "inbox_id"
             }
           }
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "messages"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

@@ -34,6 +34,7 @@
           "fields": [
             {
               "active": true,
+              "format": "date-time",
               "name": "added_at",
               "req": false,
               "short": "ISO 8601 timestamp when the domain was added.",
@@ -90,9 +91,13 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/custom-domains",
-                  "parts": [
-                    "v1",
-                    "custom-domains"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "custom-domains"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -112,9 +117,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/custom-domains",
-                  "parts": [
-                    "v1",
-                    "custom-domains"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "custom-domains"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -146,16 +155,22 @@
                   "kind": "http",
                   "method": "DELETE",
                   "orig": "/v1/custom-domains/{domain}",
-                  "parts": [
-                    "v1",
-                    "custom-domains",
-                    "{id}"
-                  ],
                   "rename": {
                     "param": {
                       "domain": "id"
                     }
                   },
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "custom-domains"
+                    },
+                    {
+                      "var": "id"
+                    }
+                  ],
                   "select": {
                     "exist": [
                       "id"
@@ -181,6 +196,7 @@
           "fields": [
             {
               "active": true,
+              "format": "date-time",
               "name": "added_at",
               "req": false,
               "short": "ISO 8601 timestamp when the domain was added.",
@@ -239,11 +255,19 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/custom-domains/{domain}/verify",
-                  "parts": [
-                    "v1",
-                    "custom-domains",
-                    "{domain}",
-                    "verify"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "custom-domains"
+                    },
+                    {
+                      "var": "domain"
+                    },
+                    {
+                      "lit": "verify"
+                    }
                   ],
                   "select": {
                     "exist": [
@@ -281,6 +305,7 @@
             },
             {
               "active": true,
+              "format": "date",
               "name": "expires_at",
               "req": false,
               "short": "ISO 8601 date when the domain registration expires at the registrar.",
@@ -327,9 +352,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/domains",
-                  "parts": [
-                    "v1",
-                    "domains"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "domains"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -366,6 +395,7 @@
             },
             {
               "active": true,
+              "format": "date",
               "name": "expires_at",
               "op": {
                 "list": {
@@ -430,10 +460,16 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/domains/all",
-                  "parts": [
-                    "v1",
-                    "domains",
-                    "all"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "domains"
+                    },
+                    {
+                      "lit": "all"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -462,6 +498,7 @@
             },
             {
               "active": true,
+              "format": "email",
               "name": "inbox",
               "op": {
                 "create": {
@@ -510,9 +547,13 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/inboxes",
-                  "parts": [
-                    "v1",
-                    "inboxes"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -534,9 +575,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes",
-                  "parts": [
-                    "v1",
-                    "inboxes"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -630,9 +675,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/me",
-                  "parts": [
-                    "v1",
-                    "me"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "me"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -667,6 +716,7 @@
             },
             {
               "active": true,
+              "format": "date-time",
               "name": "date",
               "req": false,
               "type": "`$STRING`"
@@ -790,17 +840,25 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes/{inbox}/messages",
-                  "parts": [
-                    "v1",
-                    "inboxes",
-                    "{inbox_id}",
-                    "messages"
-                  ],
                   "rename": {
                     "param": {
                       "inbox": "inbox_id"
                     }
                   },
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    },
+                    {
+                      "var": "inbox_id"
+                    },
+                    {
+                      "lit": "messages"
+                    }
+                  ],
                   "select": {
                     "exist": [
                       "before",
@@ -838,18 +896,28 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes/{inbox}/messages/{id}",
-                  "parts": [
-                    "v1",
-                    "inboxes",
-                    "{inbox_id}",
-                    "messages",
-                    "{id}"
-                  ],
                   "rename": {
                     "param": {
                       "inbox": "inbox_id"
                     }
                   },
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    },
+                    {
+                      "var": "inbox_id"
+                    },
+                    {
+                      "lit": "messages"
+                    },
+                    {
+                      "var": "id"
+                    }
+                  ],
                   "select": {
                     "exist": [
                       "id",
@@ -910,12 +978,14 @@
             },
             {
               "active": true,
+              "format": "date-time",
               "name": "received_at",
               "req": false,
               "type": "`$STRING`"
             },
             {
               "active": true,
+              "format": "float",
               "name": "score",
               "req": false,
               "short": "Confidence score (0.0 to 1.0) of the extracted OTP.",
@@ -976,17 +1046,25 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes/{inbox}/otp",
-                  "parts": [
-                    "v1",
-                    "inboxes",
-                    "{inbox_id}",
-                    "otp"
-                  ],
                   "rename": {
                     "param": {
                       "inbox": "inbox_id"
                     }
                   },
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    },
+                    {
+                      "var": "inbox_id"
+                    },
+                    {
+                      "lit": "otp"
+                    }
+                  ],
                   "select": {
                     "exist": [
                       "inbox_id",
@@ -1035,10 +1113,16 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/otp/public",
-                  "parts": [
-                    "v1",
-                    "otp",
-                    "public"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "otp"
+                    },
+                    {
+                      "lit": "public"
+                    }
                   ],
                   "select": {
                     "$action": "public",
@@ -1095,9 +1179,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/plans",
-                  "parts": [
-                    "v1",
-                    "plans"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "plans"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1120,6 +1208,7 @@
           "fields": [
             {
               "active": true,
+              "format": "date-time",
               "name": "analyzed_at",
               "req": false,
               "type": "`$STRING`"
@@ -1189,17 +1278,25 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes/{inbox}/timeline",
-                  "parts": [
-                    "v1",
-                    "inboxes",
-                    "{inbox_id}",
-                    "timeline"
-                  ],
                   "rename": {
                     "param": {
                       "inbox": "inbox_id"
                     }
                   },
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    },
+                    {
+                      "var": "inbox_id"
+                    },
+                    {
+                      "lit": "timeline"
+                    }
+                  ],
                   "select": {
                     "exist": [
                       "inbox_id",
@@ -1229,17 +1326,25 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes/{inbox}/insights",
-                  "parts": [
-                    "v1",
-                    "inboxes",
-                    "{inbox_id}",
-                    "insights"
-                  ],
                   "rename": {
                     "param": {
                       "inbox": "inbox_id"
                     }
                   },
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    },
+                    {
+                      "var": "inbox_id"
+                    },
+                    {
+                      "lit": "insights"
+                    }
+                  ],
                   "select": {
                     "exist": [
                       "inbox_id"
@@ -1361,6 +1466,7 @@
             },
             {
               "active": true,
+              "format": "date-time",
               "name": "started_at",
               "req": false,
               "type": "`$STRING`"
@@ -1414,17 +1520,25 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/inboxes/{inbox}/tests",
-                  "parts": [
-                    "v1",
-                    "inboxes",
-                    "{inbox_id}",
-                    "tests"
-                  ],
                   "rename": {
                     "param": {
                       "inbox": "inbox_id"
                     }
                   },
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    },
+                    {
+                      "var": "inbox_id"
+                    },
+                    {
+                      "lit": "tests"
+                    }
+                  ],
                   "select": {
                     "exist": [
                       "inbox_id"
@@ -1441,10 +1555,16 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/inboxes/generate",
-                  "parts": [
-                    "v1",
-                    "inboxes",
-                    "generate"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    },
+                    {
+                      "lit": "generate"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1475,16 +1595,22 @@
                   "kind": "http",
                   "method": "DELETE",
                   "orig": "/v1/inboxes/{inbox}",
-                  "parts": [
-                    "v1",
-                    "inboxes",
-                    "{id}"
-                  ],
                   "rename": {
                     "param": {
                       "inbox": "id"
                     }
                   },
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    },
+                    {
+                      "var": "id"
+                    }
+                  ],
                   "select": {
                     "exist": [
                       "id"
@@ -1514,6 +1640,7 @@
           "fields": [
             {
               "active": true,
+              "format": "date-time",
               "name": "date",
               "req": false,
               "type": "`$STRING`"
@@ -1602,17 +1729,25 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes/{inbox}/wait",
-                  "parts": [
-                    "v1",
-                    "inboxes",
-                    "{inbox_id}",
-                    "wait"
-                  ],
                   "rename": {
                     "param": {
                       "inbox": "inbox_id"
                     }
                   },
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    },
+                    {
+                      "var": "inbox_id"
+                    },
+                    {
+                      "lit": "wait"
+                    }
+                  ],
                   "select": {
                     "exist": [
                       "inbox_id",
@@ -1656,18 +1791,28 @@
                   "kind": "http",
                   "method": "DELETE",
                   "orig": "/v1/inboxes/{inbox}/messages/{id}",
-                  "parts": [
-                    "v1",
-                    "inboxes",
-                    "{inbox_id}",
-                    "messages",
-                    "{id}"
-                  ],
                   "rename": {
                     "param": {
                       "inbox": "inbox_id"
                     }
                   },
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "inboxes"
+                    },
+                    {
+                      "var": "inbox_id"
+                    },
+                    {
+                      "lit": "messages"
+                    },
+                    {
+                      "var": "id"
+                    }
+                  ],
                   "select": {
                     "exist": [
                       "id",
@@ -1698,6 +1843,7 @@
           "fields": [
             {
               "active": true,
+              "format": "date-time",
               "name": "createdAt",
               "req": false,
               "type": "`$STRING`"
@@ -1716,6 +1862,7 @@
             },
             {
               "active": true,
+              "format": "email",
               "name": "inbox",
               "op": {
                 "list": {
@@ -1729,6 +1876,7 @@
             },
             {
               "active": true,
+              "format": "uri",
               "name": "url",
               "op": {
                 "list": {
@@ -1757,9 +1905,13 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/webhooks",
-                  "parts": [
-                    "v1",
-                    "webhooks"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "webhooks"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1779,9 +1931,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/webhooks",
-                  "parts": [
-                    "v1",
-                    "webhooks"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "webhooks"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1812,10 +1968,16 @@
                   "kind": "http",
                   "method": "DELETE",
                   "orig": "/v1/webhooks/{id}",
-                  "parts": [
-                    "v1",
-                    "webhooks",
-                    "{id}"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "webhooks"
+                    },
+                    {
+                      "var": "id"
+                    }
                   ],
                   "select": {
                     "exist": [
@@ -1883,9 +2045,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/usage",
-                  "parts": [
-                    "v1",
-                    "usage"
+                  "segments": [
+                    {
+                      "lit": "v1"
+                    },
+                    {
+                      "lit": "usage"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1965,8 +2131,11 @@
             }
           },
           "name": "test",
+          "needs": {},
           "origname": "",
           "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
           "target": {
             "go": {
               "deps": {}
@@ -2567,6 +2736,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2592,6 +2764,10 @@
             "version": "0.0.1"
           },
           "srcfeature": false,
+          "superseded": [
+            "test/runner_test.go",
+            "test/struct_runner_test.go"
+          ],
           "title": "Golang"
         },
         "go-cli": {
@@ -2643,6 +2819,7 @@
               "active": false
             }
           },
+          "provides": {},
           "publish": {
             "registry": {
               "active": false,
@@ -2667,6 +2844,7 @@
             },
             "version": "0.0.1"
           },
+          "superseded": [],
           "title": "Go CLI"
         },
         "go-mcp": {
@@ -2718,6 +2896,7 @@
               "active": false
             }
           },
+          "provides": {},
           "publish": {
             "registry": {
               "active": false,
@@ -2742,6 +2921,7 @@
             },
             "version": "0.0.1"
           },
+          "superseded": [],
           "title": "Go MCP server"
         },
         "lua": {
@@ -2782,6 +2962,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2807,6 +2990,9 @@
             "version": "0.0.1"
           },
           "srcfeature": false,
+          "superseded": [
+            "test/struct_runner.lua"
+          ],
           "title": "Lua"
         },
         "php": {
@@ -2841,6 +3027,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2866,6 +3055,9 @@
             "version": "0.0.1"
           },
           "srcfeature": false,
+          "superseded": [
+            "test/StructRunner.php"
+          ],
           "title": "PHP"
         },
         "py": {
@@ -2906,6 +3098,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2931,6 +3126,9 @@
             "version": "0.0.1"
           },
           "srcfeature": false,
+          "superseded": [
+            "test/struct_runner.py"
+          ],
           "title": "Python"
         },
         "rb": {
@@ -2976,6 +3174,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -3001,6 +3202,9 @@
             "version": "0.0.1"
           },
           "srcfeature": false,
+          "superseded": [
+            "test/struct_runner.rb"
+          ],
           "title": "Ruby"
         },
         "ts": {
@@ -3018,11 +3222,6 @@
               "active": true,
               "kind": "dev",
               "version": "^25.6.0"
-            },
-            "dotenv": {
-              "active": true,
-              "kind": "dev",
-              "version": "^17.4.2"
             },
             "typescript": {
               "active": true,
@@ -3051,6 +3250,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -3075,6 +3277,14 @@
             },
             "version": "0.0.1"
           },
+          "superseded": [
+            "test/runner.ts",
+            "test/vendor/omni/compat.ts",
+            "src/feature/secrets/sekreto/Providers.ts",
+            "src/feature/secrets/sekreto/Sigv4.ts",
+            "src/feature/secrets/sekreto/provider/Registry.ts",
+            "src/feature/secrets/sekreto/provider/http.ts"
+          ],
           "title": "TypeScript"
         }
       },

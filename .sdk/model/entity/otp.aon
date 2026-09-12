@@ -31,11 +31,13 @@ main: kit: entity: otp: {
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "received_at"
       req: false
       type: "`$STRING`"
     }
     {
+      format: "float"
       name: "score"
       req: false
       short: "Confidence score (0.0 to 1.0) of the extracted OTP."
@@ -89,17 +91,25 @@ main: kit: entity: otp: {
           }
           method: "GET"
           orig: "/v1/inboxes/{inbox}/otp"
-          parts: [
-            "v1"
-            "inboxes"
-            "{inbox_id}"
-            "otp"
-          ]
           rename: {
             param: {
               inbox: "inbox_id"
             }
           }
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "otp"
+            }
+          ]
           select: {
             exist: [
               "inbox_id"
@@ -143,10 +153,16 @@ main: kit: entity: otp: {
           }
           method: "GET"
           orig: "/v1/otp/public"
-          parts: [
-            "v1"
-            "otp"
-            "public"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "otp"
+            }
+            {
+              lit: "public"
+            }
           ]
           select: {
             "$action": "public"

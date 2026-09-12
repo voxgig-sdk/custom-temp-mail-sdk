@@ -84,6 +84,7 @@ main: kit: entity: public_v1_inbox: {
       type: "`$INTEGER`"
     }
     {
+      format: "date-time"
       name: "started_at"
       req: false
       type: "`$STRING`"
@@ -132,17 +133,25 @@ main: kit: entity: public_v1_inbox: {
           }
           method: "POST"
           orig: "/v1/inboxes/{inbox}/tests"
-          parts: [
-            "v1"
-            "inboxes"
-            "{inbox_id}"
-            "tests"
-          ]
           rename: {
             param: {
               inbox: "inbox_id"
             }
           }
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "tests"
+            }
+          ]
           select: {
             exist: [
               "inbox_id"
@@ -156,10 +165,16 @@ main: kit: entity: public_v1_inbox: {
         {
           method: "POST"
           orig: "/v1/inboxes/generate"
-          parts: [
-            "v1"
-            "inboxes"
-            "generate"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              lit: "generate"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -185,16 +200,22 @@ main: kit: entity: public_v1_inbox: {
           }
           method: "DELETE"
           orig: "/v1/inboxes/{inbox}"
-          parts: [
-            "v1"
-            "inboxes"
-            "{id}"
-          ]
           rename: {
             param: {
               inbox: "id"
             }
           }
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

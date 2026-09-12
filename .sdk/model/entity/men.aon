@@ -65,9 +65,13 @@ main: kit: entity: men: {
         {
           method: "GET"
           orig: "/v1/me"
-          parts: [
-            "v1"
-            "me"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "me"
+            }
           ]
           transform: {
             req: "`reqdata`"

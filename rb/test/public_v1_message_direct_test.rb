@@ -71,15 +71,17 @@ def public_v1_message_direct_setup(mockres)
   env = Runner.env_override({
     "CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_MESSAGE_ENTID" => {},
     "CUSTOM_TEMP_MAIL_TEST_LIVE" => "FALSE",
-    "CUSTOM_TEMP_MAIL_APIKEY" => "NONE",
+    "CUSTOM_TEMP_MAIL_APIKEY" => "",
   })
 
   live = env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE"
 
   if live
-    merged_opts = {
+    # Merged so the generated fields win: sdk-test-control.json's
+    # test.client.options adds to the live client, it does not redirect it.
+    merged_opts = Runner.live_client_options.merge({
       "apikey" => env["CUSTOM_TEMP_MAIL_APIKEY"],
-    }
+    })
     client = CustomTempMailSDK.new(merged_opts)
     return {
       client: client,

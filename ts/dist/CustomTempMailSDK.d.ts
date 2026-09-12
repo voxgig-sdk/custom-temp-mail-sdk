@@ -1,0 +1,83 @@
+import { CustomDomainEntity } from './entity/CustomDomainEntity';
+import { CustomDomainVerifyEntity } from './entity/CustomDomainVerifyEntity';
+import { DomainEntity } from './entity/DomainEntity';
+import { DomainsAllEntity } from './entity/DomainsAllEntity';
+import { InboxEntity } from './entity/InboxEntity';
+import { MenEntity } from './entity/MenEntity';
+import { MessageEntity } from './entity/MessageEntity';
+import { OtpEntity } from './entity/OtpEntity';
+import { PlanEntity } from './entity/PlanEntity';
+import { PublicV1DashboardAnalyticsEntity } from './entity/PublicV1DashboardAnalyticsEntity';
+import { PublicV1InboxEntity } from './entity/PublicV1InboxEntity';
+import { PublicV1MessageEntity } from './entity/PublicV1MessageEntity';
+import { PublicV1WebhookEntity } from './entity/PublicV1WebhookEntity';
+import { UsageEntity } from './entity/UsageEntity';
+export type * from './CustomTempMailTypes';
+import { inspect } from 'node:util';
+import type { Context, Feature } from './types';
+import { config } from './Config';
+import { CustomTempMailEntityBase } from './CustomTempMailEntityBase';
+import { Utility } from './utility/Utility';
+import { BaseFeature } from './feature/base/BaseFeature';
+declare const stdutil: Utility;
+declare class CustomTempMailSDK {
+    _mode: string;
+    _options: any;
+    _utility: Utility;
+    _features: Feature[];
+    _rootctx: Context;
+    constructor(options?: any);
+    options(): any;
+    utility(): any;
+    prepare(fetchargs?: any): Promise<any>;
+    direct(fetchargs?: any): Promise<Error | {
+        ok: boolean;
+        status: number;
+        headers: any;
+        data: any;
+        err?: undefined;
+    } | {
+        ok: boolean;
+        err: any;
+        status?: undefined;
+        headers?: undefined;
+        data?: undefined;
+    }>;
+    _rawRequest(fetchargs?: any): Promise<Error | {
+        ok: boolean;
+        status: number;
+        headers: any;
+        data: any;
+        err?: undefined;
+    } | {
+        ok: boolean;
+        err: any;
+        status?: undefined;
+        headers?: undefined;
+        data?: undefined;
+    }>;
+    graphql(query: string, variables?: any, ctrl?: any): Promise<any>;
+    CustomDomain(entopts?: Record<string, any>): CustomDomainEntity;
+    CustomDomainVerify(entopts?: Record<string, any>): CustomDomainVerifyEntity;
+    Domain(entopts?: Record<string, any>): DomainEntity;
+    DomainsAll(entopts?: Record<string, any>): DomainsAllEntity;
+    Inbox(entopts?: Record<string, any>): InboxEntity;
+    Men(entopts?: Record<string, any>): MenEntity;
+    Message(entopts?: Record<string, any>): MessageEntity;
+    Otp(entopts?: Record<string, any>): OtpEntity;
+    Plan(entopts?: Record<string, any>): PlanEntity;
+    PublicV1DashboardAnalytics(entopts?: Record<string, any>): PublicV1DashboardAnalyticsEntity;
+    PublicV1Inbox(entopts?: Record<string, any>): PublicV1InboxEntity;
+    PublicV1Message(entopts?: Record<string, any>): PublicV1MessageEntity;
+    PublicV1Webhook(entopts?: Record<string, any>): PublicV1WebhookEntity;
+    Usage(entopts?: Record<string, any>): UsageEntity;
+    static test(testoptsarg?: any, sdkoptsarg?: any): CustomTempMailSDK;
+    tester(testopts?: any, sdkopts?: any): CustomTempMailSDK;
+    toJSON(): {
+        name: string;
+    };
+    toString(): string;
+    [inspect.custom](): string;
+}
+declare const SDK: typeof CustomTempMailSDK;
+export { stdutil, config, BaseFeature, CustomTempMailEntityBase, CustomTempMailSDK, SDK, };

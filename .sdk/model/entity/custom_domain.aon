@@ -6,6 +6,7 @@ main: kit: entity: custom_domain: {
 
   fields: [
     {
+      format: "date-time"
       name: "added_at"
       req: false
       short: "ISO 8601 timestamp when the domain was added."
@@ -55,9 +56,13 @@ main: kit: entity: custom_domain: {
         {
           method: "POST"
           orig: "/v1/custom-domains"
-          parts: [
-            "v1"
-            "custom-domains"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "custom-domains"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -72,9 +77,13 @@ main: kit: entity: custom_domain: {
         {
           method: "GET"
           orig: "/v1/custom-domains"
-          parts: [
-            "v1"
-            "custom-domains"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "custom-domains"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -101,16 +110,22 @@ main: kit: entity: custom_domain: {
           }
           method: "DELETE"
           orig: "/v1/custom-domains/{domain}"
-          parts: [
-            "v1"
-            "custom-domains"
-            "{id}"
-          ]
           rename: {
             param: {
               domain: "id"
             }
           }
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "custom-domains"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

@@ -16,6 +16,7 @@ main: kit: entity: message: {
       type: "`$INTEGER`"
     }
     {
+      format: "date-time"
       name: "date"
       req: false
       type: "`$STRING`"
@@ -123,17 +124,25 @@ main: kit: entity: message: {
           }
           method: "GET"
           orig: "/v1/inboxes/{inbox}/messages"
-          parts: [
-            "v1"
-            "inboxes"
-            "{inbox_id}"
-            "messages"
-          ]
           rename: {
             param: {
               inbox: "inbox_id"
             }
           }
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "messages"
+            }
+          ]
           select: {
             exist: [
               "before"
@@ -167,18 +176,28 @@ main: kit: entity: message: {
           }
           method: "GET"
           orig: "/v1/inboxes/{inbox}/messages/{id}"
-          parts: [
-            "v1"
-            "inboxes"
-            "{inbox_id}"
-            "messages"
-            "{id}"
-          ]
           rename: {
             param: {
               inbox: "inbox_id"
             }
           }
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "messages"
+            }
+            {
+              var: "id"
+            }
+          ]
           select: {
             exist: [
               "id"

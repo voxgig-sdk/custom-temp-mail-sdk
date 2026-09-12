@@ -50,7 +50,7 @@ func TestPublicV1DashboardAnalyticsEntity(t *testing.T) {
 		client := setup.client
 
 		// Bootstrap entity data from existing test data (no create step in flow).
-		publicV1DashboardAnalyticsRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath("existing.public_v1_dashboard_analytics", setup.data)))
+		publicV1DashboardAnalyticsRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath(setup.data, "existing.public_v1_dashboard_analytics")))
 		var publicV1DashboardAnalyticsRef01Data map[string]any
 		if len(publicV1DashboardAnalyticsRef01DataRaw) > 0 {
 			publicV1DashboardAnalyticsRef01Data = core.ToMapAny(publicV1DashboardAnalyticsRef01DataRaw[0][1])
@@ -97,7 +97,7 @@ func public_v1_dashboard_analyticsBasicSetup(extra map[string]any) *entityTestSe
 	client := sdk.TestSDK(options, extra)
 
 	// Generate idmap via transform, matching TS pattern.
-	idmap := vs.Transform(
+	idmap, _ := vs.Transform(
 		[]any{"public_v1_dashboard_analytics01", "public_v1_dashboard_analytics02", "public_v1_dashboard_analytics03", "inbox01", "inbox02", "inbox03"},
 		map[string]any{
 			"`$PACK`": []any{"", map[string]any{
@@ -117,7 +117,7 @@ func public_v1_dashboard_analyticsBasicSetup(extra map[string]any) *entityTestSe
 		"CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_DASHBOARD_ANALYTICS_ENTID": idmap,
 		"CUSTOM_TEMP_MAIL_TEST_LIVE":      "FALSE",
 		"CUSTOM_TEMP_MAIL_TEST_EXPLAIN":   "FALSE",
-		"CUSTOM_TEMP_MAIL_APIKEY":         "NONE",
+		"CUSTOM_TEMP_MAIL_APIKEY":         "",
 	})
 
 	idmapResolved := core.ToMapAny(env["CUSTOM_TEMP_MAIL_TEST_PUBLIC_V1_DASHBOARD_ANALYTICS_ENTID"])
@@ -126,11 +126,23 @@ func public_v1_dashboard_analyticsBasicSetup(extra map[string]any) *entityTestSe
 	}
 
 	if env["CUSTOM_TEMP_MAIL_TEST_LIVE"] == "TRUE" {
+		// An empty map, not a nil one: Merge returns nil when its last entry
+		// is nil, and BasicSetup is normally called with no extras - so a
+		// bare nil silently discarded the apikey and server values below.
+		extraOpts := extra
+		if extraOpts == nil {
+			extraOpts = map[string]any{}
+		}
+
 		mergedOpts := vs.Merge([]any{
+			// liveClientOptions() FIRST, so the generated fields below win:
+			// sdk-test-control.json's test.client.options adds to the live
+			// client, it does not redirect it.
+			liveClientOptions(),
 			map[string]any{
 				"apikey": env["CUSTOM_TEMP_MAIL_APIKEY"],
 			},
-			extra,
+			extraOpts,
 		})
 		client = sdk.NewCustomTempMailSDK(core.ToMapAny(mergedOpts))
 	}

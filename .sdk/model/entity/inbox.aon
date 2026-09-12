@@ -11,6 +11,7 @@ main: kit: entity: inbox: {
       type: "`$INTEGER`"
     }
     {
+      format: "email"
       name: "inbox"
       op: {
         create: {
@@ -52,9 +53,13 @@ main: kit: entity: inbox: {
         {
           method: "POST"
           orig: "/v1/inboxes"
-          parts: [
-            "v1"
-            "inboxes"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
           ]
           transform: {
             req: {
@@ -71,9 +76,13 @@ main: kit: entity: inbox: {
         {
           method: "GET"
           orig: "/v1/inboxes"
-          parts: [
-            "v1"
-            "inboxes"
+          segments: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
           ]
           transform: {
             req: "`reqdata`"
