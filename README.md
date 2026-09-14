@@ -105,7 +105,7 @@ local results, err = client:Domain():list()
 
 | Language | Package | Install |
 | --- | --- | --- |
-| TypeScript | `@voxgig-sdk/custom-temp-mail` | publish pending — [install from git tag](https://github.com/voxgig-sdk/custom-temp-mail-sdk/releases) |
+| TypeScript | `@voxgig-sdk/custom-temp-mail-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/custom-temp-mail-sdk/releases) |
 | Python | `voxgig-sdk-custom-temp-mail` | publish pending — [install from git tag](https://github.com/voxgig-sdk/custom-temp-mail-sdk/releases) |
 | PHP | `voxgig-sdk/custom-temp-mail` | publish pending — [install from git tag](https://github.com/voxgig-sdk/custom-temp-mail-sdk/releases) |
 | Golang | `github.com/voxgig-sdk/custom-temp-mail-sdk/go` | `go get github.com/voxgig-sdk/custom-temp-mail-sdk/go@latest` |
@@ -119,7 +119,7 @@ local results, err = client:Domain():list()
 ### TypeScript
 
 ```ts
-import { CustomTempMailSDK } from '@voxgig-sdk/custom-temp-mail'
+import { CustomTempMailSDK } from '@voxgig-sdk/custom-temp-mail-sdk'
 
 const client = new CustomTempMailSDK({
   apikey: process.env.CUSTOM_TEMP_MAIL_APIKEY,
