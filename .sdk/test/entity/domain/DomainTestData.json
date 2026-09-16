@@ -4,7 +4,7 @@
       "DOMAIN00": {
         "domain": "s3c",
         "expires_at": "s3d",
-        "expires_in_days": "s3e",
+        "expires_in_days": 62,
         "expiring_soon": false,
         "tags": [],
         "tier": "s41"
@@ -12,7 +12,7 @@
       "DOMAIN01": {
         "domain": "s78",
         "expires_at": "s79",
-        "expires_in_days": "s7a",
+        "expires_in_days": 122,
         "expiring_soon": false,
         "tags": [],
         "tier": "s7d"
@@ -20,7 +20,7 @@
       "DOMAIN02": {
         "domain": "sb4",
         "expires_at": "sb5",
-        "expires_in_days": "sb6",
+        "expires_in_days": 182,
         "expiring_soon": false,
         "tags": [],
         "tier": "sb9"
@@ -32,10 +32,276 @@
       "domain_ref01": {
         "domain": "sf0",
         "expires_at": "sf1",
-        "expires_in_days": "sf2",
+        "expires_in_days": 242,
         "expiring_soon": false,
         "tags": [],
         "tier": "sf5"
+      }
+    }
+  },
+  "requests": {
+    "GET /v1/domains": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "listDomains",
+        "parameters": [],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "free_plan": {
+                    "summary": "Free / Developer / Startup plan",
+                    "value": {
+                      "count": 10,
+                      "data": [
+                        {
+                          "domain": "ditube.info",
+                          "tags": [
+                            "popular"
+                          ],
+                          "tier": "free"
+                        },
+                        {
+                          "domain": "ditplay.info",
+                          "tags": [
+                            "popular"
+                          ],
+                          "tier": "free"
+                        },
+                        {
+                          "domain": "ditapi.info",
+                          "tags": [],
+                          "tier": "free"
+                        },
+                        {
+                          "domain": "getnotify.io",
+                          "expires_at": "2026-04-01",
+                          "expires_in_days": 25,
+                          "expiring_soon": true,
+                          "tags": [
+                            "new"
+                          ],
+                          "tier": "free"
+                        }
+                      ],
+                      "note": "Upgrade to Growth plan to access additional pro domains.",
+                      "success": true
+                    }
+                  },
+                  "growth_plan": {
+                    "summary": "Growth / Enterprise plan",
+                    "value": {
+                      "count": 14,
+                      "data": [
+                        {
+                          "domain": "ditube.info",
+                          "tags": [
+                            "popular"
+                          ],
+                          "tier": "free"
+                        },
+                        {
+                          "domain": "ditmail.pro",
+                          "tags": [
+                            "new",
+                            "featured"
+                          ],
+                          "tier": "pro"
+                        },
+                        {
+                          "domain": "mock-api.pro",
+                          "tags": [
+                            "new",
+                            "featured"
+                          ],
+                          "tier": "pro"
+                        }
+                      ],
+                      "note": "Growth/Enterprise plan: free + pro domains included.",
+                      "success": true
+                    }
+                  }
+                },
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "Total number of domains returned.",
+                      "example": 10,
+                      "type": "integer"
+                    },
+                    "data": {
+                      "items": {
+                        "properties": {
+                          "domain": {
+                            "description": "Bare domain name (no leading @).",
+                            "example": "ditube.info",
+                            "type": "string"
+                          },
+                          "expires_at": {
+                            "description": "ISO 8601 date when the domain registration expires at the registrar.\nOnly present when `expiring_soon` is true (within 30 days).\n",
+                            "example": "2026-04-01",
+                            "format": "date",
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "expires_in_days": {
+                            "description": "Days remaining until expiry. Only present when `expiring_soon` is true.",
+                            "example": 25,
+                            "nullable": true,
+                            "type": "integer"
+                          },
+                          "expiring_soon": {
+                            "description": "True when the domain expires within 30 days. Omitted entirely for\nhealthy domains to keep the payload lean. When true, migrate inboxes\nto a different domain or your own custom domain.\n",
+                            "example": true,
+                            "nullable": true,
+                            "type": "boolean"
+                          },
+                          "tags": {
+                            "description": "`new` — recently added, shown for ~30 days.\n`popular` — high-traffic domain.\n`featured` — pinned at top of domain picker.\n",
+                            "example": [
+                              "popular"
+                            ],
+                            "items": {
+                              "enum": [
+                                "new",
+                                "popular",
+                                "featured"
+                              ],
+                              "type": "string"
+                            },
+                            "type": "array"
+                          },
+                          "tier": {
+                            "description": "`free` — available on all plans.\n`pro` — requires Growth or Enterprise plan.\n",
+                            "enum": [
+                              "free",
+                              "pro"
+                            ],
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "domain",
+                          "tier",
+                          "tags"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "note": {
+                      "description": "Human-readable note about plan gating.",
+                      "example": "Upgrade to Growth plan to access additional pro domains.",
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": true,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "enum": [
+                        "unauthorized",
+                        "key_revoked"
+                      ],
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Missing or invalid API key"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "credits_url": {
+                      "format": "uri",
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "error": {
+                      "enum": [
+                        "rate_limit_exceeded",
+                        "monthly_quota_exceeded"
+                      ],
+                      "type": "string"
+                    },
+                    "hint": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "upgrade_url": {
+                      "format": "uri",
+                      "nullable": true,
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Rate limit exceeded (per-second or monthly quota)",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "description": "Seconds to wait before retrying",
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "securitySchemes": {
+          "ApiKeyQuery": {
+            "description": "API key as query parameter (alternative to Bearer header)",
+            "in": "query",
+            "name": "api_key",
+            "type": "apiKey"
+          },
+          "BearerAuth": {
+            "bearerFormat": "JWT",
+            "description": "Developer API key as Bearer token (e.g. `Bearer fce_xxx`)",
+            "scheme": "bearer",
+            "type": "http"
+          }
+        },
+        "securitySource": "operation"
       }
     }
   }

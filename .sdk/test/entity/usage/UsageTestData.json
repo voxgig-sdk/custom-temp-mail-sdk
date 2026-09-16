@@ -37,5 +37,183 @@
         "requests": {}
       }
     }
+  },
+  "requests": {
+    "GET /v1/usage": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "getUsage",
+        "parameters": [],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "properties": {
+                        "credits": {
+                          "properties": {
+                            "balance": {
+                              "type": "integer"
+                            },
+                            "note": {
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "period": {
+                          "properties": {
+                            "month": {
+                              "type": "string"
+                            },
+                            "resets_at": {
+                              "format": "date-time",
+                              "type": "string"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "plan": {
+                          "type": "string"
+                        },
+                        "rate_limit": {
+                          "properties": {
+                            "requests_per_second": {
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "requests": {
+                          "properties": {
+                            "limit": {
+                              "type": "integer"
+                            },
+                            "percent_used": {
+                              "type": "number"
+                            },
+                            "remaining": {
+                              "type": "integer"
+                            },
+                            "used": {
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "success": {
+                      "example": true,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "enum": [
+                        "unauthorized",
+                        "key_revoked"
+                      ],
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Missing or invalid API key"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "credits_url": {
+                      "format": "uri",
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "error": {
+                      "enum": [
+                        "rate_limit_exceeded",
+                        "monthly_quota_exceeded"
+                      ],
+                      "type": "string"
+                    },
+                    "hint": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "upgrade_url": {
+                      "format": "uri",
+                      "nullable": true,
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Rate limit exceeded (per-second or monthly quota)",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "description": "Seconds to wait before retrying",
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "securitySchemes": {
+          "ApiKeyQuery": {
+            "description": "API key as query parameter (alternative to Bearer header)",
+            "in": "query",
+            "name": "api_key",
+            "type": "apiKey"
+          },
+          "BearerAuth": {
+            "bearerFormat": "JWT",
+            "description": "Developer API key as Bearer token (e.g. `Bearer fce_xxx`)",
+            "scheme": "bearer",
+            "type": "http"
+          }
+        },
+        "securitySource": "operation"
+      }
+    }
   }
 }

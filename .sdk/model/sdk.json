@@ -24,7 +24,71 @@
         "repr": "auto"
       },
       "contributor": {},
-      "docs": {},
+      "doc": {
+        "active": true,
+        "assets": {
+          "path": ".sdk/doc/assets"
+        },
+        "brand": {
+          "label": "",
+          "notice": "",
+          "shortNotice": "",
+          "url": ""
+        },
+        "ci": {
+          "active": true,
+          "branch": "main"
+        },
+        "content": {
+          "path": ".sdk/doc/content"
+        },
+        "edition": {
+          "summary": {
+            "active": true,
+            "base": "node_modules/@voxgig/docgen/project/.sdk",
+            "brand": {},
+            "filter": {
+              "entities": [],
+              "features": [],
+              "targets": []
+            },
+            "kind": "summary",
+            "name": "summary",
+            "origname": "",
+            "output": {
+              "path": "SUMMARY.md"
+            },
+            "package": "@voxgig/docgen",
+            "site": {
+              "active": true
+            },
+            "style": {},
+            "title": ""
+          }
+        },
+        "qa": {
+          "vocabulary": []
+        },
+        "style": {
+          "color": {
+            "accent": "#00c6d8",
+            "background": "#f5f5f9",
+            "darkBackground": "#0f1117",
+            "darkText": "#e6edf3",
+            "primary": "#e70042",
+            "text": "#0a0a0a"
+          },
+          "font": "Nunito, system-ui, sans-serif",
+          "fontFile": "",
+          "headingFont": "Nunito, system-ui, sans-serif",
+          "headingFontFile": "",
+          "logo": "",
+          "mode": "light",
+          "mono": "ui-monospace, monospace",
+          "monoFile": ""
+        },
+        "target": {}
+      },
       "entity": {
         "custom_domain": {
           "active": true,
@@ -88,6 +152,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /v1/custom-domains",
+                    "json": "{\"operationId\":\"addCustomDomain\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"example\":{\"domain\":\"mail.acme.com\"},\"schema\":{\"properties\":{\"domain\":{\"description\":\"The bare domain name to add (no leading `@`, no protocol).\",\"example\":\"mail.acme.com\",\"type\":\"string\"}},\"required\":[\"domain\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"description\":\"A custom domain added to your account.\",\"properties\":{\"added_at\":{\"description\":\"ISO 8601 timestamp when the domain was added.\",\"example\":\"2026-01-15T10:00:00.000Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"domain\":{\"description\":\"Bare domain name (no leading @).\",\"example\":\"mail.acme.com\",\"type\":\"string\"},\"mx_record\":{\"description\":\"The MX record value to add at your registrar.\",\"example\":\"mx.freecustom.email\",\"type\":\"string\"},\"txt_record\":{\"description\":\"The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. Unique per domain + account.\",\"example\":\"freecustomemail-verification=a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4\",\"type\":\"string\"},\"verified\":{\"description\":\"`true` — MX and TXT records confirmed. Inboxes can be registered.\\n`false` — DNS records not yet verified. Call the verify endpoint.\\n\",\"example\":true,\"type\":\"boolean\"}},\"required\":[\"domain\",\"verified\",\"mx_record\",\"txt_record\"],\"type\":\"object\"},\"message\":{\"example\":\"Domain already added.\",\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Domain was already added (idempotent)\"},\"201\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"added_at\":\"2026-03-11T12:00:00.000Z\",\"dns_records\":[{\"hostname\":\"@\",\"priority\":\"10\",\"ttl\":\"Auto\",\"type\":\"MX\",\"value\":\"mx.freecustom.email\"},{\"hostname\":\"@\",\"ttl\":\"Auto\",\"type\":\"TXT\",\"value\":\"freecustomemail-verification=a1b2c3d4e5f6...\"}],\"domain\":\"mail.acme.com\",\"mx_record\":\"mx.freecustom.email\",\"next_step\":\"POST /v1/custom-domains/mail.acme.com/verify\",\"txt_record\":\"freecustomemail-verification=a1b2c3d4e5f6...\",\"verified\":false},\"message\":\"Domain added. Configure the DNS records below, then call the verify endpoint.\",\"success\":true},\"schema\":{\"properties\":{\"data\":{\"allOf\":[{\"description\":\"A custom domain added to your account.\",\"properties\":{\"added_at\":{\"description\":\"ISO 8601 timestamp when the domain was added.\",\"example\":\"2026-01-15T10:00:00.000Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"domain\":{\"description\":\"Bare domain name (no leading @).\",\"example\":\"mail.acme.com\",\"type\":\"string\"},\"mx_record\":{\"description\":\"The MX record value to add at your registrar.\",\"example\":\"mx.freecustom.email\",\"type\":\"string\"},\"txt_record\":{\"description\":\"The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. Unique per domain + account.\",\"example\":\"freecustomemail-verification=a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4\",\"type\":\"string\"},\"verified\":{\"description\":\"`true` — MX and TXT records confirmed. Inboxes can be registered.\\n`false` — DNS records not yet verified. Call the verify endpoint.\\n\",\"example\":true,\"type\":\"boolean\"}},\"required\":[\"domain\",\"verified\",\"mx_record\",\"txt_record\"],\"type\":\"object\"}],\"properties\":{\"dns_records\":{\"description\":\"The two DNS records to add at your registrar (MX + TXT).\",\"items\":{\"description\":\"A DNS record to add at your registrar.\",\"properties\":{\"hostname\":{\"description\":\"The DNS hostname / host field. `@` means the root of the domain.\",\"example\":\"@\",\"type\":\"string\"},\"priority\":{\"description\":\"MX priority. Only present for MX records.\",\"example\":\"10\",\"nullable\":true,\"type\":\"string\"},\"ttl\":{\"description\":\"Recommended TTL setting.\",\"example\":\"Auto\",\"type\":\"string\"},\"type\":{\"enum\":[\"MX\",\"TXT\"],\"example\":\"MX\",\"type\":\"string\"},\"value\":{\"description\":\"The record value to enter in your DNS panel.\",\"example\":\"mx.freecustom.email\",\"type\":\"string\"}},\"required\":[\"type\",\"hostname\",\"value\",\"ttl\"],\"type\":\"object\"},\"type\":\"array\"},\"next_step\":{\"description\":\"The API path to call once DNS records are live.\",\"example\":\"POST /v1/custom-domains/mail.acme.com/verify\",\"type\":\"string\"}},\"type\":\"object\"},\"message\":{\"example\":\"Domain added. Configure the DNS records below, then call the verify endpoint.\",\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Domain added — configure the DNS records and then call the verify endpoint\"},\"400\":{\"content\":{\"application/json\":{\"examples\":{\"invalid_domain\":{\"value\":{\"error\":\"invalid_domain\",\"message\":\"Must be a valid domain name (e.g. \\\"mail.yourdomain.com\\\").\",\"success\":false}},\"limit_reached\":{\"value\":{\"error\":\"limit_reached\",\"message\":\"Maximum of 10 custom domains reached.\",\"success\":false}},\"missing_field\":{\"value\":{\"error\":\"missing_field\",\"message\":\"`domain` is required (e.g. \\\"mail.yourdomain.com\\\").\",\"success\":false}}},\"schema\":{\"properties\":{\"error\":{\"enum\":[\"missing_field\",\"invalid_domain\",\"limit_reached\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid domain name\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low — Growth or Enterprise required\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/custom-domains",
@@ -114,6 +184,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /v1/custom-domains",
+                    "json": "{\"operationId\":\"listCustomDomains\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":{\"count\":2,\"data\":[{\"added_at\":\"2026-01-15T10:00:00.000Z\",\"domain\":\"mail.acme.com\",\"mx_record\":\"mx.freecustom.email\",\"txt_record\":\"freecustomemail-verification=a1b2c3d4e5f6...\",\"verified\":true},{\"added_at\":\"2026-03-10T08:30:00.000Z\",\"domain\":\"staging.acme.com\",\"mx_record\":\"mx.freecustom.email\",\"txt_record\":\"freecustomemail-verification=9z8y7x6w5v4u...\",\"verified\":false}],\"success\":true},\"schema\":{\"properties\":{\"count\":{\"description\":\"Number of custom domains in your account.\",\"example\":2,\"type\":\"integer\"},\"data\":{\"items\":{\"description\":\"A custom domain added to your account.\",\"properties\":{\"added_at\":{\"description\":\"ISO 8601 timestamp when the domain was added.\",\"example\":\"2026-01-15T10:00:00.000Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"domain\":{\"description\":\"Bare domain name (no leading @).\",\"example\":\"mail.acme.com\",\"type\":\"string\"},\"mx_record\":{\"description\":\"The MX record value to add at your registrar.\",\"example\":\"mx.freecustom.email\",\"type\":\"string\"},\"txt_record\":{\"description\":\"The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. Unique per domain + account.\",\"example\":\"freecustomemail-verification=a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4\",\"type\":\"string\"},\"verified\":{\"description\":\"`true` — MX and TXT records confirmed. Inboxes can be registered.\\n`false` — DNS records not yet verified. Call the verify endpoint.\\n\",\"example\":true,\"type\":\"boolean\"}},\"required\":[\"domain\",\"verified\",\"mx_record\",\"txt_record\"],\"type\":\"object\"},\"type\":\"array\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low — Growth or Enterprise required\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/custom-domains",
@@ -151,6 +227,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "DELETE /v1/custom-domains/{domain}",
+                    "json": "{\"operationId\":\"deleteCustomDomain\",\"parameters\":[{\"description\":\"The bare domain name to remove (e.g. `mail.acme.com`).\",\"in\":\"path\",\"name\":\"domain\",\"required\":true,\"schema\":{\"example\":\"mail.acme.com\",\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":{\"inboxes_removed\":[\"support@mail.acme.com\",\"noreply@mail.acme.com\"],\"message\":\"\\\"mail.acme.com\\\" removed.\",\"success\":true},\"schema\":{\"properties\":{\"inboxes_removed\":{\"description\":\"API inboxes that were automatically unregistered because they used\\nthis domain. May be an empty array.\\n\",\"example\":[\"support@mail.acme.com\",\"noreply@mail.acme.com\"],\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"message\":{\"example\":\"\\\"mail.acme.com\\\" removed.\",\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Domain removed\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"example\":\"domain_not_found\",\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Domain not found in your account\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "DELETE",
@@ -252,6 +334,12 @@
                       }
                     ]
                   },
+                  "contract": {
+                    "id": "POST /v1/custom-domains/{domain}/verify",
+                    "json": "{\"operationId\":\"verifyCustomDomain\",\"parameters\":[{\"description\":\"The bare domain name to verify (e.g. `mail.acme.com`).\",\"in\":\"path\",\"name\":\"domain\",\"required\":true,\"schema\":{\"example\":\"mail.acme.com\",\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"already_verified\":{\"summary\":\"Already verified\",\"value\":{\"message\":\"Domain is already verified.\",\"success\":true,\"verified\":true}},\"verified\":{\"summary\":\"Verification succeeded\",\"value\":{\"data\":{\"domain\":\"mail.acme.com\",\"mx_record\":\"mx.freecustom.email\",\"txt_record\":\"freecustomemail-verification=a1b2c3d4e5f6...\",\"verified\":true},\"message\":\"Domain \\\"mail.acme.com\\\" verified successfully. You can now register inboxes at @mail.acme.com.\",\"success\":true,\"verified\":true}}},\"schema\":{\"properties\":{\"data\":{\"description\":\"A custom domain added to your account.\",\"properties\":{\"added_at\":{\"description\":\"ISO 8601 timestamp when the domain was added.\",\"example\":\"2026-01-15T10:00:00.000Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"domain\":{\"description\":\"Bare domain name (no leading @).\",\"example\":\"mail.acme.com\",\"type\":\"string\"},\"mx_record\":{\"description\":\"The MX record value to add at your registrar.\",\"example\":\"mx.freecustom.email\",\"type\":\"string\"},\"txt_record\":{\"description\":\"The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. Unique per domain + account.\",\"example\":\"freecustomemail-verification=a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4\",\"type\":\"string\"},\"verified\":{\"description\":\"`true` — MX and TXT records confirmed. Inboxes can be registered.\\n`false` — DNS records not yet verified. Call the verify endpoint.\\n\",\"example\":true,\"type\":\"boolean\"}},\"required\":[\"domain\",\"verified\",\"mx_record\",\"txt_record\"],\"type\":\"object\"},\"message\":{\"example\":\"Domain \\\"mail.acme.com\\\" verified successfully. You can now register inboxes at @mail.acme.com.\",\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"},\"verified\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Verification succeeded (or domain was already verified)\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"example\":\"domain_not_found\",\"type\":\"string\"},\"message\":{\"example\":\"\\\"mail.acme.com\\\" not found. Add it first via POST /v1/custom-domains.\",\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Domain not found — add it first via POST /v1/custom-domains\"},\"422\":{\"content\":{\"application/json\":{\"examples\":{\"missing_both\":{\"summary\":\"Both records not found\",\"value\":{\"dns_records_needed\":[{\"hostname\":\"@\",\"priority\":\"10\",\"type\":\"MX\",\"value\":\"mx.freecustom.email\"},{\"hostname\":\"@\",\"type\":\"TXT\",\"value\":\"freecustomemail-verification=a1b2c3d4e5f6...\"}],\"error\":\"verification_failed\",\"hint\":\"DNS propagation can take up to 48 hours.\",\"message\":\"MX \\\"mx.freecustom.email\\\" and TXT \\\"freecustomemail-verification=a1b2c3d4e5f6...\\\" not found.\",\"success\":false,\"verified\":false}},\"missing_txt\":{\"summary\":\"TXT record not found\",\"value\":{\"dns_records_needed\":[{\"hostname\":\"@\",\"priority\":\"10\",\"type\":\"MX\",\"value\":\"mx.freecustom.email\"},{\"hostname\":\"@\",\"type\":\"TXT\",\"value\":\"freecustomemail-verification=a1b2c3d4e5f6...\"}],\"error\":\"verification_failed\",\"hint\":\"DNS propagation can take up to 48 hours.\",\"message\":\"TXT record \\\"freecustomemail-verification=a1b2c3d4e5f6...\\\" not found.\",\"success\":false,\"verified\":false}}},\"schema\":{\"properties\":{\"dns_records_needed\":{\"description\":\"The records that must be present for verification to pass.\",\"items\":{\"description\":\"A DNS record to add at your registrar.\",\"properties\":{\"hostname\":{\"description\":\"The DNS hostname / host field. `@` means the root of the domain.\",\"example\":\"@\",\"type\":\"string\"},\"priority\":{\"description\":\"MX priority. Only present for MX records.\",\"example\":\"10\",\"nullable\":true,\"type\":\"string\"},\"ttl\":{\"description\":\"Recommended TTL setting.\",\"example\":\"Auto\",\"type\":\"string\"},\"type\":{\"enum\":[\"MX\",\"TXT\"],\"example\":\"MX\",\"type\":\"string\"},\"value\":{\"description\":\"The record value to enter in your DNS panel.\",\"example\":\"mx.freecustom.email\",\"type\":\"string\"}},\"required\":[\"type\",\"hostname\",\"value\",\"ttl\"],\"type\":\"object\"},\"type\":\"array\"},\"error\":{\"example\":\"verification_failed\",\"type\":\"string\"},\"hint\":{\"example\":\"DNS propagation can take up to 48 hours.\",\"type\":\"string\"},\"message\":{\"description\":\"Which specific record was not found.\",\"example\":\"TXT record \\\"freecustomemail-verification=...\\\" not found.\",\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"verified\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Verification failed — DNS records not yet found or not propagated\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/custom-domains/{domain}/verify",
@@ -349,6 +437,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /v1/domains",
+                    "json": "{\"operationId\":\"listDomains\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"free_plan\":{\"summary\":\"Free / Developer / Startup plan\",\"value\":{\"count\":10,\"data\":[{\"domain\":\"ditube.info\",\"tags\":[\"popular\"],\"tier\":\"free\"},{\"domain\":\"ditplay.info\",\"tags\":[\"popular\"],\"tier\":\"free\"},{\"domain\":\"ditapi.info\",\"tags\":[],\"tier\":\"free\"},{\"domain\":\"getnotify.io\",\"expires_at\":\"2026-04-01\",\"expires_in_days\":25,\"expiring_soon\":true,\"tags\":[\"new\"],\"tier\":\"free\"}],\"note\":\"Upgrade to Growth plan to access additional pro domains.\",\"success\":true}},\"growth_plan\":{\"summary\":\"Growth / Enterprise plan\",\"value\":{\"count\":14,\"data\":[{\"domain\":\"ditube.info\",\"tags\":[\"popular\"],\"tier\":\"free\"},{\"domain\":\"ditmail.pro\",\"tags\":[\"new\",\"featured\"],\"tier\":\"pro\"},{\"domain\":\"mock-api.pro\",\"tags\":[\"new\",\"featured\"],\"tier\":\"pro\"}],\"note\":\"Growth/Enterprise plan: free + pro domains included.\",\"success\":true}}},\"schema\":{\"properties\":{\"count\":{\"description\":\"Total number of domains returned.\",\"example\":10,\"type\":\"integer\"},\"data\":{\"items\":{\"properties\":{\"domain\":{\"description\":\"Bare domain name (no leading @).\",\"example\":\"ditube.info\",\"type\":\"string\"},\"expires_at\":{\"description\":\"ISO 8601 date when the domain registration expires at the registrar.\\nOnly present when `expiring_soon` is true (within 30 days).\\n\",\"example\":\"2026-04-01\",\"format\":\"date\",\"nullable\":true,\"type\":\"string\"},\"expires_in_days\":{\"description\":\"Days remaining until expiry. Only present when `expiring_soon` is true.\",\"example\":25,\"nullable\":true,\"type\":\"integer\"},\"expiring_soon\":{\"description\":\"True when the domain expires within 30 days. Omitted entirely for\\nhealthy domains to keep the payload lean. When true, migrate inboxes\\nto a different domain or your own custom domain.\\n\",\"example\":true,\"nullable\":true,\"type\":\"boolean\"},\"tags\":{\"description\":\"`new` — recently added, shown for ~30 days.\\n`popular` — high-traffic domain.\\n`featured` — pinned at top of domain picker.\\n\",\"example\":[\"popular\"],\"items\":{\"enum\":[\"new\",\"popular\",\"featured\"],\"type\":\"string\"},\"type\":\"array\"},\"tier\":{\"description\":\"`free` — available on all plans.\\n`pro` — requires Growth or Enterprise plan.\\n\",\"enum\":[\"free\",\"pro\"],\"type\":\"string\"}},\"required\":[\"domain\",\"tier\",\"tags\"],\"type\":\"object\"},\"type\":\"array\"},\"note\":{\"description\":\"Human-readable note about plan gating.\",\"example\":\"Upgrade to Growth plan to access additional pro domains.\",\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/domains",
@@ -457,6 +551,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /v1/domains/all",
+                    "json": "{\"operationId\":\"listDomainsAll\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":{\"count\":10,\"data\":[{\"domain\":\"ditube.info\",\"expired\":false,\"expires_at\":\"2026-08-01\",\"expires_in_days\":147,\"expiring_soon\":false,\"tags\":[\"popular\"],\"tier\":\"free\"},{\"domain\":\"ditmail.pro\",\"expired\":false,\"expires_at\":\"2026-09-05\",\"expires_in_days\":178,\"expiring_soon\":false,\"tags\":[\"new\",\"featured\"],\"tier\":\"pro\"}],\"success\":true},\"schema\":{\"properties\":{\"count\":{\"example\":10,\"type\":\"integer\"},\"data\":{\"items\":{\"allOf\":[{\"properties\":{\"domain\":{\"description\":\"Bare domain name (no leading @).\",\"example\":\"ditube.info\",\"type\":\"string\"},\"expires_at\":{\"description\":\"ISO 8601 date when the domain registration expires at the registrar.\\nOnly present when `expiring_soon` is true (within 30 days).\\n\",\"example\":\"2026-04-01\",\"format\":\"date\",\"nullable\":true,\"type\":\"string\"},\"expires_in_days\":{\"description\":\"Days remaining until expiry. Only present when `expiring_soon` is true.\",\"example\":25,\"nullable\":true,\"type\":\"integer\"},\"expiring_soon\":{\"description\":\"True when the domain expires within 30 days. Omitted entirely for\\nhealthy domains to keep the payload lean. When true, migrate inboxes\\nto a different domain or your own custom domain.\\n\",\"example\":true,\"nullable\":true,\"type\":\"boolean\"},\"tags\":{\"description\":\"`new` — recently added, shown for ~30 days.\\n`popular` — high-traffic domain.\\n`featured` — pinned at top of domain picker.\\n\",\"example\":[\"popular\"],\"items\":{\"enum\":[\"new\",\"popular\",\"featured\"],\"type\":\"string\"},\"type\":\"array\"},\"tier\":{\"description\":\"`free` — available on all plans.\\n`pro` — requires Growth or Enterprise plan.\\n\",\"enum\":[\"free\",\"pro\"],\"type\":\"string\"}},\"required\":[\"domain\",\"tier\",\"tags\"],\"type\":\"object\"},{\"properties\":{\"expired\":{\"description\":\"True when the domain has already passed its expiry date.\",\"example\":false,\"type\":\"boolean\"},\"expires_at\":{\"description\":\"ISO 8601 registrar expiry date. Always present on this endpoint.\",\"example\":\"2026-08-01\",\"format\":\"date\",\"type\":\"string\"},\"expires_in_days\":{\"description\":\"Days remaining until expiry. Always present on this endpoint.\",\"example\":147,\"type\":\"integer\"},\"expiring_soon\":{\"description\":\"True when expiry is within 30 days. Always present on this endpoint.\",\"example\":false,\"type\":\"boolean\"}},\"required\":[\"expires_at\",\"expires_in_days\",\"expiring_soon\",\"expired\"],\"type\":\"object\"}]},\"type\":\"array\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/domains/all",
@@ -544,6 +644,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /v1/inboxes",
+                    "json": "{\"operationId\":\"createInbox\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"inbox\":{\"example\":\"test@ditube.info\",\"format\":\"email\",\"type\":\"string\"},\"isTesting\":{\"description\":\"Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger.\\nRequires Growth ($89/mo) or Enterprise ($199/mo) plan.\\n\",\"example\":false,\"type\":\"boolean\"}},\"required\":[\"inbox\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"inbox\":{\"type\":\"string\"},\"message\":{\"example\":\"Inbox already registered.\",\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Inbox was already registered (idempotent)\"},\"201\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"inbox\":{\"type\":\"string\"},\"registered_at\":{\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Inbox registered\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"missing_field\",\"invalid_inbox\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid inbox address\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Domain not allowed for your plan, or custom domain not yet verified\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/inboxes",
@@ -572,6 +678,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /v1/inboxes",
+                    "json": "{\"operationId\":\"listInboxes\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"count\":{\"type\":\"integer\"},\"inboxes\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes",
@@ -672,6 +784,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /v1/me",
+                    "json": "{\"operationId\":\"getMe\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"api_inbox_count\":{\"type\":\"integer\"},\"api_inboxes\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"app_inbox_count\":{\"type\":\"integer\"},\"app_inboxes\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"credits\":{\"example\":25000,\"type\":\"integer\"},\"custom_domain_count\":{\"type\":\"integer\"},\"custom_domains\":{\"items\":{\"description\":\"A custom domain added to your account.\",\"properties\":{\"added_at\":{\"description\":\"ISO 8601 timestamp when the domain was added.\",\"example\":\"2026-01-15T10:00:00.000Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"domain\":{\"description\":\"Bare domain name (no leading @).\",\"example\":\"mail.acme.com\",\"type\":\"string\"},\"mx_record\":{\"description\":\"The MX record value to add at your registrar.\",\"example\":\"mx.freecustom.email\",\"type\":\"string\"},\"txt_record\":{\"description\":\"The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. Unique per domain + account.\",\"example\":\"freecustomemail-verification=a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4\",\"type\":\"string\"},\"verified\":{\"description\":\"`true` — MX and TXT records confirmed. Inboxes can be registered.\\n`false` — DNS records not yet verified. Call the verify endpoint.\\n\",\"example\":true,\"type\":\"boolean\"}},\"required\":[\"domain\",\"verified\",\"mx_record\",\"txt_record\"],\"type\":\"object\"},\"type\":\"array\"},\"features\":{\"properties\":{\"attachments\":{\"type\":\"boolean\"},\"custom_domains\":{\"type\":\"boolean\"},\"max_attachment_size_mb\":{\"type\":\"integer\"},\"max_ws_connections\":{\"type\":\"integer\"},\"otp_extraction\":{\"type\":\"boolean\"},\"websocket\":{\"type\":\"boolean\"}},\"type\":\"object\"},\"plan\":{\"example\":\"startup\",\"type\":\"string\"},\"rate_limits\":{\"properties\":{\"requests_per_month\":{\"type\":\"integer\"},\"requests_per_second\":{\"type\":\"integer\"}},\"type\":\"object\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\",\"headers\":{\"X-API-Plan\":{\"schema\":{\"example\":\"startup\",\"type\":\"string\"}},\"X-RateLimit-Limit-Month\":{\"schema\":{\"example\":250000,\"type\":\"integer\"}},\"X-RateLimit-Limit-Second\":{\"schema\":{\"example\":25,\"type\":\"integer\"}},\"X-RateLimit-Remaining-Month\":{\"schema\":{\"example\":248770,\"type\":\"integer\"}},\"X-RateLimit-Remaining-Second\":{\"schema\":{\"example\":24,\"type\":\"integer\"}}}},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded\"}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/me",
@@ -837,6 +955,12 @@
                       }
                     ]
                   },
+                  "contract": {
+                    "id": "GET /v1/inboxes/{inbox}/messages",
+                    "json": "{\"operationId\":\"listMessages\",\"parameters\":[{\"in\":\"path\",\"name\":\"inbox\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"in\":\"query\",\"name\":\"limit\",\"schema\":{\"default\":20,\"maximum\":100,\"type\":\"integer\"}},{\"description\":\"Message ID — returns messages older than this\",\"in\":\"query\",\"name\":\"before\",\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"count\":{\"type\":\"integer\"},\"has_more\":{\"type\":\"boolean\"},\"inbox\":{\"type\":\"string\"},\"messages\":{\"items\":{\"properties\":{\"date\":{\"format\":\"date-time\",\"type\":\"string\"},\"from\":{\"type\":\"string\"},\"has_attachment\":{\"type\":\"boolean\"},\"id\":{\"type\":\"string\"},\"otp\":{\"description\":\"The extracted OTP code, or `__DETECTED__` on plans below Growth\\n(upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value).\\n\",\"nullable\":true,\"type\":\"string\"},\"subject\":{\"type\":\"string\"},\"verification_link\":{\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"example\":\"forbidden\",\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Inbox not registered to this account\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes/{inbox}/messages",
@@ -892,6 +1016,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "GET /v1/inboxes/{inbox}/messages/{id}",
+                    "json": "{\"operationId\":\"getMessage\",\"parameters\":[{\"in\":\"path\",\"name\":\"inbox\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"attachments\":{\"items\":{\"properties\":{\"content_type\":{\"type\":\"string\"},\"filename\":{\"type\":\"string\"},\"size_bytes\":{\"type\":\"integer\"}},\"type\":\"object\"},\"type\":\"array\"},\"date\":{\"format\":\"date-time\",\"type\":\"string\"},\"from\":{\"type\":\"string\"},\"has_attachment\":{\"type\":\"boolean\"},\"html\":{\"nullable\":true,\"type\":\"string\"},\"id\":{\"type\":\"string\"},\"otp\":{\"nullable\":true,\"type\":\"string\"},\"subject\":{\"type\":\"string\"},\"text\":{\"nullable\":true,\"type\":\"string\"},\"to\":{\"type\":\"string\"},\"verification_link\":{\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"example\":\"forbidden\",\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Forbidden (e.g. inbox not owned by this account)\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"example\":\"not_found\",\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Message not found\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "GET",
@@ -1043,6 +1173,12 @@
                       }
                     ]
                   },
+                  "contract": {
+                    "id": "GET /v1/inboxes/{inbox}/otp",
+                    "json": "{\"operationId\":\"getOtp\",\"parameters\":[{\"in\":\"path\",\"name\":\"inbox\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"Unix timestamp in milliseconds. Only OTPs from messages received after this timestamp are returned.\\n\",\"in\":\"query\",\"name\":\"since\",\"required\":false,\"schema\":{\"type\":\"integer\"}},{\"description\":\"When `true`, includes messages where `otp` is null and triggers on-demand extraction from stored text. Use for API-generated inboxes.\\n\",\"in\":\"query\",\"name\":\"parseCode\",\"required\":false,\"schema\":{\"default\":false,\"type\":\"boolean\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"from\":{\"nullable\":true,\"type\":\"string\"},\"inbox\":{\"type\":\"string\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"message_id\":{\"nullable\":true,\"type\":\"string\"},\"otp\":{\"nullable\":true,\"type\":\"string\"},\"received_at\":{\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"score\":{\"description\":\"Confidence score (0.0 to 1.0) of the extracted OTP.\",\"format\":\"float\",\"nullable\":true,\"type\":\"number\"},\"subject\":{\"nullable\":true,\"type\":\"string\"},\"verification_link\":{\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success (OTP found or null)\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low — requires Growth plan ($89/mo) or above\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes/{inbox}/otp",
@@ -1110,6 +1246,12 @@
                       }
                     ]
                   },
+                  "contract": {
+                    "id": "GET /v1/otp/public",
+                    "json": "{\"operationId\":\"getOtpPublic\",\"parameters\":[{\"description\":\"Per-inbox OTP token (format `fceotp_…`). Generated by `POST /v1/inboxes/generate`.\",\"in\":\"query\",\"name\":\"token\",\"required\":true,\"schema\":{\"example\":\"fceotp_24f1add500d18150a02c62e40b395828226a79ab\",\"type\":\"string\"}},{\"description\":\"Unix timestamp in milliseconds. Only OTPs from messages received **after** this timestamp are returned. Use the timestamp captured just before triggering the verification email to skip stale codes.\\n\",\"in\":\"query\",\"name\":\"since\",\"required\":false,\"schema\":{\"example\":1716900000000,\"type\":\"integer\"}},{\"description\":\"When `true`, triggers on-demand OTP extraction from stored email text. Required for API-generated inboxes (fast-save path stores `otp: null`). The Inbox Generator embeds this flag in OTP URLs by default.\\n\",\"in\":\"query\",\"name\":\"parseCode\",\"required\":false,\"schema\":{\"default\":false,\"type\":\"boolean\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"from\":{\"nullable\":true,\"type\":\"string\"},\"inbox\":{\"type\":\"string\"},\"message\":{\"nullable\":true,\"type\":\"string\"},\"message_id\":{\"nullable\":true,\"type\":\"string\"},\"otp\":{\"nullable\":true,\"type\":\"string\"},\"received_at\":{\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"score\":{\"description\":\"Confidence score (0.0 to 1.0) of the extracted OTP.\",\"format\":\"float\",\"nullable\":true,\"type\":\"number\"},\"subject\":{\"nullable\":true,\"type\":\"string\"},\"verification_link\":{\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"OTP found or null\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"example\":\"token_not_found\",\"type\":\"string\"},\"message\":{\"example\":\"Token not found or expired.\",\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Token not found or expired\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/otp/public",
@@ -1176,6 +1318,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /v1/plans",
+                    "json": "{\"operationId\":\"getPlans\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"credit_packages\":{\"items\":{\"properties\":{\"label\":{\"type\":\"string\"},\"price_usd\":{\"type\":\"integer\"},\"requests\":{\"type\":\"integer\"}},\"type\":\"object\"},\"type\":\"array\"},\"plans\":{\"items\":{\"properties\":{\"features\":{\"properties\":{\"attachments\":{\"type\":\"boolean\"},\"custom_domains\":{\"type\":\"boolean\"},\"max_attachment_size_mb\":{\"type\":\"integer\"},\"max_ws_connections\":{\"type\":\"integer\"},\"otp_extraction\":{\"type\":\"boolean\"},\"websocket\":{\"type\":\"boolean\"}},\"type\":\"object\"},\"label\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"price_usd\":{\"type\":\"integer\"},\"requests_per_month\":{\"type\":\"integer\"},\"requests_per_second\":{\"type\":\"integer\"}},\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"}},\"security\":[],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/plans",
@@ -1275,6 +1423,12 @@
                       }
                     ]
                   },
+                  "contract": {
+                    "id": "GET /v1/inboxes/{inbox}/timeline",
+                    "json": "{\"operationId\":\"getTimeline\",\"parameters\":[{\"description\":\"The inbox to get timeline for (e.g. `test@ditube.info`).\",\"example\":\"test@ditube.info\",\"in\":\"path\",\"name\":\"inbox\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"Optional test ID to filter the timeline events by a specific test run.\",\"in\":\"query\",\"name\":\"test_id\",\"required\":false,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"duration_hours\":{\"type\":\"integer\"},\"event_count\":{\"type\":\"integer\"},\"events\":{\"items\":{\"properties\":{\"id\":{\"type\":\"string\"},\"inbox\":{\"type\":\"string\"},\"latency_ms\":{\"type\":\"integer\"},\"metadata\":{\"properties\":{\"error\":{\"type\":\"string\"},\"from\":{\"type\":\"string\"},\"message_id\":{\"type\":\"string\"},\"otp\":{\"type\":\"string\"},\"raw_snippet\":{\"type\":\"string\"},\"score\":{\"type\":\"number\"},\"subject\":{\"type\":\"string\"},\"verification_link\":{\"type\":\"string\"}},\"type\":\"object\"},\"test_run_id\":{\"type\":\"string\"},\"timestamp\":{\"type\":\"integer\"},\"type\":{\"enum\":[\"inbox_created\",\"test_started\",\"smtp_rcpt_received\",\"email_received\",\"email_parsed\",\"otp_extracted\",\"webhook_sent\",\"websocket_sent\",\"error\"],\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"inbox\":{\"type\":\"string\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"missing_field\",\"invalid_inbox\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing inbox parameter\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low — Growth or Enterprise required\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes/{inbox}/timeline",
@@ -1322,6 +1476,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "GET /v1/inboxes/{inbox}/insights",
+                    "json": "{\"operationId\":\"getInsights\",\"parameters\":[{\"description\":\"The inbox to get insights for (e.g. `test@ditube.info`).\",\"example\":\"test@ditube.info\",\"in\":\"path\",\"name\":\"inbox\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"analyzed_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"inbox\":{\"type\":\"string\"},\"insights\":{\"items\":{\"properties\":{\"message\":{\"example\":\"Email took >3s\",\"type\":\"string\"},\"type\":{\"example\":\"slow_delivery\",\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"400\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"missing_field\",\"invalid_inbox\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing inbox parameter\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low — Growth or Enterprise required\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "GET",
@@ -1517,6 +1677,12 @@
                       }
                     ]
                   },
+                  "contract": {
+                    "id": "POST /v1/inboxes/{inbox}/tests",
+                    "json": "{\"operationId\":\"startTestRun\",\"parameters\":[{\"description\":\"The inbox to start a test for.\",\"in\":\"path\",\"name\":\"inbox\",\"required\":true,\"schema\":{\"example\":\"test@ditube.info\",\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"test_id\":{\"description\":\"Optional custom test ID. If omitted, one will be generated.\",\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":false},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"inbox\":{\"example\":\"test@ditube.info\",\"type\":\"string\"},\"started_at\":{\"example\":\"2026-03-04T10:00:00.000Z\",\"format\":\"date-time\",\"type\":\"string\"},\"test_id\":{\"example\":\"signup-test-1\",\"type\":\"string\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Test started\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/inboxes/{inbox}/tests",
@@ -1552,6 +1718,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /v1/inboxes/generate",
+                    "json": "{\"operationId\":\"generateInboxes\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"count\":{\"default\":1,\"description\":\"Number of inboxes to generate (1–500 depending on plan).\",\"minimum\":1,\"type\":\"integer\"},\"custom_firstnames\":{\"description\":\"Custom first-name pool for `firstname.surname` style.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"custom_surnames\":{\"description\":\"Custom surname pool for `firstname.surname` style.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"domain_mode\":{\"default\":\"any\",\"description\":\"Which domain pool to use. One of: `any` (default), `free_only`, `pro_only`, `custom_only`, `specific`.\\n\",\"type\":\"string\"},\"domains\":{\"description\":\"Required when `domain_mode` is `specific`. List of domains to use.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"output_format\":{\"default\":\"{email}----{otp_url}\",\"description\":\"Template string for each line of output. Variables: `{email}`, `{username}`, `{domain}`, `{otp_url}`, `{token}`, `{api_key}`.\\n\",\"type\":\"string\"},\"parseCode\":{\"default\":true,\"description\":\"When `true` (default), embeds `?parseCode=true` in every OTP URL. This enables on-demand OTP extraction at poll time rather than at SMTP delivery — required for API inboxes since they use the fast-save path.\\n\",\"type\":\"boolean\"},\"since\":{\"description\":\"Unix timestamp in milliseconds. When provided, it is embedded as `?since=` in every OTP URL so stale codes from previous sessions are ignored.\\n\",\"type\":\"integer\"},\"username_style\":{\"default\":\"random_chars\",\"description\":\"Username generation style. One of: `random_chars` (default), `digits_only`, `letters_only`, `name`, `noun_digits`, `firstname.surname`.\\n\",\"type\":\"string\"}},\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"count\":{\"example\":5,\"type\":\"integer\"},\"daily_limit\":{\"nullable\":true,\"type\":\"integer\"},\"daily_remaining\":{\"nullable\":true,\"type\":\"integer\"},\"daily_used\":{\"nullable\":true,\"type\":\"integer\"},\"inboxes\":{\"items\":{\"properties\":{\"domain\":{\"example\":\"addmy.space\",\"type\":\"string\"},\"email\":{\"example\":\"jade.quasar21@addmy.space\",\"type\":\"string\"},\"formatted\":{\"example\":\"jade.quasar21@addmy.space----https://api2.freecustom.email/v1/otp/public?token=fceotp_…\",\"type\":\"string\"},\"otp_url\":{\"example\":\"https://api2.freecustom.email/v1/otp/public?token=fceotp_…&since=1716900000000&parseCode=true\",\"type\":\"string\"},\"token\":{\"example\":\"fceotp_24f1add500d18150a02c62e4…\",\"type\":\"string\"},\"username\":{\"example\":\"jade.quasar21\",\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Inboxes generated\"},\"400\":{\"description\":\"Invalid parameters\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low or daily/batch limit exceeded\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/inboxes/generate",
@@ -1591,6 +1763,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "DELETE /v1/inboxes/{inbox}",
+                    "json": "{\"operationId\":\"deleteInbox\",\"parameters\":[{\"description\":\"URL-encoded email address (e.g. test%40ditube.info)\",\"in\":\"path\",\"name\":\"inbox\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"message\":{\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Unregistered\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"example\":\"not_found\",\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Inbox not registered\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "DELETE",
@@ -1726,6 +1904,12 @@
                       }
                     ]
                   },
+                  "contract": {
+                    "id": "GET /v1/inboxes/{inbox}/wait",
+                    "json": "{\"operationId\":\"waitMessage\",\"parameters\":[{\"in\":\"path\",\"name\":\"inbox\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"Max seconds to wait (10-60 recommended, default 30).\",\"in\":\"query\",\"name\":\"timeout\",\"schema\":{\"default\":30,\"maximum\":60,\"minimum\":1,\"type\":\"integer\"}},{\"description\":\"Last seen message ID. Return immediately if a newer message exists, otherwise wait.\",\"in\":\"query\",\"name\":\"since\",\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"date\":{\"format\":\"date-time\",\"type\":\"string\"},\"from\":{\"type\":\"string\"},\"has_attachment\":{\"type\":\"boolean\"},\"id\":{\"type\":\"string\"},\"otp\":{\"description\":\"The extracted OTP code, or `__DETECTED__` on plans below Growth\\n(upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value).\\n\",\"nullable\":true,\"type\":\"string\"},\"subject\":{\"type\":\"string\"},\"verification_link\":{\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"},\"message\":{\"example\":\"New message received\",\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"New message received\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low — requires Developer plan or above\"},\"408\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"message\":{\"example\":\"Timeout reached\",\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Timeout reached\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/inboxes/{inbox}/wait",
@@ -1787,6 +1971,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "DELETE /v1/inboxes/{inbox}/messages/{id}",
+                    "json": "{\"operationId\":\"deleteMessage\",\"parameters\":[{\"in\":\"path\",\"name\":\"inbox\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"message\":{\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Message deleted\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"example\":\"not_found\",\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}}},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "DELETE",
@@ -1902,6 +2092,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /v1/webhooks",
+                    "json": "{\"operationId\":\"createWebhook\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"inbox\":{\"description\":\"The registered inbox to subscribe to.\",\"example\":\"target@domain.com\",\"format\":\"email\",\"type\":\"string\"},\"url\":{\"description\":\"The HTTPS URL to receive the POST request.\",\"example\":\"https://your-server.com/callback\",\"format\":\"uri\",\"type\":\"string\"}},\"required\":[\"url\",\"inbox\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"201\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"id\":{\"type\":\"string\"},\"inbox\":{\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"},\"url\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Webhook registered\"},\"400\":{\"description\":\"Missing fields\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Inbox not owned or plan too low\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/v1/webhooks",
@@ -1928,6 +2124,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /v1/webhooks",
+                    "json": "{\"operationId\":\"listWebhooks\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"count\":{\"example\":1,\"type\":\"integer\"},\"data\":{\"items\":{\"properties\":{\"_id\":{\"type\":\"string\"},\"createdAt\":{\"format\":\"date-time\",\"type\":\"string\"},\"failureCount\":{\"type\":\"integer\"},\"inbox\":{\"type\":\"string\"},\"url\":{\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/webhooks",
@@ -1964,6 +2166,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "DELETE /v1/webhooks/{id}",
+                    "json": "{\"operationId\":\"deleteWebhook\",\"parameters\":[{\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"message\":{\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Webhook unregistered\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low\"},\"404\":{\"description\":\"Webhook not found\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "DELETE",
@@ -2042,6 +2250,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /v1/usage",
+                    "json": "{\"operationId\":\"getUsage\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"data\":{\"properties\":{\"credits\":{\"properties\":{\"balance\":{\"type\":\"integer\"},\"note\":{\"type\":\"string\"}},\"type\":\"object\"},\"period\":{\"properties\":{\"month\":{\"type\":\"string\"},\"resets_at\":{\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"},\"plan\":{\"type\":\"string\"},\"rate_limit\":{\"properties\":{\"requests_per_second\":{\"type\":\"integer\"}},\"type\":\"object\"},\"requests\":{\"properties\":{\"limit\":{\"type\":\"integer\"},\"percent_used\":{\"type\":\"number\"},\"remaining\":{\"type\":\"integer\"},\"used\":{\"type\":\"integer\"}},\"type\":\"object\"}},\"type\":\"object\"},\"success\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Success\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/v1/usage",
@@ -2068,13 +2282,223 @@
         }
       },
       "feature": {
+        "ratelimit": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "burst": 5,
+              "rate": 5
+            },
+            "optspec": {
+              "now": "`$FUNCTION`",
+              "sleep": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "ratelimit",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Client-side rate limiting via a token bucket",
+          "transport": "wrap",
+          "version": "0.0.1"
+        },
+        "retry": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "factor": 2,
+              "maxDelay": 2000,
+              "minDelay": 50,
+              "retries": 2,
+              "statuses": [
+                408,
+                425,
+                429,
+                500,
+                502,
+                503,
+                504
+              ]
+            },
+            "optspec": {
+              "jitter": "`$BOOLEAN`",
+              "sleep": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "retry",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Automatic retry of transient failures with exponential backoff",
+          "transport": "wrap",
+          "version": "0.0.1"
+        },
         "test": {
           "active": true,
           "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "config": {
             "options": {
               "active": false
-            }
+            },
+            "optspec": {
+              "entity": "`$MAP`",
+              "net": "`$MAP`"
+            },
+            "strict": false
           },
           "hook": {
             "GetData": {
@@ -2164,6 +2588,102 @@
           },
           "title": "In-memory mock transport for testing without a live server",
           "transport": "base",
+          "version": "0.0.1"
+        },
+        "timeout": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "ms": 30000
+            },
+            "optspec": {
+              "clearTimer": "`$FUNCTION`",
+              "setTimer": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "timeout",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Per-request timeout with transport abort",
+          "transport": "wrap",
           "version": "0.0.1"
         }
       },
@@ -2697,6 +3217,48 @@
         "website": "https://api2.freecustom.email"
       },
       "option": {},
+      "optspec": {
+        "allow": {
+          "method": "GET,PUT,POST,PATCH,DELETE,OPTIONS",
+          "op": "create,update,load,list,remove,command,direct,graphql"
+        },
+        "apikey": "",
+        "auth": {
+          "basic": false,
+          "prefix": ""
+        },
+        "base": "http://localhost:8000",
+        "clean": {
+          "keys": "key,token,id"
+        },
+        "entity": {
+          "`$CHILD`": {
+            "`$OPEN`": true,
+            "active": false,
+            "alias": {}
+          }
+        },
+        "extend": "`$ANY`",
+        "headers": {
+          "`$CHILD`": "`$STRING`"
+        },
+        "prefix": "",
+        "secret": "",
+        "server": {
+          "`$CHILD`": ""
+        },
+        "suffix": "",
+        "system": {
+          "fetch": "`$ANY`"
+        },
+        "test": {
+          "active": false,
+          "entity": {
+            "`$OPEN`": true
+          }
+        },
+        "utility": {}
+      },
       "repo": {
         "host": "github.com",
         "path": ""
@@ -3251,6 +3813,7 @@
           },
           "package": "@voxgig/sdkgen",
           "provides": {
+            "schema": true,
             "sekreto": true
           },
           "publish": {
@@ -3292,7 +3855,7 @@
         "live": {
           "app": false,
           "base": "",
-          "strict": false
+          "strict": true
         }
       }
     }

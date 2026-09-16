@@ -3,7 +3,7 @@
     "message": {
       "MESSAGE00": {
         "attachments": [],
-        "count": "s97",
+        "count": 151,
         "date": "s98",
         "from": "s99",
         "has_attachment": true,
@@ -21,7 +21,7 @@
       },
       "MESSAGE01": {
         "attachments": [],
-        "count": "s12d",
+        "count": 301,
         "date": "s12e",
         "from": "s12f",
         "has_attachment": true,
@@ -39,7 +39,7 @@
       },
       "MESSAGE02": {
         "attachments": [],
-        "count": "s1c3",
+        "count": 451,
         "date": "s1c4",
         "from": "s1c5",
         "has_attachment": true,
@@ -61,7 +61,7 @@
     "message": {
       "message_ref01": {
         "attachments": [],
-        "count": "s259",
+        "count": 601,
         "date": "s25a",
         "from": "s25b",
         "has_attachment": true,
@@ -74,6 +74,464 @@
         "text": "s264",
         "to": "s265",
         "verification_link": "s266"
+      }
+    }
+  },
+  "requests": {
+    "GET /v1/inboxes/{inbox}/messages": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "listMessages",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "inbox",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Message ID — returns messages older than this",
+            "in": "query",
+            "name": "before",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "properties": {
+                        "count": {
+                          "type": "integer"
+                        },
+                        "has_more": {
+                          "type": "boolean"
+                        },
+                        "inbox": {
+                          "type": "string"
+                        },
+                        "messages": {
+                          "items": {
+                            "properties": {
+                              "date": {
+                                "format": "date-time",
+                                "type": "string"
+                              },
+                              "from": {
+                                "type": "string"
+                              },
+                              "has_attachment": {
+                                "type": "boolean"
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "otp": {
+                                "description": "The extracted OTP code, or `__DETECTED__` on plans below Growth\n(upgrade or use `GET /v1/inboxes/{inbox}/otp` to read the value).\n",
+                                "nullable": true,
+                                "type": "string"
+                              },
+                              "subject": {
+                                "type": "string"
+                              },
+                              "verification_link": {
+                                "nullable": true,
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "success": {
+                      "example": true,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "enum": [
+                        "unauthorized",
+                        "key_revoked"
+                      ],
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "example": "forbidden",
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Inbox not registered to this account"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "credits_url": {
+                      "format": "uri",
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "error": {
+                      "enum": [
+                        "rate_limit_exceeded",
+                        "monthly_quota_exceeded"
+                      ],
+                      "type": "string"
+                    },
+                    "hint": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "upgrade_url": {
+                      "format": "uri",
+                      "nullable": true,
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Rate limit exceeded (per-second or monthly quota)",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "description": "Seconds to wait before retrying",
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "securitySchemes": {
+          "ApiKeyQuery": {
+            "description": "API key as query parameter (alternative to Bearer header)",
+            "in": "query",
+            "name": "api_key",
+            "type": "apiKey"
+          },
+          "BearerAuth": {
+            "bearerFormat": "JWT",
+            "description": "Developer API key as Bearer token (e.g. `Bearer fce_xxx`)",
+            "scheme": "bearer",
+            "type": "http"
+          }
+        },
+        "securitySource": "operation"
+      }
+    },
+    "GET /v1/inboxes/{inbox}/messages/{id}": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "getMessage",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "inbox",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "properties": {
+                        "attachments": {
+                          "items": {
+                            "properties": {
+                              "content_type": {
+                                "type": "string"
+                              },
+                              "filename": {
+                                "type": "string"
+                              },
+                              "size_bytes": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "date": {
+                          "format": "date-time",
+                          "type": "string"
+                        },
+                        "from": {
+                          "type": "string"
+                        },
+                        "has_attachment": {
+                          "type": "boolean"
+                        },
+                        "html": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "otp": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "subject": {
+                          "type": "string"
+                        },
+                        "text": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "to": {
+                          "type": "string"
+                        },
+                        "verification_link": {
+                          "nullable": true,
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "success": {
+                      "example": true,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "enum": [
+                        "unauthorized",
+                        "key_revoked"
+                      ],
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Missing or invalid API key"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "example": "forbidden",
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden (e.g. inbox not owned by this account)"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "error": {
+                      "example": "not_found",
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Message not found"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "credits_url": {
+                      "format": "uri",
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "error": {
+                      "enum": [
+                        "rate_limit_exceeded",
+                        "monthly_quota_exceeded"
+                      ],
+                      "type": "string"
+                    },
+                    "hint": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "example": false,
+                      "type": "boolean"
+                    },
+                    "upgrade_url": {
+                      "format": "uri",
+                      "nullable": true,
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Rate limit exceeded (per-second or monthly quota)",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "description": "Seconds to wait before retrying",
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "securitySchemes": {
+          "ApiKeyQuery": {
+            "description": "API key as query parameter (alternative to Bearer header)",
+            "in": "query",
+            "name": "api_key",
+            "type": "apiKey"
+          },
+          "BearerAuth": {
+            "bearerFormat": "JWT",
+            "description": "Developer API key as Bearer token (e.g. `Bearer fce_xxx`)",
+            "scheme": "bearer",
+            "type": "http"
+          }
+        },
+        "securitySource": "operation"
       }
     }
   }

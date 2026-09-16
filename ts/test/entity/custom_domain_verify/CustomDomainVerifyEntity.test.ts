@@ -5,6 +5,8 @@ import * as Fs from 'node:fs'
 
 import { test, describe, afterEach } from 'node:test'
 import assert from 'node:assert'
+import { createLiveTransport } from '../../live-runner'
+import { runLiveEntity } from '../../live-entity'
 
 
 import { CustomTempMailSDK, BaseFeature, stdutil } from '../../..'
@@ -47,16 +49,13 @@ describe('CustomDomainVerifyEntity', async () => {
 
     const live = 'TRUE' === process.env.CUSTOM_TEMP_MAIL_TEST_LIVE
     for (const op of ['create']) {
-      if (maybeSkipControl(t, 'entityOp', 'custom_domain_verify.' + op, live)) return
+      if (!live && maybeSkipControl(t, 'entityOp', 'custom_domain_verify.' + op, live)) return
     }
 
+    
     const setup = basicSetup()
-    // The basic flow consumes synthetic IDs and field values from the
-    // fixture (entity TestData.json). Those don't exist on the live API.
-    // Skip live runs unless the user provided a real ENTID env override.
-    if (setup.syntheticOnly) {
-      t.skip('live entity test uses synthetic IDs from fixture — set CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID JSON to run live')
-      return
+    if (setup.live) {
+      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":[{"active":true,"format":"date-time","name":"added_at","req":false,"short":"ISO 8601 timestamp when the domain was added.","type":"`$STRING`","index$":0},{"active":true,"name":"domain","req":true,"short":"Bare domain name (no leading @).","type":"`$STRING`","index$":1},{"active":true,"name":"mx_record","req":true,"short":"The MX record value to add at your registrar.","type":"`$STRING`","index$":2},{"active":true,"name":"txt_record","req":true,"short":"The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar.","type":"`$STRING`","index$":3},{"active":true,"name":"verified","req":true,"short":"`true` — MX and TXT records confirmed.","type":"`$BOOLEAN`","index$":4}],"name":"custom_domain_verify","op":{"create":{"input":"data","name":"create","points":[{"active":true,"args":{"params":[{"active":true,"example":"mail.acme.com","kind":"param","name":"domain","orig":"domain","reqd":true,"type":"`$STRING`","index$":0}]},"contract":{"id":"POST /v1/custom-domains/{domain}/verify","json":"{\"operationId\":\"verifyCustomDomain\",\"parameters\":[{\"description\":\"The bare domain name to verify (e.g. `mail.acme.com`).\",\"in\":\"path\",\"name\":\"domain\",\"required\":true,\"schema\":{\"example\":\"mail.acme.com\",\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"already_verified\":{\"summary\":\"Already verified\",\"value\":{\"message\":\"Domain is already verified.\",\"success\":true,\"verified\":true}},\"verified\":{\"summary\":\"Verification succeeded\",\"value\":{\"data\":{\"domain\":\"mail.acme.com\",\"mx_record\":\"mx.freecustom.email\",\"txt_record\":\"freecustomemail-verification=a1b2c3d4e5f6...\",\"verified\":true},\"message\":\"Domain \\\"mail.acme.com\\\" verified successfully. You can now register inboxes at @mail.acme.com.\",\"success\":true,\"verified\":true}}},\"schema\":{\"properties\":{\"data\":{\"description\":\"A custom domain added to your account.\",\"properties\":{\"added_at\":{\"description\":\"ISO 8601 timestamp when the domain was added.\",\"example\":\"2026-01-15T10:00:00.000Z\",\"format\":\"date-time\",\"nullable\":true,\"type\":\"string\"},\"domain\":{\"description\":\"Bare domain name (no leading @).\",\"example\":\"mail.acme.com\",\"type\":\"string\"},\"mx_record\":{\"description\":\"The MX record value to add at your registrar.\",\"example\":\"mx.freecustom.email\",\"type\":\"string\"},\"txt_record\":{\"description\":\"The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar. Unique per domain + account.\",\"example\":\"freecustomemail-verification=a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4\",\"type\":\"string\"},\"verified\":{\"description\":\"`true` — MX and TXT records confirmed. Inboxes can be registered.\\n`false` — DNS records not yet verified. Call the verify endpoint.\\n\",\"example\":true,\"type\":\"boolean\"}},\"required\":[\"domain\",\"verified\",\"mx_record\",\"txt_record\"],\"type\":\"object\"},\"message\":{\"example\":\"Domain \\\"mail.acme.com\\\" verified successfully. You can now register inboxes at @mail.acme.com.\",\"type\":\"string\"},\"success\":{\"example\":true,\"type\":\"boolean\"},\"verified\":{\"example\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Verification succeeded (or domain was already verified)\"},\"401\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"unauthorized\",\"key_revoked\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Missing or invalid API key\"},\"403\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"enum\":[\"plan_required\",\"plan_restriction\",\"domain_not_verified\",\"domain_not_found\"],\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Plan too low\"},\"404\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"error\":{\"example\":\"domain_not_found\",\"type\":\"string\"},\"message\":{\"example\":\"\\\"mail.acme.com\\\" not found. Add it first via POST /v1/custom-domains.\",\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Domain not found — add it first via POST /v1/custom-domains\"},\"422\":{\"content\":{\"application/json\":{\"examples\":{\"missing_both\":{\"summary\":\"Both records not found\",\"value\":{\"dns_records_needed\":[{\"hostname\":\"@\",\"priority\":\"10\",\"type\":\"MX\",\"value\":\"mx.freecustom.email\"},{\"hostname\":\"@\",\"type\":\"TXT\",\"value\":\"freecustomemail-verification=a1b2c3d4e5f6...\"}],\"error\":\"verification_failed\",\"hint\":\"DNS propagation can take up to 48 hours.\",\"message\":\"MX \\\"mx.freecustom.email\\\" and TXT \\\"freecustomemail-verification=a1b2c3d4e5f6...\\\" not found.\",\"success\":false,\"verified\":false}},\"missing_txt\":{\"summary\":\"TXT record not found\",\"value\":{\"dns_records_needed\":[{\"hostname\":\"@\",\"priority\":\"10\",\"type\":\"MX\",\"value\":\"mx.freecustom.email\"},{\"hostname\":\"@\",\"type\":\"TXT\",\"value\":\"freecustomemail-verification=a1b2c3d4e5f6...\"}],\"error\":\"verification_failed\",\"hint\":\"DNS propagation can take up to 48 hours.\",\"message\":\"TXT record \\\"freecustomemail-verification=a1b2c3d4e5f6...\\\" not found.\",\"success\":false,\"verified\":false}}},\"schema\":{\"properties\":{\"dns_records_needed\":{\"description\":\"The records that must be present for verification to pass.\",\"items\":{\"description\":\"A DNS record to add at your registrar.\",\"properties\":{\"hostname\":{\"description\":\"The DNS hostname / host field. `@` means the root of the domain.\",\"example\":\"@\",\"type\":\"string\"},\"priority\":{\"description\":\"MX priority. Only present for MX records.\",\"example\":\"10\",\"nullable\":true,\"type\":\"string\"},\"ttl\":{\"description\":\"Recommended TTL setting.\",\"example\":\"Auto\",\"type\":\"string\"},\"type\":{\"enum\":[\"MX\",\"TXT\"],\"example\":\"MX\",\"type\":\"string\"},\"value\":{\"description\":\"The record value to enter in your DNS panel.\",\"example\":\"mx.freecustom.email\",\"type\":\"string\"}},\"required\":[\"type\",\"hostname\",\"value\",\"ttl\"],\"type\":\"object\"},\"type\":\"array\"},\"error\":{\"example\":\"verification_failed\",\"type\":\"string\"},\"hint\":{\"example\":\"DNS propagation can take up to 48 hours.\",\"type\":\"string\"},\"message\":{\"description\":\"Which specific record was not found.\",\"example\":\"TXT record \\\"freecustomemail-verification=...\\\" not found.\",\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"verified\":{\"example\":false,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"Verification failed — DNS records not yet found or not propagated\"},\"429\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credits_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"},\"error\":{\"enum\":[\"rate_limit_exceeded\",\"monthly_quota_exceeded\"],\"type\":\"string\"},\"hint\":{\"nullable\":true,\"type\":\"string\"},\"message\":{\"type\":\"string\"},\"success\":{\"example\":false,\"type\":\"boolean\"},\"upgrade_url\":{\"format\":\"uri\",\"nullable\":true,\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Rate limit exceeded (per-second or monthly quota)\",\"headers\":{\"Retry-After\":{\"schema\":{\"description\":\"Seconds to wait before retrying\",\"type\":\"integer\"}}}}},\"security\":[{\"BearerAuth\":[]}],\"securitySchemes\":{\"ApiKeyQuery\":{\"description\":\"API key as query parameter (alternative to Bearer header)\",\"in\":\"query\",\"name\":\"api_key\",\"type\":\"apiKey\"},\"BearerAuth\":{\"bearerFormat\":\"JWT\",\"description\":\"Developer API key as Bearer token (e.g. `Bearer fce_xxx`)\",\"scheme\":\"bearer\",\"type\":\"http\"}},\"securitySource\":\"operation\"}","source":"openapi3","version":1},"kind":"http","method":"POST","orig":"/v1/custom-domains/{domain}/verify","segments":[{"lit":"v1"},{"lit":"custom-domains"},{"var":"domain"},{"lit":"verify"}],"select":{"exist":["domain"]},"transform":{"req":"`reqdata`","res":"`body.data`"},"index$":0}],"key$":"create"}},"relations":{"ancestors":[["custom_domain"]]},"key$":"custom_domain_verify","name__orig":"custom_domain_verify","Name":"CustomDomainVerify","name_":"custom_domain_verify","name-":"custom-domain-verify","NAME":"CUSTOM_DOMAIN_VERIFY","index$":1}, {"active":true,"entity":"custom_domain_verify","key$":"BasicCustomDomainVerifyFlow","kind":"basic","name":"BasicCustomDomainVerifyFlow","param":{},"step":[{"active":true,"data":{},"input":{"ref":"custom_domain_verify_ref01"},"match":{"domain":"domain01"},"op":"create","spec":[],"valid":[],"index$":0}]}, 'CustomDomainVerify')
     }
     const client = setup.client
     const struct = setup.struct
@@ -110,13 +109,6 @@ function basicSetup(extra?: any) {
       }]
     })
 
-  // Detect whether the user provided a real ENTID JSON via env var. The
-  // basic flow consumes synthetic IDs from the fixture file; without an
-  // override those synthetic IDs reach the live API and 4xx. Surface this
-  // to the test so it can skip rather than fail.
-  const idmapEnvVal = process.env['CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID']
-  const idmapOverridden = null != idmapEnvVal && idmapEnvVal.trim().startsWith('{')
-
   const env = envOverride({
     'CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID': idmap,
     'CUSTOM_TEMP_MAIL_TEST_LIVE': 'FALSE',
@@ -128,7 +120,13 @@ function basicSetup(extra?: any) {
 
   const live = 'TRUE' === env.CUSTOM_TEMP_MAIL_TEST_LIVE
 
+  const transport = createLiveTransport()
   if (live) {
+    const rawIds = process.env['CUSTOM_TEMP_MAIL_TEST_CUSTOM_DOMAIN_VERIFY_ENTID']
+    idmap = rawIds && rawIds.trim() ? JSON.parse(rawIds) : {}
+    if (!idmap || Array.isArray(idmap) || typeof idmap !== 'object') {
+      throw new Error('Live ENTID must be a JSON object')
+    }
     client = new CustomTempMailSDK(merge([
       // FIRST, so the generated fields below win: sdk-test-control.json's
       // test.client.options adds to the live client, it does not redirect it.
@@ -141,7 +139,8 @@ function basicSetup(extra?: any) {
       // argument at all - so a bare 'extra' silently discarded the apikey
       // and server values above and handed the SDK undefined. Harmless
       // while there was nothing in that object; not harmless now.
-      extra || {}
+      extra || {},
+      { system: { fetch: transport.fetch } }
     ]))
   }
 
@@ -154,7 +153,7 @@ function basicSetup(extra?: any) {
     data: entityData,
     explain: 'TRUE' === env.CUSTOM_TEMP_MAIL_TEST_EXPLAIN,
     live,
-    syntheticOnly: live && !idmapOverridden,
+    transport,
     now: Date.now(),
   }
 

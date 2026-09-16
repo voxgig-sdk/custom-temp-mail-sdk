@@ -25,5 +25,117 @@
         "plans": []
       }
     }
+  },
+  "requests": {
+    "GET /v1/plans": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "getPlans",
+        "parameters": [],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "properties": {
+                        "credit_packages": {
+                          "items": {
+                            "properties": {
+                              "label": {
+                                "type": "string"
+                              },
+                              "price_usd": {
+                                "type": "integer"
+                              },
+                              "requests": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "plans": {
+                          "items": {
+                            "properties": {
+                              "features": {
+                                "properties": {
+                                  "attachments": {
+                                    "type": "boolean"
+                                  },
+                                  "custom_domains": {
+                                    "type": "boolean"
+                                  },
+                                  "max_attachment_size_mb": {
+                                    "type": "integer"
+                                  },
+                                  "max_ws_connections": {
+                                    "type": "integer"
+                                  },
+                                  "otp_extraction": {
+                                    "type": "boolean"
+                                  },
+                                  "websocket": {
+                                    "type": "boolean"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "label": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "price_usd": {
+                                "type": "integer"
+                              },
+                              "requests_per_month": {
+                                "type": "integer"
+                              },
+                              "requests_per_second": {
+                                "type": "integer"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "success": {
+                      "example": true,
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "security": [],
+        "securitySchemes": {
+          "ApiKeyQuery": {
+            "description": "API key as query parameter (alternative to Bearer header)",
+            "in": "query",
+            "name": "api_key",
+            "type": "apiKey"
+          },
+          "BearerAuth": {
+            "bearerFormat": "JWT",
+            "description": "Developer API key as Bearer token (e.g. `Bearer fce_xxx`)",
+            "scheme": "bearer",
+            "type": "http"
+          }
+        },
+        "securitySource": "operation"
+      }
+    }
   }
 }
