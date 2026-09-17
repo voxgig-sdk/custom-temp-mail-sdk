@@ -131,48 +131,48 @@ class Config {
 
     entity: {
       
-      custom_domain: {
-      },
-
-      custom_domain_verify: {
-      },
-
-      domain: {
-      },
-
-      domains_all: {
-      },
-
-      inbox: {
-      },
-
-      men: {
-      },
-
-      message: {
-      },
-
-      otp: {
-      },
-
-      plan: {
-      },
-
-      public_v1_dashboard_analytics: {
-      },
-
-      public_v1_inbox: {
-      },
-
-      public_v1_message: {
-      },
-
-      public_v1_webhook: {
-      },
-
-      usage: {
-      },
-
+        custom_domain: {
+        },
+  
+        custom_domain_verify: {
+        },
+  
+        domain: {
+        },
+  
+        domains_all: {
+        },
+  
+        inbox: {
+        },
+  
+        men: {
+        },
+  
+        message: {
+        },
+  
+        otp: {
+        },
+  
+        plan: {
+        },
+  
+        public_v1_dashboard_analytics: {
+        },
+  
+        public_v1_inbox: {
+        },
+  
+        public_v1_message: {
+        },
+  
+        public_v1_webhook: {
+        },
+  
+        usage: {
+        },
+  
     }
   }
 
