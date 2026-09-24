@@ -1,0 +1,85 @@
+# Entity: domain
+
+main: kit: entity: domain: {
+
+  alias: field: {}
+
+  fields: {
+    domain: {
+      h: "Domain"
+      n: "domain"
+      r: true
+      sh: "Bare domain name (no leading @)."
+      t: "`$STRING`"
+    }
+    expires_at: {
+      fo: "date"
+      h: "Expires At"
+      n: "expires_at"
+      r: false
+      sh: "ISO 8601 date when the domain registration expires at the registrar."
+      t: "`$STRING`"
+    }
+    expires_in_days: {
+      h: "Expires In Days"
+      n: "expires_in_days"
+      r: false
+      sh: "Days remaining until expiry."
+      t: "`$INTEGER`"
+    }
+    expiring_soon: {
+      h: "Expiring Soon"
+      n: "expiring_soon"
+      r: false
+      sh: "True when the domain expires within 30 days."
+      t: "`$BOOLEAN`"
+    }
+    tags: {
+      h: "Tags"
+      n: "tags"
+      r: true
+      sh: "`new` — recently added, shown for ~30 days."
+      t: "`$ARRAY`"
+    }
+    tier: {
+      h: "Tier"
+      n: "tier"
+      r: true
+      sh: "`free` — available on all plans."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "domain"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /v1/domains"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/v1/domains"
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "domains"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

@@ -1,0 +1,22 @@
+# BasicDomainsAllFlow
+
+main: kit: flow: BasicDomainsAllFlow:
+{
+  entity: "domains_all",
+  kind: "basic",
+  name: "BasicDomainsAllFlow",
+  step: [
+    {
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "domains_all_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicDomainsAllFlow"
+}

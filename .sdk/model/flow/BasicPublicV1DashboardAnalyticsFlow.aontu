@@ -1,0 +1,32 @@
+# BasicPublicV1DashboardAnalyticsFlow
+
+main: kit: flow: BasicPublicV1DashboardAnalyticsFlow:
+{
+  entity: "public_v1_dashboard_analytics",
+  kind: "basic",
+  name: "BasicPublicV1DashboardAnalyticsFlow",
+  step: [
+    {
+      i: {
+        ref: "public_v1_dashboard_analytics_ref01",
+        srcdatavar: "public_v1_dashboard_analytics_ref01_data",
+        suffix: "_dt0"
+      }
+
+      m: {
+        id: "public_v1_dashboard_analytics01"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-public_v1_dashboard_analytics_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicPublicV1DashboardAnalyticsFlow"
+}

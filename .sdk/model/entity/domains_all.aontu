@@ -1,0 +1,113 @@
+# Entity: domains_all
+
+main: kit: entity: domains_all: {
+
+  alias: field: {}
+
+  fields: {
+    domain: {
+      h: "Domain"
+      n: "domain"
+      r: true
+      sh: "Bare domain name (no leading @)."
+      t: "`$STRING`"
+    }
+    expired: {
+      h: "Expired"
+      n: "expired"
+      r: true
+      sh: "True when the domain has already passed its expiry date."
+      t: "`$BOOLEAN`"
+    }
+    expires_at: {
+      fo: "date"
+      h: "Expires At"
+      n: "expires_at"
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "ISO 8601 date when the domain registration expires at the registrar."
+      t: "`$STRING`"
+    }
+    expires_in_days: {
+      h: "Expires In Days"
+      n: "expires_in_days"
+      op: {
+        list: {
+          req: true
+          type: "`$INTEGER`"
+        }
+      }
+      r: false
+      sh: "Days remaining until expiry."
+      t: "`$INTEGER`"
+    }
+    expiring_soon: {
+      h: "Expiring Soon"
+      n: "expiring_soon"
+      op: {
+        list: {
+          req: true
+          type: "`$BOOLEAN`"
+        }
+      }
+      r: false
+      sh: "True when the domain expires within 30 days."
+      t: "`$BOOLEAN`"
+    }
+    tags: {
+      h: "Tags"
+      n: "tags"
+      r: true
+      sh: "`new` — recently added, shown for ~30 days."
+      t: "`$ARRAY`"
+    }
+    tier: {
+      h: "Tier"
+      n: "tier"
+      r: true
+      sh: "`free` — available on all plans."
+      t: "`$STRING`"
+    }
+  }
+
+  name: "domains_all"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /v1/domains/all"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/v1/domains/all"
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "domains"
+            }
+            {
+              lit: "all"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

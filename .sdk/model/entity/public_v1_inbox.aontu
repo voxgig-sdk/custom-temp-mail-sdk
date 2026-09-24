@@ -1,0 +1,271 @@
+# Entity: public_v1_inbox
+
+main: kit: entity: public_v1_inbox: {
+
+  alias: field: {}
+
+  fields: {
+    count: {
+      h: "Count"
+      n: "count"
+      r: false
+      sh: "Number of inboxes to generate (1–500 depending on plan)."
+      t: "`$INTEGER`"
+    }
+    custom_firstnames: {
+      h: "Custom Firstnames"
+      n: "custom_firstnames"
+      r: false
+      sh: "Custom first-name pool for `firstname.surname` style."
+      t: "`$ARRAY`"
+    }
+    custom_surnames: {
+      h: "Custom Surnames"
+      n: "custom_surnames"
+      r: false
+      sh: "Custom surname pool for `firstname.surname` style."
+      t: "`$ARRAY`"
+    }
+    daily_limit: {
+      h: "Daily Limit"
+      n: "daily_limit"
+      r: false
+      t: "`$INTEGER`"
+    }
+    daily_remaining: {
+      h: "Daily Remaining"
+      n: "daily_remaining"
+      r: false
+      t: "`$INTEGER`"
+    }
+    daily_used: {
+      h: "Daily Used"
+      n: "daily_used"
+      r: false
+      t: "`$INTEGER`"
+    }
+    domain_mode: {
+      h: "Domain Mode"
+      n: "domain_mode"
+      r: false
+      sh: "Which domain pool to use."
+      t: "`$STRING`"
+    }
+    domains: {
+      h: "Domains"
+      n: "domains"
+      r: false
+      sh: "Required when `domain_mode` is `specific`."
+      t: "`$ARRAY`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
+    }
+    inbox: {
+      h: "Inbox"
+      n: "inbox"
+      r: false
+      t: "`$STRING`"
+    }
+    inboxes: {
+      h: "Inboxes"
+      n: "inboxes"
+      r: false
+      t: "`$ARRAY`"
+    }
+    output_format: {
+      h: "Output Format"
+      n: "output_format"
+      r: false
+      sh: "Template string for each line of output."
+      t: "`$STRING`"
+    }
+    parseCode: {
+      h: "Parse Code"
+      n: "parseCode"
+      r: false
+      sh: "When `true` (default), embeds `?parseCode=true` in every OTP URL."
+      t: "`$BOOLEAN`"
+    }
+    since: {
+      h: "Since"
+      n: "since"
+      r: false
+      sh: "Unix timestamp in milliseconds."
+      t: "`$INTEGER`"
+    }
+    started_at: {
+      fo: "date-time"
+      h: "Started At"
+      n: "started_at"
+      r: false
+      t: "`$STRING`"
+    }
+    success: {
+      h: "Success"
+      n: "success"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    test_id: {
+      h: "Test Id"
+      n: "test_id"
+      r: false
+      sh: "Optional custom test ID."
+      t: "`$STRING`"
+    }
+    username_style: {
+      h: "Username Style"
+      n: "username_style"
+      r: false
+      sh: "Username generation style."
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "public_v1_inbox"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /v1/inboxes/{inbox}/tests"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "test@ditube.info"
+                k: "param"
+                n: "inbox_id"
+                or: "inbox"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/v1/inboxes/{inbox}/tests"
+          q: {
+            exist: [
+              "inbox_id"
+            ]
+          }
+          r: {
+            param: {
+              inbox: "inbox_id"
+            }
+          }
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "tests"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+        {
+          co: {
+            id: "POST /v1/inboxes/generate"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/v1/inboxes/generate"
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              lit: "generate"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /v1/inboxes/{inbox}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "inbox"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/v1/inboxes/{inbox}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              inbox: "id"
+            }
+          }
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.inbox")]
+  ]
+
+}

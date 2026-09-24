@@ -19,7 +19,6 @@ import type {
   DomainListMatch,
 } from '../CustomTempMailTypes'
 
-// TODO: needs Entity superclass
 class DomainEntity extends CustomTempMailEntityBase<Domain> {
 
   constructor(client: CustomTempMailSDK, entopts: any) {

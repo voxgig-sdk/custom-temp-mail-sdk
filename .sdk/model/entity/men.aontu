@@ -1,0 +1,102 @@
+# Entity: men
+
+main: kit: entity: men: {
+
+  alias: field: {}
+
+  fields: {
+    api_inbox_count: {
+      h: "Api Inbox Count"
+      n: "api_inbox_count"
+      r: false
+      t: "`$INTEGER`"
+    }
+    api_inboxes: {
+      h: "Api Inboxes"
+      n: "api_inboxes"
+      r: false
+      t: "`$ARRAY`"
+    }
+    app_inbox_count: {
+      h: "App Inbox Count"
+      n: "app_inbox_count"
+      r: false
+      t: "`$INTEGER`"
+    }
+    app_inboxes: {
+      h: "App Inboxes"
+      n: "app_inboxes"
+      r: false
+      t: "`$ARRAY`"
+    }
+    credits: {
+      h: "Credits"
+      n: "credits"
+      r: false
+      t: "`$INTEGER`"
+    }
+    custom_domain_count: {
+      h: "Custom Domain Count"
+      n: "custom_domain_count"
+      r: false
+      t: "`$INTEGER`"
+    }
+    custom_domains: {
+      h: "Custom Domains"
+      n: "custom_domains"
+      r: false
+      t: "`$ARRAY`"
+    }
+    features: {
+      h: "Features"
+      n: "features"
+      r: false
+      t: "`$OBJECT`"
+    }
+    plan: {
+      h: "Plan"
+      n: "plan"
+      r: false
+      t: "`$STRING`"
+    }
+    rate_limits: {
+      h: "Rate Limits"
+      n: "rate_limits"
+      r: false
+      t: "`$OBJECT`"
+    }
+  }
+
+  name: "men"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /v1/me"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/v1/me"
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "me"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

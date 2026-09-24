@@ -1,0 +1,32 @@
+# BasicPublicV1MessageFlow
+
+main: kit: flow: BasicPublicV1MessageFlow:
+{
+  entity: "public_v1_message",
+  kind: "basic",
+  name: "BasicPublicV1MessageFlow",
+  step: [
+    {
+      i: {
+        ref: "public_v1_message_ref01",
+        srcdatavar: "public_v1_message_ref01_data",
+        suffix: "_dt0"
+      }
+
+      m: {
+        id: "public_v1_message01"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-public_v1_message_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicPublicV1MessageFlow"
+}

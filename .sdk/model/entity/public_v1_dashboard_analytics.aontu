@@ -1,0 +1,169 @@
+# Entity: public_v1_dashboard_analytics
+
+main: kit: entity: public_v1_dashboard_analytics: {
+
+  alias: field: {}
+
+  fields: {
+    analyzed_at: {
+      fo: "date-time"
+      h: "Analyzed At"
+      n: "analyzed_at"
+      r: false
+      t: "`$STRING`"
+    }
+    duration_hours: {
+      h: "Duration Hours"
+      n: "duration_hours"
+      r: false
+      t: "`$INTEGER`"
+    }
+    event_count: {
+      h: "Event Count"
+      n: "event_count"
+      r: false
+      t: "`$INTEGER`"
+    }
+    events: {
+      h: "Events"
+      n: "events"
+      r: false
+      t: "`$ARRAY`"
+    }
+    inbox: {
+      h: "Inbox"
+      n: "inbox"
+      r: false
+      t: "`$STRING`"
+    }
+    insights: {
+      h: "Insights"
+      n: "insights"
+      r: false
+      t: "`$ARRAY`"
+    }
+  }
+
+  name: "public_v1_dashboard_analytics"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /v1/inboxes/{inbox}/timeline"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "test@ditube.info"
+                k: "param"
+                n: "inbox_id"
+                or: "inbox"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "test_id"
+                or: "test_id"
+                r: false
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v1/inboxes/{inbox}/timeline"
+          q: {
+            exist: [
+              "inbox_id"
+              "test_id"
+            ]
+          }
+          r: {
+            param: {
+              inbox: "inbox_id"
+            }
+          }
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "timeline"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+        {
+          co: {
+            id: "GET /v1/inboxes/{inbox}/insights"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "test@ditube.info"
+                k: "param"
+                n: "inbox_id"
+                or: "inbox"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v1/inboxes/{inbox}/insights"
+          q: {
+            exist: [
+              "inbox_id"
+            ]
+          }
+          r: {
+            param: {
+              inbox: "inbox_id"
+            }
+          }
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "insights"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.inbox")]
+  ]
+
+}

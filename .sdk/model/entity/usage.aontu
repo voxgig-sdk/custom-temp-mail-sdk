@@ -1,0 +1,72 @@
+# Entity: usage
+
+main: kit: entity: usage: {
+
+  alias: field: {}
+
+  fields: {
+    credits: {
+      h: "Credits"
+      n: "credits"
+      r: false
+      t: "`$OBJECT`"
+    }
+    period: {
+      h: "Period"
+      n: "period"
+      r: false
+      t: "`$OBJECT`"
+    }
+    plan: {
+      h: "Plan"
+      n: "plan"
+      r: false
+      t: "`$STRING`"
+    }
+    rate_limit: {
+      h: "Rate Limit"
+      n: "rate_limit"
+      r: false
+      t: "`$OBJECT`"
+    }
+    requests: {
+      h: "Requests"
+      n: "requests"
+      r: false
+      t: "`$OBJECT`"
+    }
+  }
+
+  name: "usage"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /v1/usage"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/v1/usage"
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "usage"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

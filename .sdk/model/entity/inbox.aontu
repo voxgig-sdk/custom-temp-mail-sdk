@@ -1,0 +1,114 @@
+# Entity: inbox
+
+main: kit: entity: inbox: {
+
+  alias: field: {}
+
+  fields: {
+    count: {
+      h: "Count"
+      n: "count"
+      r: false
+      t: "`$INTEGER`"
+    }
+    inbox: {
+      fo: "email"
+      h: "Inbox"
+      n: "inbox"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      t: "`$STRING`"
+    }
+    inboxes: {
+      h: "Inboxes"
+      n: "inboxes"
+      r: false
+      t: "`$ARRAY`"
+    }
+    isTesting: {
+      h: "Is Testing"
+      n: "isTesting"
+      r: false
+      sh: "Flag this inbox for testing purposes to enable zero-latency event timelines in the Auth Flow Debugger."
+      t: "`$BOOLEAN`"
+    }
+    message: {
+      h: "Message"
+      n: "message"
+      r: false
+      t: "`$STRING`"
+    }
+    success: {
+      h: "Success"
+      n: "success"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+  }
+
+  name: "inbox"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /v1/inboxes"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/v1/inboxes"
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+          ]
+          t: {
+            req: {
+              inbox: "`reqdata`"
+            }
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /v1/inboxes"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/v1/inboxes"
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

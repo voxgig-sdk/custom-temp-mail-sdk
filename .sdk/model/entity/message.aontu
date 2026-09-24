@@ -1,0 +1,246 @@
+# Entity: message
+
+main: kit: entity: message: {
+
+  alias: field: {}
+
+  fields: {
+    attachments: {
+      h: "Attachments"
+      n: "attachments"
+      r: false
+      t: "`$ARRAY`"
+    }
+    count: {
+      h: "Count"
+      n: "count"
+      r: false
+      t: "`$INTEGER`"
+    }
+    date: {
+      fo: "date-time"
+      h: "Date"
+      n: "date"
+      r: false
+      t: "`$STRING`"
+    }
+    from: {
+      h: "From"
+      n: "from"
+      r: false
+      t: "`$STRING`"
+    }
+    has_attachment: {
+      h: "Has Attachment"
+      n: "has_attachment"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    has_more: {
+      h: "Has More"
+      n: "has_more"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    html: {
+      h: "Html"
+      n: "html"
+      r: false
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
+    }
+    inbox: {
+      h: "Inbox"
+      n: "inbox"
+      r: false
+      t: "`$STRING`"
+    }
+    messages: {
+      h: "Messages"
+      n: "messages"
+      r: false
+      t: "`$ARRAY`"
+    }
+    otp: {
+      h: "Otp"
+      n: "otp"
+      r: false
+      t: "`$STRING`"
+    }
+    subject: {
+      h: "Subject"
+      n: "subject"
+      r: false
+      t: "`$STRING`"
+    }
+    text: {
+      h: "Text"
+      n: "text"
+      r: false
+      t: "`$STRING`"
+    }
+    to: {
+      h: "To"
+      n: "to"
+      r: false
+      t: "`$STRING`"
+    }
+    verification_link: {
+      h: "Verification Link"
+      n: "verification_link"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "message"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /v1/inboxes/{inbox}/messages"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "inbox_id"
+                or: "inbox"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                k: "query"
+                n: "before"
+                or: "before"
+                r: false
+                t: "`$STRING`"
+              }
+              {
+                ex: 20
+                k: "query"
+                n: "limit"
+                or: "limit"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v1/inboxes/{inbox}/messages"
+          q: {
+            exist: [
+              "before"
+              "inbox_id"
+              "limit"
+            ]
+          }
+          r: {
+            param: {
+              inbox: "inbox_id"
+            }
+          }
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "messages"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+        {
+          co: {
+            id: "GET /v1/inboxes/{inbox}/messages/{id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "inbox_id"
+                or: "inbox"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v1/inboxes/{inbox}/messages/{id}"
+          q: {
+            exist: [
+              "id"
+              "inbox_id"
+            ]
+          }
+          r: {
+            param: {
+              inbox: "inbox_id"
+            }
+          }
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "messages"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.inbox")]
+  ]
+
+}

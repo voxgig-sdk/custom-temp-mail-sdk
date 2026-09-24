@@ -1,0 +1,28 @@
+# BasicOtpFlow
+
+main: kit: flow: BasicOtpFlow:
+{
+  entity: "otp",
+  kind: "basic",
+  name: "BasicOtpFlow",
+  step: [
+    {
+      i: {
+        ref: "otp_ref01",
+        srcdatavar: "otp_ref01_data",
+        suffix: "_dt0"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-otp_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicOtpFlow"
+}

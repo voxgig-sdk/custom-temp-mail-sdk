@@ -1,0 +1,54 @@
+# Entity: plan
+
+main: kit: entity: plan: {
+
+  alias: field: {}
+
+  fields: {
+    credit_packages: {
+      h: "Credit Packages"
+      n: "credit_packages"
+      r: false
+      t: "`$ARRAY`"
+    }
+    plans: {
+      h: "Plans"
+      n: "plans"
+      r: false
+      t: "`$ARRAY`"
+    }
+  }
+
+  name: "plan"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /v1/plans"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/v1/plans"
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "plans"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

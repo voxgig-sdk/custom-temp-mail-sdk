@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DomainEntity = void 0;
 const CustomTempMailEntityBase_1 = require("../CustomTempMailEntityBase");
-// TODO: needs Entity superclass
 class DomainEntity extends CustomTempMailEntityBase_1.CustomTempMailEntityBase {
     constructor(client, entopts) {
         super(client, entopts);

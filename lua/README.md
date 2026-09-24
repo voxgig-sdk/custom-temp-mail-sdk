@@ -45,7 +45,7 @@ local customdomains, err = client:CustomDomain():list()
 if err then error(err) end
 
 for _, item in ipairs(customdomains) do
-  print(item["id"], item["added_at"])
+  print(item["id"])
 end
 ```
 

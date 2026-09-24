@@ -1,0 +1,208 @@
+# Entity: otp
+
+main: kit: entity: otp: {
+
+  alias: field: {}
+
+  fields: {
+    from: {
+      h: "From"
+      n: "from"
+      r: false
+      t: "`$STRING`"
+    }
+    inbox: {
+      h: "Inbox"
+      n: "inbox"
+      r: false
+      t: "`$STRING`"
+    }
+    message: {
+      h: "Message"
+      n: "message"
+      r: false
+      t: "`$STRING`"
+    }
+    message_id: {
+      h: "Message Id"
+      n: "message_id"
+      r: false
+      t: "`$STRING`"
+    }
+    otp: {
+      h: "Otp"
+      n: "otp"
+      r: false
+      t: "`$STRING`"
+    }
+    received_at: {
+      fo: "date-time"
+      h: "Received At"
+      n: "received_at"
+      r: false
+      t: "`$STRING`"
+    }
+    score: {
+      fo: "float"
+      h: "Score"
+      n: "score"
+      r: false
+      sh: "Confidence score (0.0 to 1.0) of the extracted OTP."
+      t: "`$NUMBER`"
+    }
+    subject: {
+      h: "Subject"
+      n: "subject"
+      r: false
+      t: "`$STRING`"
+    }
+    verification_link: {
+      h: "Verification Link"
+      n: "verification_link"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  name: "otp"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /v1/inboxes/{inbox}/otp"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "inbox_id"
+                or: "inbox"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: false
+                k: "query"
+                n: "parse_code"
+                or: "parse_code"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+              {
+                k: "query"
+                n: "since"
+                or: "since"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v1/inboxes/{inbox}/otp"
+          q: {
+            exist: [
+              "inbox_id"
+              "parse_code"
+              "since"
+            ]
+          }
+          r: {
+            param: {
+              inbox: "inbox_id"
+            }
+          }
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "inboxes"
+            }
+            {
+              var: "inbox_id"
+            }
+            {
+              lit: "otp"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+        {
+          co: {
+            id: "GET /v1/otp/public"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                ex: false
+                k: "query"
+                n: "parse_code"
+                or: "parse_code"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+              {
+                ex: 1716900000000
+                k: "query"
+                n: "since"
+                or: "since"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: "fceotp_24f1add500d18150a02c62e40b395828226a79ab"
+                k: "query"
+                n: "token"
+                or: "token"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/v1/otp/public"
+          q: {
+            "$action": "public"
+            exist: [
+              "parse_code"
+              "since"
+              "token"
+            ]
+          }
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "otp"
+            }
+            {
+              lit: "public"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.inbox")]
+  ]
+
+}

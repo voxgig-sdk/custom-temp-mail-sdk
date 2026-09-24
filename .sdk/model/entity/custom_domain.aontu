@@ -1,0 +1,166 @@
+# Entity: custom_domain
+
+main: kit: entity: custom_domain: {
+
+  alias: field: {}
+
+  fields: {
+    added_at: {
+      fo: "date-time"
+      h: "Added At"
+      n: "added_at"
+      r: false
+      sh: "ISO 8601 timestamp when the domain was added."
+      t: "`$STRING`"
+    }
+    domain: {
+      h: "Domain"
+      n: "domain"
+      r: true
+      sh: "Bare domain name (no leading @)."
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
+    }
+    mx_record: {
+      h: "Mx Record"
+      n: "mx_record"
+      r: true
+      sh: "The MX record value to add at your registrar."
+      t: "`$STRING`"
+    }
+    txt_record: {
+      h: "Txt Record"
+      n: "txt_record"
+      r: true
+      sh: "The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar."
+      t: "`$STRING`"
+    }
+    verified: {
+      h: "Verified"
+      n: "verified"
+      r: true
+      sh: "`true` — MX and TXT records confirmed."
+      t: "`$BOOLEAN`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "custom_domain"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /v1/custom-domains"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/v1/custom-domains"
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "custom-domains"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /v1/custom-domains"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/v1/custom-domains"
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "custom-domains"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /v1/custom-domains/{domain}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "mail.acme.com"
+                k: "param"
+                n: "id"
+                or: "domain"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/v1/custom-domains/{domain}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          r: {
+            param: {
+              domain: "id"
+            }
+          }
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "custom-domains"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

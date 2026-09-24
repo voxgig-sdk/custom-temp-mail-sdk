@@ -1,0 +1,104 @@
+# Entity: custom_domain_verify
+
+main: kit: entity: custom_domain_verify: {
+
+  alias: field: {}
+
+  fields: {
+    added_at: {
+      fo: "date-time"
+      h: "Added At"
+      n: "added_at"
+      r: false
+      sh: "ISO 8601 timestamp when the domain was added."
+      t: "`$STRING`"
+    }
+    domain: {
+      h: "Domain"
+      n: "domain"
+      r: true
+      sh: "Bare domain name (no leading @)."
+      t: "`$STRING`"
+    }
+    mx_record: {
+      h: "Mx Record"
+      n: "mx_record"
+      r: true
+      sh: "The MX record value to add at your registrar."
+      t: "`$STRING`"
+    }
+    txt_record: {
+      h: "Txt Record"
+      n: "txt_record"
+      r: true
+      sh: "The full TXT record value (including the `freecustomemail-verification=` prefix) to add at your registrar."
+      t: "`$STRING`"
+    }
+    verified: {
+      h: "Verified"
+      n: "verified"
+      r: true
+      sh: "`true` — MX and TXT records confirmed."
+      t: "`$BOOLEAN`"
+    }
+  }
+
+  name: "custom_domain_verify"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /v1/custom-domains/{domain}/verify"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "mail.acme.com"
+                k: "param"
+                n: "domain"
+                or: "domain"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/v1/custom-domains/{domain}/verify"
+          q: {
+            exist: [
+              "domain"
+            ]
+          }
+          s: [
+            {
+              lit: "v1"
+            }
+            {
+              lit: "custom-domains"
+            }
+            {
+              var: "domain"
+            }
+            {
+              lit: "verify"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.data`"
+          }
+        }
+      ]
+    }
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.custom_domain")]
+  ]
+
+}

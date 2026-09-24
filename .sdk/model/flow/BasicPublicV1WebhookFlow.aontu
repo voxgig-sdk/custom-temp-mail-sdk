@@ -1,0 +1,59 @@
+# BasicPublicV1WebhookFlow
+
+main: kit: flow: BasicPublicV1WebhookFlow:
+{
+  entity: "public_v1_webhook",
+  kind: "basic",
+  name: "BasicPublicV1WebhookFlow",
+  step: [
+    {
+      i: {
+        ref: "public_v1_webhook_ref01"
+      }
+
+      o: "create"
+    }
+
+    {
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "public_v1_webhook_ref01"
+          }
+        }
+      ]
+    }
+
+    {
+      i: {
+        ref: "public_v1_webhook_ref01",
+        suffix: "_rm0"
+      }
+
+      m: {
+        id: "public_v1_webhook01"
+      }
+
+      o: "remove"
+    }
+
+    {
+      i: {
+        suffix: "_rt0"
+      }
+
+      o: "list",
+      v: [
+        {
+          apply: "ItemNotExists",
+          def: {
+            ref: "public_v1_webhook_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicPublicV1WebhookFlow"
+}

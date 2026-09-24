@@ -1,0 +1,22 @@
+# BasicCustomDomainVerifyFlow
+
+main: kit: flow: BasicCustomDomainVerifyFlow:
+{
+  entity: "custom_domain_verify",
+  kind: "basic",
+  name: "BasicCustomDomainVerifyFlow",
+  step: [
+    {
+      i: {
+        ref: "custom_domain_verify_ref01"
+      }
+
+      m: {
+        domain: "domain01"
+      }
+
+      o: "create"
+    }
+  ],
+  "key$": "BasicCustomDomainVerifyFlow"
+}

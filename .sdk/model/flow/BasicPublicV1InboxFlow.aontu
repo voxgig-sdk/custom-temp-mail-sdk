@@ -1,0 +1,31 @@
+# BasicPublicV1InboxFlow
+
+main: kit: flow: BasicPublicV1InboxFlow:
+{
+  entity: "public_v1_inbox",
+  kind: "basic",
+  name: "BasicPublicV1InboxFlow",
+  step: [
+    {
+      i: {
+        ref: "public_v1_inbox_ref01"
+      }
+
+      o: "create"
+    }
+
+    {
+      i: {
+        ref: "public_v1_inbox_ref01",
+        suffix: "_rm0"
+      }
+
+      m: {
+        id: "public_v1_inbox01"
+      }
+
+      o: "remove"
+    }
+  ],
+  "key$": "BasicPublicV1InboxFlow"
+}

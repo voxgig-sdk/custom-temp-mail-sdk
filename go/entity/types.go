@@ -1,7 +1,7 @@
 // Typed models for the CustomTempMail SDK.
 //
-// GENERATED from the API model: main.kit.entity.<e>.fields[] and per-op
-// params (op.<name>.points[].args.params[]). Field/param types come from the
+// GENERATED from the API model: main.kit.entity.<e>.fields{} and per-op
+// params (op.<name>.points[].g.params[]). Field/param types come from the
 // canonical type sentinels via @voxgig/sdkgen canonToType (source of truth:
 // @voxgig/apidef VALID_CANON). Do not edit by hand.
 package entity
@@ -14,12 +14,6 @@ import (
 
 // CustomDomain is the typed data model for the custom_domain entity.
 type CustomDomain struct {
-	AddedAt *string `json:"added_at,omitempty"`
-	Domain string `json:"domain"`
-	Id *string `json:"id,omitempty"`
-	MxRecord string `json:"mx_record"`
-	TxtRecord string `json:"txt_record"`
-	Verified bool `json:"verified"`
 }
 
 // CustomDomainListMatch is the typed request payload for CustomDomain.ListTyped.
@@ -49,11 +43,6 @@ type CustomDomainRemoveMatch struct {
 
 // CustomDomainVerify is the typed data model for the custom_domain_verify entity.
 type CustomDomainVerify struct {
-	AddedAt *string `json:"added_at,omitempty"`
-	Domain string `json:"domain"`
-	MxRecord string `json:"mx_record"`
-	TxtRecord string `json:"txt_record"`
-	Verified bool `json:"verified"`
 }
 
 // CustomDomainVerifyCreateData is the typed request payload for CustomDomainVerify.CreateTyped.
@@ -67,12 +56,6 @@ type CustomDomainVerifyCreateData struct {
 
 // Domain is the typed data model for the domain entity.
 type Domain struct {
-	Domain string `json:"domain"`
-	ExpiresAt *string `json:"expires_at,omitempty"`
-	ExpiresInDays *int `json:"expires_in_days,omitempty"`
-	ExpiringSoon *bool `json:"expiring_soon,omitempty"`
-	Tags []any `json:"tags"`
-	Tier string `json:"tier"`
 }
 
 // DomainListMatch is the typed request payload for Domain.ListTyped.
@@ -87,13 +70,6 @@ type DomainListMatch struct {
 
 // DomainsAll is the typed data model for the domains_all entity.
 type DomainsAll struct {
-	Domain string `json:"domain"`
-	Expired bool `json:"expired"`
-	ExpiresAt *string `json:"expires_at,omitempty"`
-	ExpiresInDays *int `json:"expires_in_days,omitempty"`
-	ExpiringSoon *bool `json:"expiring_soon,omitempty"`
-	Tags []any `json:"tags"`
-	Tier string `json:"tier"`
 }
 
 // DomainsAllListMatch is the typed request payload for DomainsAll.ListTyped.
@@ -109,12 +85,6 @@ type DomainsAllListMatch struct {
 
 // Inbox is the typed data model for the inbox entity.
 type Inbox struct {
-	Count *int `json:"count,omitempty"`
-	Inbox *string `json:"inbox,omitempty"`
-	Inboxes *[]any `json:"inboxes,omitempty"`
-	IsTesting *bool `json:"isTesting,omitempty"`
-	Message *string `json:"message,omitempty"`
-	Success *bool `json:"success,omitempty"`
 }
 
 // InboxLoadMatch is the typed request payload for Inbox.LoadTyped.
@@ -139,16 +109,6 @@ type InboxCreateData struct {
 
 // Men is the typed data model for the men entity.
 type Men struct {
-	ApiInboxCount *int `json:"api_inbox_count,omitempty"`
-	ApiInboxes *[]any `json:"api_inboxes,omitempty"`
-	AppInboxCount *int `json:"app_inbox_count,omitempty"`
-	AppInboxes *[]any `json:"app_inboxes,omitempty"`
-	Credits *int `json:"credits,omitempty"`
-	CustomDomainCount *int `json:"custom_domain_count,omitempty"`
-	CustomDomains *[]any `json:"custom_domains,omitempty"`
-	Features *map[string]any `json:"features,omitempty"`
-	Plan *string `json:"plan,omitempty"`
-	RateLimits *map[string]any `json:"rate_limits,omitempty"`
 }
 
 // MenLoadMatch is the typed request payload for Men.LoadTyped.
@@ -167,21 +127,6 @@ type MenLoadMatch struct {
 
 // Message is the typed data model for the message entity.
 type Message struct {
-	Attachments *[]any `json:"attachments,omitempty"`
-	Count *int `json:"count,omitempty"`
-	Date *string `json:"date,omitempty"`
-	From *string `json:"from,omitempty"`
-	HasAttachment *bool `json:"has_attachment,omitempty"`
-	HasMore *bool `json:"has_more,omitempty"`
-	Html *string `json:"html,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Inbox *string `json:"inbox,omitempty"`
-	Messages *[]any `json:"messages,omitempty"`
-	Otp *string `json:"otp,omitempty"`
-	Subject *string `json:"subject,omitempty"`
-	Text *string `json:"text,omitempty"`
-	To *string `json:"to,omitempty"`
-	VerificationLink *string `json:"verification_link,omitempty"`
 }
 
 // MessageLoadMatch is the typed request payload for Message.LoadTyped.
@@ -194,15 +139,6 @@ type MessageLoadMatch struct {
 
 // Otp is the typed data model for the otp entity.
 type Otp struct {
-	From *string `json:"from,omitempty"`
-	Inbox *string `json:"inbox,omitempty"`
-	Message *string `json:"message,omitempty"`
-	MessageId *string `json:"message_id,omitempty"`
-	Otp *string `json:"otp,omitempty"`
-	ReceivedAt *string `json:"received_at,omitempty"`
-	Score *float64 `json:"score,omitempty"`
-	Subject *string `json:"subject,omitempty"`
-	VerificationLink *string `json:"verification_link,omitempty"`
 }
 
 // OtpLoadMatch is the typed request payload for Otp.LoadTyped.
@@ -214,8 +150,6 @@ type OtpLoadMatch struct {
 
 // Plan is the typed data model for the plan entity.
 type Plan struct {
-	CreditPackages *[]any `json:"credit_packages,omitempty"`
-	Plans *[]any `json:"plans,omitempty"`
 }
 
 // PlanLoadMatch is the typed request payload for Plan.LoadTyped.
@@ -226,12 +160,6 @@ type PlanLoadMatch struct {
 
 // PublicV1DashboardAnalytics is the typed data model for the public_v1_dashboard_analytics entity.
 type PublicV1DashboardAnalytics struct {
-	AnalyzedAt *string `json:"analyzed_at,omitempty"`
-	DurationHours *int `json:"duration_hours,omitempty"`
-	EventCount *int `json:"event_count,omitempty"`
-	Events *[]any `json:"events,omitempty"`
-	Inbox *string `json:"inbox,omitempty"`
-	Insights *[]any `json:"insights,omitempty"`
 }
 
 // PublicV1DashboardAnalyticsLoadMatch is the typed request payload for PublicV1DashboardAnalytics.LoadTyped.
@@ -242,24 +170,6 @@ type PublicV1DashboardAnalyticsLoadMatch struct {
 
 // PublicV1Inbox is the typed data model for the public_v1_inbox entity.
 type PublicV1Inbox struct {
-	Count *int `json:"count,omitempty"`
-	CustomFirstnames *[]any `json:"custom_firstnames,omitempty"`
-	CustomSurnames *[]any `json:"custom_surnames,omitempty"`
-	DailyLimit *int `json:"daily_limit,omitempty"`
-	DailyRemaining *int `json:"daily_remaining,omitempty"`
-	DailyUsed *int `json:"daily_used,omitempty"`
-	DomainMode *string `json:"domain_mode,omitempty"`
-	Domains *[]any `json:"domains,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Inbox *string `json:"inbox,omitempty"`
-	Inboxes *[]any `json:"inboxes,omitempty"`
-	OutputFormat *string `json:"output_format,omitempty"`
-	ParseCode *bool `json:"parseCode,omitempty"`
-	Since *int `json:"since,omitempty"`
-	StartedAt *string `json:"started_at,omitempty"`
-	Success *bool `json:"success,omitempty"`
-	TestId *string `json:"test_id,omitempty"`
-	UsernameStyle *string `json:"username_style,omitempty"`
 }
 
 // PublicV1InboxCreateData is the typed request payload for PublicV1Inbox.CreateTyped.
@@ -291,13 +201,6 @@ type PublicV1InboxRemoveMatch struct {
 
 // PublicV1Message is the typed data model for the public_v1_message entity.
 type PublicV1Message struct {
-	Date *string `json:"date,omitempty"`
-	From *string `json:"from,omitempty"`
-	HasAttachment *bool `json:"has_attachment,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Otp *string `json:"otp,omitempty"`
-	Subject *string `json:"subject,omitempty"`
-	VerificationLink *string `json:"verification_link,omitempty"`
 }
 
 // PublicV1MessageLoadMatch is the typed request payload for PublicV1Message.LoadTyped.
@@ -315,11 +218,6 @@ type PublicV1MessageRemoveMatch struct {
 
 // PublicV1Webhook is the typed data model for the public_v1_webhook entity.
 type PublicV1Webhook struct {
-	CreatedAt *string `json:"createdAt,omitempty"`
-	FailureCount *int `json:"failureCount,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Inbox string `json:"inbox"`
-	Url string `json:"url"`
 }
 
 // PublicV1WebhookListMatch is the typed request payload for PublicV1Webhook.ListTyped.
@@ -347,11 +245,6 @@ type PublicV1WebhookRemoveMatch struct {
 
 // Usage is the typed data model for the usage entity.
 type Usage struct {
-	Credits *map[string]any `json:"credits,omitempty"`
-	Period *map[string]any `json:"period,omitempty"`
-	Plan *string `json:"plan,omitempty"`
-	RateLimit *map[string]any `json:"rate_limit,omitempty"`
-	Requests *map[string]any `json:"requests,omitempty"`
 }
 
 // UsageLoadMatch is the typed request payload for Usage.LoadTyped.
